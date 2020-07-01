@@ -7,8 +7,14 @@ public class Circuit {
     }
 
     void addNode(String name){
-        if(!nodes.containsKey(name))
-        nodes.put(name,new Node());
+        int i=nodes.size();
+        if(!nodes.containsKey(name)) {
+            if (name.equals("0"))
+                nodes.put(name, new Node(true));
+            else nodes.put(name, new Node(false));
+            nodes.get(name).setUnion(i);
+        }
+
     }
     //resistor,capacitor,inductor
     void addElement(String name,String positive,String negative,String type,double value){

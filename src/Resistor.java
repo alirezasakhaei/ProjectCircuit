@@ -10,7 +10,6 @@ public class Resistor extends Element{
         return resistance;
     }
 
-
 //    @Override
     double getCurrent() {
         return getVoltage()/resistance;

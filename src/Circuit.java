@@ -6,6 +6,8 @@ public class Circuit {
     private HashMap<String, Element> elements;
     private ArrayList<String> nodeNameQueue;
 
+    double dt,dv,di;
+
     public Circuit() {
         nodes = new HashMap<>();
         elements = new HashMap<>();

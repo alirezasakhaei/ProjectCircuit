@@ -1,7 +1,8 @@
 public class VoltageDependentVoltageSource extends Element{
     double gain;
     Node positiveDependence,negativeDependence;
-    VoltageDependentVoltageSource(Node positive,Node negative,double gain,Node positiveDependence,Node negativeDependence){
+    VoltageDependentVoltageSource(String name,Node positive,Node negative,double gain,Node positiveDependence,Node negativeDependence){
+        this.name=name;
         positiveNode=positive;
         negativeNode=negative;
         this.gain=gain;

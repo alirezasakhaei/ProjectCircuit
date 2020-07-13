@@ -1,7 +1,8 @@
 public class Diode extends Element {
     private boolean isOn;
 
-    Diode(Node positiveNode,Node negativeNode){
+    Diode(String name,Node positiveNode,Node negativeNode){
+        this.name=name;
         this.positiveNode=positiveNode;
         this.negativeNode=negativeNode;
     }

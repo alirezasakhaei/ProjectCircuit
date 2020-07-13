@@ -6,12 +6,14 @@ public class Node {
     private int union;
     private boolean added;
     private boolean isGround;
-    private ArrayList<String> neighbors;
+    private ArrayList<Integer> neighbors;
     private ArrayList<String> positives;
     private ArrayList<String> negatives;
+    int name;;
 
 
-    public Node(boolean isGround){
+    public Node(int name,boolean isGround){
+        this.name=name;
         voltage=0;
         added = false;
         this.isGround=isGround;
@@ -20,19 +22,19 @@ public class Node {
         negatives=new ArrayList<>();
     }
 
-    void setNeighbors(String neighbor){
+    void setNeighbors(int neighbor){
         if(!neighbors.contains(neighbor))
             neighbors.add(neighbor);
     }
 
     void setPositives(String name){
-        if(!neighbors.contains(name))
-            neighbors.add(name);
+        if(!positives.contains(name))
+            positives.add(name);
     }
 
     void setNegatives(String name){
-        if(!neighbors.contains(name))
-            neighbors.add(name);
+        if(!negatives.contains(name))
+            negatives.add(name);
     }
 
     ArrayList<String> getPositives(){
@@ -43,7 +45,7 @@ public class Node {
         return negatives;
     }
 
-    ArrayList<String> getNeighbors(){
+    ArrayList<Integer> getNeighbors(){
         return neighbors;
     }
 

@@ -1,42 +1,43 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Circuit {
-    private HashMap<String, Node> nodes;
-    private HashMap<String, Element> elements;
-    private ArrayList<String> nodeNameQueue;
+    private ArrayList<Node> nodes;
+    private ArrayList<Element> elements;
+    private ArrayList<Integer> nodeNameQueue;
+    private ArrayList<String> elementNames;
+
 
     double dt,dv,di;
 
     public Circuit() {
-        nodes = new HashMap<>();
-        elements = new HashMap<>();
+        nodes = new ArrayList<>();
+        elements = new ArrayList<>();
         nodeNameQueue = new ArrayList<>();
     }
 
-    void addNode(String name) {
+    void addNode(int name) {
         int i = nodes.size();
-        if (!nodes.containsKey(name)) {
-            if (name.equals("0"))
-                nodes.put(name, new Node(true));
-            else nodes.put(name, new Node(false));
+        if (!nodes.contains(new Node(name,false))&&!nodes.contains(new Node(name,true))) {
+            if (name==0)
+                nodes.add(name, new Node(name,true));
+            else nodes.add(new Node(name,false));
             nodes.get(name).setUnion(i);
         }
 
     }
 
     //resistor,capacitor,inductor
-    void addElement(String name, String positive, String negative, String type, double value) {
-        if (!elements.containsKey(name)) {
+    void addElement(String name, int positive, int negative, String type, double value) {
+        if (!elementNames.contains(name)) {
             switch (type) {
                 case "resistor":
-                    elements.put(name, new Resistor(nodes.get(positive), nodes.get(negative), value));
+                    elements.add(new Resistor(name,nodes.get(positive), nodes.get(negative), value));
                     break;
                 case "capacitor":
-                    elements.put(name, new Capacitor(nodes.get(positive), nodes.get(negative), value));
+                    elements.add(new Capacitor(name,nodes.get(positive), nodes.get(negative), value));
                     break;
                 case "inductance":
-                    elements.put(name, new Inductor(nodes.get(positive), nodes.get(negative), value));
+                    elements.add(new Inductor(name,nodes.get(positive), nodes.get(negative), value));
                     break;
                 default:
                     return;
@@ -45,29 +46,31 @@ public class Circuit {
             nodes.get(negative).setNeighbors(positive);
             nodes.get(positive).setPositives(name);
             nodes.get(negative).setNegatives(name);
+            elementNames.add(name);
         }
     }
 
     //diode
-    void addElement(String name, String positive, String negative, String type) {
-        if (type.equals("diode") && !elements.containsKey(name)) {
-            elements.put(name, new Diode(nodes.get(positive), nodes.get(negative)));
+    void addElement(String name, int positive, int negative, String type) {
+        if (type.equals("diode") && !elementNames.contains(name)) {
+            elements.add(new Diode(name,nodes.get(positive), nodes.get(negative)));
             nodes.get(positive).setNeighbors(negative);
             nodes.get(negative).setNeighbors(positive);
             nodes.get(positive).setPositives(name);
             nodes.get(negative).setNegatives(name);
+            elementNames.add(name);
         }
     }
 
     //independent sources
-    void addElement(String name, String positive, String negative, String type, double value, double offset, double amplitude, double frequency, double phase) {
-        if (!elements.containsKey(name)) {
+    void addElement(String name, int positive, int negative, String type, double value, double offset, double amplitude, double frequency, double phase) {
+        if (!elementNames.contains(name)) {
             switch (type) {
                 case "independentCurrent":
-                    elements.put(name, new IndependentCurrentSource(nodes.get(positive), nodes.get(negative), value, offset, amplitude, frequency, phase));
+                    elements.add(new IndependentCurrentSource(name,nodes.get(positive), nodes.get(negative), value, offset, amplitude, frequency, phase));
                     break;
                 case "independentVoltage":
-                    elements.put(name, new IndependentVoltageSource(nodes.get(positive), nodes.get(negative), value, offset, amplitude, frequency, phase));
+                    elements.add(new IndependentVoltageSource(name,nodes.get(positive), nodes.get(negative), value, offset, amplitude, frequency, phase));
                     break;
                 default:
                     return;
@@ -76,27 +79,28 @@ public class Circuit {
             nodes.get(negative).setNeighbors(positive);
             nodes.get(positive).setPositives(name);
             nodes.get(negative).setNegatives(name);
+            elementNames.add(name);
         }
     }
 
     //dependent sources
-    void addElement(String name, String positive, String negative, String type, double gain, String positiveDepended, String negativeDepended) {
-        if (!elements.containsKey(name)) {
+    void addElement(String name, int positive, int negative, String type, double gain, int positiveDepended, int negativeDepended) {
+        if (!elementNames.contains(name)) {
             switch (type) {
                 case "CurrentDependentCurrent":
-                    elements.put(name, new CurrentDependentCurrentSource(nodes.get(positive), nodes.get(negative), gain,
+                    elements.add(new CurrentDependentCurrentSource(name,nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "CurrentDependentVoltage":
-                    elements.put(name, new CurrentDependentVoltageSource(nodes.get(positive), nodes.get(negative), gain,
+                    elements.add(new CurrentDependentVoltageSource(name,nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "voltageDependentCurrent":
-                    elements.put(name, new VoltageDependentCurrentSource(nodes.get(positive), nodes.get(negative), gain,
+                    elements.add(new VoltageDependentCurrentSource(name,nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "voltageDependentVoltage":
-                    elements.put(name, new VoltageDependentVoltageSource(nodes.get(positive), nodes.get(negative), gain,
+                    elements.add(new VoltageDependentVoltageSource(name,nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 default:
@@ -106,10 +110,11 @@ public class Circuit {
             nodes.get(negative).setNeighbors(positive);
             nodes.get(positive).setPositives(name);
             nodes.get(negative).setNegatives(name);
+            elementNames.add(name);
         }
     }
 
-    private void setAddedNodes(String name) {
+    private void setAddedNodes(int name) {
         if (!nodes.get(name).isAdded()) {
             nodes.get(name).setAdded(true);
             nodeNameQueue.add(name);
@@ -136,9 +141,10 @@ public class Circuit {
     }
 
     boolean initializeGraph() {
-        nodeNameQueue.add("0");
-        nodeNameQueue.addAll(nodes.get("0").getNeighbors());
-        setAddedNodes("0");
+        nodeNameQueue.add(0);
+        nodeNameQueue.addAll(nodes.get(0).getNeighbors());
+        setAddedNodes(0);
+
 
 
         return true;

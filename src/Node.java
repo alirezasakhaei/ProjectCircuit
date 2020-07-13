@@ -8,7 +8,7 @@ public class Node {
     private ArrayList<Integer> neighbors;
     private ArrayList<String> positives;
     private ArrayList<String> negatives;
-    int name;;
+    private int name;;
 
 
     public Node(int name){
@@ -18,6 +18,10 @@ public class Node {
         neighbors=new ArrayList<>();
         positives=new ArrayList<>();
         negatives=new ArrayList<>();
+    }
+
+    int getName(){
+        return name;
     }
 
     void setNeighbors(int neighbor){

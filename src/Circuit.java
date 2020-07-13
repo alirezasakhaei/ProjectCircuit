@@ -171,7 +171,7 @@ public class Circuit {
     }
 
     boolean initializeGraph() {
-        if(nodes.get(0).name!=0){
+        if(nodes.get(0).getName()!=0){
             //No Ground
         }
         nodeNameQueue.add(0);
@@ -181,7 +181,7 @@ public class Circuit {
         }
         String validatedNodes=checkLoopValidation("0","",0);
         for (int i = 0; i < nodes.size(); i++) {
-            if(!validatedNodes.contains(nodes.get(i).name)){
+            if(!validatedNodes.contains(String.valueOf(nodes.get(i).getName()))){
                 //Error5
             }
         }

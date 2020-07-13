@@ -5,18 +5,16 @@ public class Node {
     private double current;
     private int union;
     private boolean added;
-    private boolean isGround;
     private ArrayList<Integer> neighbors;
     private ArrayList<String> positives;
     private ArrayList<String> negatives;
     int name;;
 
 
-    public Node(int name,boolean isGround){
+    public Node(int name){
         this.name=name;
         voltage=0;
         added = false;
-        this.isGround=isGround;
         neighbors=new ArrayList<>();
         positives=new ArrayList<>();
         negatives=new ArrayList<>();
@@ -66,11 +64,11 @@ public class Node {
     }
 
     void setVoltage(double voltage){
-        if(!isGround)
+        if(name!=0)
         this.voltage=voltage;
     }
     double getVoltage(){
-        if(!isGround)
+        if(name!=0)
         return voltage;
         else return 0;
     }

@@ -5,6 +5,7 @@ public class Circuit {
     private ArrayList<Element> elements;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
+    private ArrayList<ArrayList<Node>> unions;
 
 
     double dt,dv,di;
@@ -13,18 +14,19 @@ public class Circuit {
         nodes = new ArrayList<>();
         elements = new ArrayList<>();
         nodeNameQueue = new ArrayList<>();
+        unions=new ArrayList<>();
     }
 
     void addNode(int name) {
         int i = nodes.size();
-        if (!nodes.contains(new Node(name,false))&&!nodes.contains(new Node(name,true))) {
+        if (!nodes.contains(new Node(name))&&!nodes.contains(new Node(name))) {
             if (name==0)
-                nodes.add(name, new Node(name,true));
-            else nodes.add(new Node(name,false));
+                nodes.add(name, new Node(name));
+            else nodes.add(new Node(name));
             nodes.get(name).setUnion(i);
         }
-
     }
+
 
     //resistor,capacitor,inductor
     void addElement(String name, int positive, int negative, String type, double value) {
@@ -119,7 +121,7 @@ public class Circuit {
             nodes.get(name).setAdded(true);
             nodeNameQueue.add(name);
         } else return;
-        for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
+
             for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
                 if (elements.get(nodes.get(name).getPositives().get(j)).getClass().equals(VoltageDependentCurrentSource.class) ||
                         elements.get(nodes.get(name).getPositives().get(j)).getClass().equals(VoltageDependentVoltageSource.class) ||
@@ -136,16 +138,54 @@ public class Circuit {
                     elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(nodeNameQueue.get(i)).getUnion());
                 }
             }
+        for (int i = 0; i <nodes.get(name).getNeighbors().size() ; i++) {
             setAddedNodes(nodes.get(name).getNeighbors().get(i));
         }
     }
 
+    private void initializeUnions(){
+        int currentUnion=0;
+        for (int i = 0; i <nodeNameQueue.size() ; i++) {
+            if(nodes.get(nodeNameQueue.get(i)).getUnion()>=currentUnion){
+                ArrayList<Node> temp=new ArrayList<>();
+                currentUnion++;
+                temp.add(nodes.get(nodeNameQueue.get(i)));
+                unions.add(temp);
+            }else {
+                unions.get(nodes.get(nodeNameQueue.get(i)).getUnion()).add(nodes.get(nodeNameQueue.get(i)));
+            }
+        }
+    }
+
+    String checkLoopValidation(String s,String validated,int currentNode){
+        if(s.charAt(s.length()-1)=='0'&&s.length()>3){
+            return s;
+        }
+        if(s.indexOf(String.valueOf(currentNode))==s.lastIndexOf(String.valueOf(currentNode))){
+            for (int i = 0; i < nodes.get(currentNode).getNeighbors().size(); i++) {
+                validated=validated.concat(checkLoopValidation(s.concat(nodes.get(currentNode).getNeighbors().get(i))
+                        ,validated,nodes.get(currentNode).getNeighbors().get(i)));
+            }
+        }
+        return validated;
+    }
+
     boolean initializeGraph() {
+        if(nodes.get(0).name!=0){
+            //No Ground
+        }
         nodeNameQueue.add(0);
-        nodeNameQueue.addAll(nodes.get(0).getNeighbors());
         setAddedNodes(0);
-
-
+        if(nodeNameQueue.size()<nodes.size()){
+            //Error5
+        }
+        String validatedNodes=checkLoopValidation("0","",0);
+        for (int i = 0; i < nodes.size(); i++) {
+            if(!validatedNodes.contains(nodes.get(i).name)){
+                //Error5
+            }
+        }
+        initializeUnions();
 
         return true;
     }

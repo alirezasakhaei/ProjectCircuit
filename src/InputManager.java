@@ -28,15 +28,15 @@ public class InputManager {
                     case 'd':
                         switch (secondLetter) {
                             case 'v':
-                                circuit.dv = dCalculater(nthWord(string, 2));
+                                circuit.dv = unitCalculater(nthWord(string, 2));
                                 flagDv = true;
                                 break;
                             case 'i':
-                                circuit.di = dCalculater(nthWord(string, 2));
+                                circuit.di = unitCalculater(nthWord(string, 2));
                                 flagDi = true;
                                 break;
                             case 't':
-                                circuit.dt = dCalculater(nthWord(string, 2));
+                                circuit.dt = unitCalculater(nthWord(string, 2));
                                 flagDt = true;
                                 break;
                         }
@@ -49,7 +49,7 @@ public class InputManager {
         }
     }
 
-    public static double dCalculater(String dAmount) {
+    public static double unitCalculater(String dAmount) {
         double dReturn = 0;
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);

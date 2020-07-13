@@ -28,19 +28,23 @@ public class InputManager {
                     case 'd':
                         switch (secondLetter) {
                             case 'v':
-                                circuit.dv = unitCalculater(nthWord(string, 2));
+                                circuit.dv = unitCalculator(nthWord(string, 2));
                                 flagDv = true;
                                 break;
                             case 'i':
-                                circuit.di = unitCalculater(nthWord(string, 2));
+                                circuit.di = unitCalculator(nthWord(string, 2));
                                 flagDi = true;
                                 break;
                             case 't':
-                                circuit.dt = unitCalculater(nthWord(string, 2));
+                                circuit.dt = unitCalculator(nthWord(string, 2));
                                 flagDt = true;
                                 break;
                         }
                         break;
+                    case 'I' :
+                        addCurrentSource(circuit,string);
+                        break;
+
 
                 }
             }
@@ -48,8 +52,10 @@ public class InputManager {
             System.out.println("There is a problem found in line " + inputLines.size());
         }
     }
+    public static void addCurrentSource(Circuit circuit, String string){
 
-    public static double unitCalculater(String dAmount) {
+    }
+    public static double unitCalculator(String dAmount) {
         double dReturn = 0;
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);
@@ -79,7 +85,6 @@ public class InputManager {
         }
         return 0;
     }
-
     public static String nthWord(String line, int number) {
         Pattern pattern = Pattern.compile("\\w+");
         Matcher matcher = pattern.matcher(line);

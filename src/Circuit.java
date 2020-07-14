@@ -121,13 +121,14 @@ public class Circuit {
             elementNames.add(name);
         }
     }
+
     //current dependent source
     void addElement(String name, int positive, int negative, String type, String elementDependent, double gain) {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "CurrentDependentCurrent":
                     elements.put(name, new CurrentDependentCurrentSource(name, nodes.get(positive), nodes.get(negative),
-                           elements.get(elementDependent), gain));
+                            elements.get(elementDependent), gain));
                     break;
                 case "CurrentDependentVoltage":
                     elements.put(name, new CurrentDependentVoltageSource(name, nodes.get(positive), nodes.get(negative),
@@ -218,5 +219,11 @@ public class Circuit {
         return validated;
     }
 
-
+    @Override
+    public String toString() {
+        return "Circuit{" +
+                "nodes=" + nodes +
+                ", elements=" + elements +
+                '}';
+    }
 }

@@ -14,6 +14,8 @@ public class Main {
             System.out.println("dt or dv or di is not set properly");
         if (tranFlag && dVITFlag){
 
+            // THE REST OF THE CODE MUST BEGIN FROM HERE
+
         }
 
     }

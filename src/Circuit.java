@@ -7,7 +7,7 @@ public class Circuit {
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
-    private double dt, dv, di, time;
+    private double dt=0, dv=0, di=0, time;
 
     public Circuit() {
         nodes = new HashMap<>();

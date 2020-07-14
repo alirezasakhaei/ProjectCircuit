@@ -2,10 +2,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InputManager {
+public class InputManager{
     File input;
     Circuit circuit;
-    boolean flagDt, flagDv, flagDi, flagTran;
+    boolean flagTran, flag = true;
 
     InputManager(File input) {
         this.input = input;
@@ -17,44 +17,15 @@ public class InputManager {
         ArrayList<String> inputLines = new ArrayList<String>(0);
         try {
             Scanner inputScanner = new Scanner(input);
-            while (inputScanner.hasNextLine()) {
+            while (inputScanner.hasNextLine() && flag) {
                 String string = inputScanner.nextLine();
                 string = string.trim();
                 inputLines.add(string);
                 char firstLetter = string.charAt(0);
-                char secondLetter = string.charAt(1);
                 switch (firstLetter) {
                     case 'd':
-                        Scanner scanner = new Scanner(string);
-                        scanner.next();
-                        String dAmount = scanner.next();
-                        switch (secondLetter) {
-                            case 'v':
-                                if (unitCalculator(dAmount) > 0) {
-                                    circuit.setDv(unitCalculator(dAmount));
-                                    flagDv = true;
-                                }
-                                break;
-                            case 'i':
-                                if (unitCalculator(dAmount) > 0) {
-                                    circuit.setDi(unitCalculator(dAmount));
-                                    flagDi = true;
-                                }
-                                break;
-                            case 't':
-                                if (unitCalculator(dAmount) > 0) {
-                                    circuit.setDt(unitCalculator(dAmount));
-                                    flagDt = true;
-                                }
-                                break;
-                        }
+                        setD(circuit,string);
                         break;
-                    case '.':
-                        Scanner scannerTran = new Scanner(string);
-                        if (scannerTran.next().equals(".tran")){
-                            circuit.setTime(unitCalculator(scannerTran.next()));
-                            flagTran = true;
-                        }
                     case 'I':
                         addIndependentSource(circuit, string, 'I');
                         break;
@@ -86,6 +57,12 @@ public class InputManager {
                     case 'D':
                         addDiode(circuit,string);
                         break;
+                    case '.':
+                        Scanner scannerTran = new Scanner(string);
+                        if (scannerTran.next().equals(".tran")){
+                            circuit.setTime(unitCalculator(scannerTran.next()));
+                            flagTran = true;
+                        }
                 }
             }
         } catch (Exception e) {
@@ -94,10 +71,28 @@ public class InputManager {
 
         return circuit;
     }
-    public boolean isDVTI(){
-        if (flagDv && flagDi && flagDt)
-            return true;
-        return false;
+
+    public void setD(Circuit circuit,String string){
+        Scanner scanner = new Scanner(string);
+        char vdi = string.charAt(1);
+        scanner.next();
+        double dAmount = unitCalculator(scanner.next());
+        if (dAmount <= 0)
+//            return false;
+        switch (vdi){
+            case 'v':
+                circuit.setDv(dAmount);
+                break;
+            case 'i':
+                circuit.setDi(dAmount);
+                break;
+            case 't':
+                circuit.setDt(dAmount);
+                break;
+            default:
+//                return false;
+        }
+//        return true;
     }
     public boolean isTran(){
         return flagTran;
@@ -225,10 +220,11 @@ public class InputManager {
                     return number * 0.000000001;
                 case 'p':
                     return number * 0.000000000001;
+                default:
+                    return -1;
             }
 
         }
-        return 0;
     }
 }
 

@@ -42,8 +42,22 @@ public class InputManager {
                         }
                         break;
                     case 'I' :
-                        addCurrentSource(circuit,string);
+                        addIndependentSource(circuit,string,'I');
                         break;
+                    case 'V' :
+                        addIndependentSource(circuit,string,'V');
+                        break;
+                    case 'R' :
+                        addRLC(circuit,string,'R');
+                        break;
+                    case 'C' :
+                        addRLC(circuit,string,'C');
+                        break;
+                    case 'L' :
+                        addRLC(circuit,string,'L');
+                        break;
+
+
 
 
                 }
@@ -52,9 +66,45 @@ public class InputManager {
             System.out.println("There is a problem found in line " + inputLines.size());
         }
     }
-    public static void addCurrentSource(Circuit circuit, String string){
+    public static void addIndependentSource(Circuit circuit, String string,int IV){
         circuit.addNode(Integer.parseInt(nthWord(string,2)));
         circuit.addNode(Integer.parseInt(nthWord(string,3)));
+        Scanner scanner = new Scanner(string);
+        String name = scanner.next();
+        int positive = Integer.parseInt(scanner.next());
+        int negative = Integer.parseInt(scanner.next());
+        double offset = unitCalculator(scanner.next());
+        double amplitude = unitCalculator(scanner.next());
+        double frequency = unitCalculator(scanner.next());
+        double phase = unitCalculator(scanner.next());
+        switch (IV) {
+            case 'I' :
+                circuit.addElement(name, positive, negative, "independentCurrent", offset, amplitude, frequency, phase);
+                break;
+            case 'V' :
+                circuit.addElement(name, positive, negative, "independentVoltage", offset, amplitude, frequency, phase);
+                break;
+        }
+    }
+    public static void addRLC(Circuit circuit,String string,int RLC){
+        circuit.addNode(Integer.parseInt(nthWord(string,2)));
+        circuit.addNode(Integer.parseInt(nthWord(string,3)));
+        Scanner scanner = new Scanner(string);
+        String name = scanner.next();
+        int positive = Integer.parseInt(scanner.next());
+        int negative = Integer.parseInt(scanner.next());
+        double value = unitCalculator(scanner.next());
+        switch (RLC) {
+            case 'R' :
+                circuit.addElement(name,positive,negative,"resistor",value);
+                break;
+            case 'C' :
+                circuit.addElement(name,positive,negative,"capacitor",value);
+                break;
+            case 'L' :
+                circuit.addElement(name,positive,negative,"inductance",value);
+                break;
+        }
 
     }
     public static double unitCalculator(String dAmount) {

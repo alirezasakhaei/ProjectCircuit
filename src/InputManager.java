@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -56,7 +55,7 @@ public class InputManager {
     public static void addCurrentSource(Circuit circuit, String string){
         circuit.addNode(Integer.parseInt(nthWord(string,2)));
         circuit.addNode(Integer.parseInt(nthWord(string,3)));
-        //circuit.addElement(nthWord(string,1),);
+
     }
     public static double unitCalculator(String dAmount) {
         double dReturn = 0;
@@ -89,12 +88,12 @@ public class InputManager {
         return 0;
     }
     public static String nthWord(String line, int number) {
-        Pattern pattern = Pattern.compile("\\w+");
-        Matcher matcher = pattern.matcher(line);
+        Scanner scanner = new Scanner(line);
+        String string = null;
         for (int i = 0; i < number; i++) {
-            matcher.find();
+            string = scanner.next();
         }
-        return matcher.group();
+        return string;
     }
 }
 

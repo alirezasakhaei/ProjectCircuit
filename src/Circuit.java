@@ -95,7 +95,7 @@ public class Circuit {
     }
 
     //voltage dependent sources
-    void addElement(String name, int positive, int negative, String type, double gain, int positiveDepended, int negativeDepended) {
+    void addElement(String name, int positive, int negative, String type, int positiveDepended, int negativeDepended, double gain) {
         if (!elementNames.contains(name)) {
             switch (type) {
 
@@ -118,7 +118,7 @@ public class Circuit {
         }
     }
     //current dependent source
-    void addElement(String name, int positive, int negative, String type, double gain, String elementDependent) {
+    void addElement(String name, int positive, int negative, String type, String elementDependent, double gain) {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "CurrentDependentCurrent":

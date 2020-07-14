@@ -1,8 +1,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class InputManager {
     File input;
@@ -12,6 +11,7 @@ public class InputManager {
         this.input = input;
         circuit = new Circuit();
     }
+    // this method is instantly called in the main method (right after the inputManager object is created
 
     public void analyzeTheInput() {
         ArrayList<String> inputLines = new ArrayList<String>(0);
@@ -66,6 +66,7 @@ public class InputManager {
             System.out.println("There is a problem found in line " + inputLines.size());
         }
     }
+    //methods to add an element to the circuit
     public static void addIndependentSource(Circuit circuit, String string,int IV){
         circuit.addNode(Integer.parseInt(nthWord(string,2)));
         circuit.addNode(Integer.parseInt(nthWord(string,3)));
@@ -107,6 +108,10 @@ public class InputManager {
         }
 
     }
+
+
+
+    //practical methods
     public static double unitCalculator(String dAmount) {
         double dReturn = 0;
         int length = dAmount.length();

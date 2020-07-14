@@ -7,7 +7,7 @@ public class Circuit {
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
-    private double dt, dv, di;
+    private double dt, dv, di, time;
 
     public Circuit() {
         nodes = new HashMap<>();
@@ -27,6 +27,10 @@ public class Circuit {
 
     public void setDi(double di) {
         this.di = di;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
     }
 
     void addNode(int name) {

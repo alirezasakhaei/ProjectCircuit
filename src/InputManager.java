@@ -44,6 +44,11 @@ public class InputManager {
                                 break;
                         }
                         break;
+                    case '.':
+                        Scanner scannerTran = new Scanner(string);
+                        if (scannerTran.next().equals(".tran")){
+                            circuit.setTime(unitCalculator(scannerTran.next()));
+                        }
                     case 'I':
                         addIndependentSource(circuit, string, 'I');
                         break;
@@ -73,8 +78,8 @@ public class InputManager {
                         break;
                     // adding Ideal Diode
                     case 'D':
-
-
+                        addDiode(circuit,string);
+                        break;
                 }
             }
         } catch (Exception e) {

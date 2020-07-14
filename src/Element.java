@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+
 public abstract class Element extends Circuit{
     Node positiveNode,negativeNode;
     double current;
+    ArrayList<Double> currentsArray = new ArrayList<Double>();
     String name;
 
     double getVoltage(){
@@ -8,5 +11,4 @@ public abstract class Element extends Circuit{
     }
 
 //    abstract double getCurrent();
-
 }

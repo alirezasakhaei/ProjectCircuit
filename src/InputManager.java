@@ -109,8 +109,6 @@ public class InputManager {
 
     }
 
-
-
     //practical methods
     public static double unitCalculator(String dAmount) {
         double dReturn = 0;

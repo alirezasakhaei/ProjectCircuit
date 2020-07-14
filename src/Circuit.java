@@ -2,18 +2,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Circuit {
-    private HashMap<Integer,Node> nodes;
-    private HashMap<String,Element> elements;
+    private HashMap<Integer, Node> nodes;
+    private HashMap<String, Element> elements;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
-    private double dt,dv,di;
+    private double dt, dv, di;
 
     public Circuit() {
         nodes = new HashMap<>();
         elements = new HashMap<>();
         nodeNameQueue = new ArrayList<>();
-        unions=new ArrayList<>();
+        unions = new ArrayList<>();
     }
 
     public void setDt(double dt) {
@@ -31,10 +31,9 @@ public class Circuit {
     void addNode(int name) {
         int i = nodes.size();
         if (!nodes.containsKey(name)) {
-                nodes.put(name, new Node(name));
+            nodes.put(name, new Node(name));
             nodes.get(name).setUnion(i);
         }
-
     }
 
     //resistor,capacitor,inductor
@@ -42,13 +41,13 @@ public class Circuit {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "resistor":
-                    elements.put(name,new Resistor(name,nodes.get(positive), nodes.get(negative), value));
+                    elements.put(name, new Resistor(name, nodes.get(positive), nodes.get(negative), value));
                     break;
                 case "capacitor":
-                    elements.put(name,new Capacitor(name,nodes.get(positive), nodes.get(negative), value));
+                    elements.put(name, new Capacitor(name, nodes.get(positive), nodes.get(negative), value));
                     break;
                 case "inductance":
-                    elements.put(name,new Inductor(name,nodes.get(positive), nodes.get(negative), value));
+                    elements.put(name, new Inductor(name, nodes.get(positive), nodes.get(negative), value));
                     break;
                 default:
                     return;
@@ -64,7 +63,7 @@ public class Circuit {
     //diode
     void addElement(String name, int positive, int negative, String type) {
         if (type.equals("diode") && !elementNames.contains(name)) {
-            elements.put(name,new Diode(name,nodes.get(positive), nodes.get(negative)));
+            elements.put(name, new Diode(name, nodes.get(positive), nodes.get(negative)));
             nodes.get(positive).setNeighbors(negative);
             nodes.get(negative).setNeighbors(positive);
             nodes.get(positive).setPositives(name);
@@ -78,10 +77,10 @@ public class Circuit {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "independentCurrent":
-                    elements.put(name,new IndependentCurrentSource(name,nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
+                    elements.put(name, new IndependentCurrentSource(name, nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
                     break;
                 case "independentVoltage":
-                    elements.put(name,new IndependentVoltageSource(name,nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
+                    elements.put(name, new IndependentVoltageSource(name, nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
                     break;
                 default:
                     return;
@@ -99,19 +98,19 @@ public class Circuit {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "CurrentDependentCurrent":
-                    elements.put(name,new CurrentDependentCurrentSource(name,nodes.get(positive), nodes.get(negative), gain,
+                    elements.put(name, new CurrentDependentCurrentSource(name, nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "CurrentDependentVoltage":
-                    elements.put(name,new CurrentDependentVoltageSource(name,nodes.get(positive), nodes.get(negative), gain,
+                    elements.put(name, new CurrentDependentVoltageSource(name, nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "voltageDependentCurrent":
-                    elements.put(name,new VoltageDependentCurrentSource(name,nodes.get(positive), nodes.get(negative), gain,
+                    elements.put(name, new VoltageDependentCurrentSource(name, nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 case "voltageDependentVoltage":
-                    elements.put(name,new VoltageDependentVoltageSource(name,nodes.get(positive), nodes.get(negative), gain,
+                    elements.put(name, new VoltageDependentVoltageSource(name, nodes.get(positive), nodes.get(negative), gain,
                             nodes.get(positiveDepended), nodes.get(negativeDepended)));
                     break;
                 default:
@@ -123,6 +122,26 @@ public class Circuit {
             nodes.get(negative).setNegatives(name);
             elementNames.add(name);
         }
+    }
+
+    boolean initializeGraph() {
+        if (!nodes.containsKey(0)) {
+            //No Ground Error
+        }
+        nodeNameQueue.add(0);
+        setAddedNodes(0);
+        if (nodeNameQueue.size() < nodes.size()) {
+            //Error5
+        }
+        String validatedNodes = checkLoopValidation("0", "", 0);
+        for (int i = 0; i < nodes.size(); i++) {
+            if (!validatedNodes.contains(String.valueOf(nodes.get(i).getName()))) {
+                //Error5
+            }
+        }
+        initializeUnions();
+
+        return true;
     }
 
     private void setAddedNodes(int name) {
@@ -147,56 +166,36 @@ public class Circuit {
                 elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
             }
         }
-        for (int i = 0; i <nodes.get(name).getNeighbors().size() ; i++) {
+        for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
             setAddedNodes(nodes.get(name).getNeighbors().get(i));
         }
     }
 
-    private void initializeUnions(){
-        int currentUnion=0;
-        for (int i = 0; i <nodeNameQueue.size() ; i++) {
-            if(nodes.get(nodeNameQueue.get(i)).getUnion()>=currentUnion){
-                ArrayList<Node> temp=new ArrayList<>();
+    private void initializeUnions() {
+        int currentUnion = 0;
+        for (int i = 0; i < nodeNameQueue.size(); i++) {
+            if (nodes.get(nodeNameQueue.get(i)).getUnion() >= currentUnion) {
+                ArrayList<Node> temp = new ArrayList<>();
                 currentUnion++;
                 temp.add(nodes.get(nodeNameQueue.get(i)));
                 unions.add(temp);
-            }else {
+            } else {
                 unions.get(nodes.get(nodeNameQueue.get(i)).getUnion()).add(nodes.get(nodeNameQueue.get(i)));
             }
         }
     }
 
-    String checkLoopValidation(String s,String validated,int currentNode){
-        if(s.charAt(s.length()-1)=='0'&&s.length()>3){
+    String checkLoopValidation(String s, String validated, int currentNode) {
+        if (s.charAt(s.length() - 1) == '0' && s.length() > 3) {
             return s;
         }
-        if(s.indexOf(String.valueOf(currentNode))==s.lastIndexOf(String.valueOf(currentNode))){
+        if (s.indexOf(String.valueOf(currentNode)) == s.lastIndexOf(String.valueOf(currentNode))) {
             for (int i = 0; i < nodes.get(currentNode).getNeighbors().size(); i++) {
-                validated=validated.concat(checkLoopValidation(s.concat(nodes.get(currentNode).getNeighbors().get(i))
-                        ,validated,nodes.get(currentNode).getNeighbors().get(i)));
+                validated = validated.concat(checkLoopValidation(s.concat(String.valueOf(nodes.get(currentNode).getNeighbors().get(i)))
+                        , validated, nodes.get(currentNode).getNeighbors().get(i)));
             }
         }
         return validated;
-    }
-
-    boolean initializeGraph() {
-        if(nodes.get(0).getName()!=0){
-            //No Ground
-        }
-        nodeNameQueue.add(0);
-        setAddedNodes(0);
-        if(nodeNameQueue.size()<nodes.size()){
-            //Error5
-        }
-        String validatedNodes=checkLoopValidation("0","",0);
-        for (int i = 0; i < nodes.size(); i++) {
-            if(!validatedNodes.contains(String.valueOf(nodes.get(i).getName()))){
-                //Error5
-            }
-        }
-        initializeUnions();
-
-        return true;
     }
 
 

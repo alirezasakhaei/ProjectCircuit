@@ -71,9 +71,8 @@ public class InputManager {
                     case 'E':
                         addVoltageDependent(circuit, string, 'V');
                         break;
-                        // adding Ideal Diode
-                    case 'D' :
-
+                    // adding Ideal Diode
+                    case 'D':
 
 
                 }
@@ -166,7 +165,7 @@ public class InputManager {
         }
     }
 
-    public static void addDiode(Circuit circuit, String string){
+    public static void addDiode(Circuit circuit, String string) {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = scanner.nextInt();
@@ -174,9 +173,9 @@ public class InputManager {
         circuit.addNode(positive);
         circuit.addNode(negative);
         int isIdeal = scanner.nextInt();
-        switch (isIdeal){
-            case 1 :
-                circuit.addElement(name,positive,negative,"diode");
+        switch (isIdeal) {
+            case 1:
+                circuit.addElement(name, positive, negative, "diode");
                 break;
         }
     }

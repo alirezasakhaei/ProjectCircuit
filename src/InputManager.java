@@ -2,20 +2,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class InputManager {
     File input;
     Circuit circuit;
+    boolean flagDt, flagDv, flagDi, flagTran;
 
     InputManager(File input) {
         this.input = input;
         circuit = new Circuit();
     }
-    // this method is instantly called in the main method (right after the inputManager object is created
 
-    public void analyzeTheInput() {
+    // this method is instantly called in the main method (right after the inputManager object is created
+    public Circuit analyzeTheInput() {
         ArrayList<String> inputLines = new ArrayList<String>(0);
-        boolean flagDt, flagDv, flagDi;
         try {
             Scanner inputScanner = new Scanner(input);
             while (inputScanner.hasNextLine()) {
@@ -31,16 +30,22 @@ public class InputManager {
                         String dAmount = scanner.next();
                         switch (secondLetter) {
                             case 'v':
-                                circuit.setDv(unitCalculator(dAmount));
-                                flagDv = true;
+                                if (unitCalculator(dAmount) > 0) {
+                                    circuit.setDv(unitCalculator(dAmount));
+                                    flagDv = true;
+                                }
                                 break;
                             case 'i':
-                                circuit.setDi(unitCalculator(dAmount));
-                                flagDi = true;
+                                if (unitCalculator(dAmount) > 0) {
+                                    circuit.setDi(unitCalculator(dAmount));
+                                    flagDi = true;
+                                }
                                 break;
                             case 't':
-                                circuit.setDt(unitCalculator(dAmount));
-                                flagDt = true;
+                                if (unitCalculator(dAmount) > 0) {
+                                    circuit.setDt(unitCalculator(dAmount));
+                                    flagDt = true;
+                                }
                                 break;
                         }
                         break;
@@ -48,6 +53,7 @@ public class InputManager {
                         Scanner scannerTran = new Scanner(string);
                         if (scannerTran.next().equals(".tran")){
                             circuit.setTime(unitCalculator(scannerTran.next()));
+                            flagTran = true;
                         }
                     case 'I':
                         addIndependentSource(circuit, string, 'I');
@@ -85,6 +91,16 @@ public class InputManager {
         } catch (Exception e) {
             System.out.println("There is a problem found in line " + inputLines.size());
         }
+
+        return circuit;
+    }
+    public boolean isDVTI(){
+        if (flagDv && flagDi && flagDt)
+            return true;
+        return false;
+    }
+    public boolean isTran(){
+        return flagTran;
     }
 
     //methods to add an element to the circuit

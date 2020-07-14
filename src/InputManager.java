@@ -68,16 +68,21 @@ public class InputManager {
     }
     //methods to add an element to the circuit
     public static void addIndependentSource(Circuit circuit, String string,int IV){
+        System.out.println(string);
         circuit.addNode(Integer.parseInt(nthWord(string,2)));
         circuit.addNode(Integer.parseInt(nthWord(string,3)));
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
-        int positive = Integer.parseInt(scanner.next());
-        int negative = Integer.parseInt(scanner.next());
+        int positive = scanner.nextInt();
+        int negative = scanner.nextInt();
         double offset = unitCalculator(scanner.next());
+        System.out.println(offset);
         double amplitude = unitCalculator(scanner.next());
+        System.out.println(amplitude);
         double frequency = unitCalculator(scanner.next());
+        System.out.println(frequency);
         double phase = unitCalculator(scanner.next());
+        System.out.println(phase);
         switch (IV) {
             case 'I' :
                 circuit.addElement(name, positive, negative, "independentCurrent", offset, amplitude, frequency, phase);
@@ -111,12 +116,10 @@ public class InputManager {
 
     //practical methods
     public static double unitCalculator(String dAmount) {
-        double dReturn = 0;
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);
         int ascii = (int) measure;
-        if (ascii > 48 && ascii < 58) {
-            System.out.println(dAmount);
+        if (ascii >= '0' && ascii <= '9') {
             return Double.parseDouble(dAmount);
         } else {
             double number = Double.parseDouble(dAmount.substring(0, dAmount.length()-1));
@@ -134,7 +137,7 @@ public class InputManager {
                 case 'n' :
                     return number *0.000000001;
                 case 'p' :
-                    return number *0.000000001;
+                    return number *0.000000000001;
             }
 
         }

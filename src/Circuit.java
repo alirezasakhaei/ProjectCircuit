@@ -13,6 +13,7 @@ public class Circuit {
         nodes = new HashMap<>();
         elements = new HashMap<>();
         nodeNameQueue = new ArrayList<>();
+        elementNames = new ArrayList<>();
         unions = new ArrayList<>();
     }
 

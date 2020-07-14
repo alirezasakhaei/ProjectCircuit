@@ -1,12 +1,12 @@
 public class CurrentDependentCurrentSource extends Element {
     double gain;
-    Node positiveDependence,negativeDependence;
-    CurrentDependentCurrentSource(String name,Node positive,Node negative,double gain,Node positiveDependence,Node negativeDependence){
+    Element dependentElement;
+    CurrentDependentCurrentSource(String name,Node positiveNode,Node negativeNode,Element dependentElement,double gain){
         this.name=name;
-        positiveNode=positive;
-        negativeNode=negative;
+        this.positiveNode=positiveNode;
+        this.negativeNode=negativeNode;
+        this.dependentElement = dependentElement;
         this.gain=gain;
-        this.positiveDependence=positiveDependence;
-        this.negativeDependence=negativeDependence;
+
     }
 }

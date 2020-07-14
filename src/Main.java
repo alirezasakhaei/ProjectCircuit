@@ -12,11 +12,14 @@ public class Main {
             System.out.println("Time is not given");
         if (tranFlag){
 
+
             int error=circuit.initializeGraph();
             if(error!=0) {
                 System.out.println("Error " + error);
                 return;
             }
+
+            circuit.solveCircuit();
             System.out.println(circuit.toString());
 
             // THE REST OF THE CODE MUST BEGIN FROM HERE

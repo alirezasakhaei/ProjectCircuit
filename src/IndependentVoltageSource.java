@@ -15,10 +15,12 @@ public class IndependentVoltageSource extends Element{
     double getCurrent() {
         current=0;
         for (int i = 0; i < positiveNode.getPositives().size(); i++) {
-            current-=elements.get(positiveNode.getPositives().get(i)).getCurrent();
+                if (!positiveNode.getPositives().get(i).equals(this.name))
+                    current -= elements.get(positiveNode.getPositives().get(i)).getCurrent();
+
         }
         for (int i = 0; i < negativeNode.getPositives().size(); i++) {
-            current+=elements.get(negativeNode.getPositives().get(i)).getCurrent();
+            current+=elements.get(positiveNode.getNegatives().get(i)).getCurrent();
         }
         return current;
     }

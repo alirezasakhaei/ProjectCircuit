@@ -60,7 +60,7 @@ public class InputManager{
                     case '.':
                         Scanner scannerTran = new Scanner(string);
                         if (scannerTran.next().equals(".tran")){
-                            circuit.setTime(unitCalculator(scannerTran.next()));
+                            circuit.setMaximumTime(unitCalculator(scannerTran.next()));
                             flagTran = true;
                         }
                 }
@@ -74,10 +74,11 @@ public class InputManager{
 
     public void setD(Circuit circuit,String string){
         Scanner scanner = new Scanner(string);
+        System.out.println(string);
         char vdi = string.charAt(1);
         scanner.next();
         double dAmount = unitCalculator(scanner.next());
-        if (dAmount <= 0)
+      //  if (dAmount <= 0)
 //            return false;
         switch (vdi){
             case 'v':

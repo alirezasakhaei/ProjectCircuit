@@ -17,7 +17,7 @@ public class CurrentDependentVoltageSource extends Element{
             current-=elements.get(positiveNode.getPositives().get(i)).getCurrent();
         }
         for (int i = 0; i < negativeNode.getPositives().size(); i++) {
-            current+=elements.get(negativeNode.getPositives().get(i)).getCurrent();
+            current+=elements.get(positiveNode.getNegatives().get(i)).getCurrent();
         }
         return current;
     }

@@ -89,6 +89,7 @@ public class Node {
         return "Node{" +
                 "name=" + name +
                 ", voltage=" + voltage +
+                ", union="+ union +
                 '}';
     }
 }

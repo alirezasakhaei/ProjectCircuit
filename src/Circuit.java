@@ -7,7 +7,7 @@ public class Circuit {
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
-    private double dt=0, dv=0, di=0, time;
+    private double dt = 0, dv = 0, di = 0, time, maximumTime;
 
     public Circuit() {
         nodes = new HashMap<>();
@@ -15,6 +15,10 @@ public class Circuit {
         nodeNameQueue = new ArrayList<>();
         elementNames = new ArrayList<>();
         unions = new ArrayList<>();
+    }
+
+    public void setMaximumTime(double maximumTime) {
+        this.maximumTime = maximumTime;
     }
 
     public void setDt(double dt) {
@@ -47,6 +51,10 @@ public class Circuit {
 
     public double getTime() {
         return time;
+    }
+
+    public double getMaximumTime() {
+        return maximumTime;
     }
 
     void addNode(int name) {
@@ -165,13 +173,12 @@ public class Circuit {
         if (!nodes.containsKey(0)) {
             return 4;
         }
-        nodeNameQueue.add(0);
         setAddedNodes(0);
         if (nodeNameQueue.size() < nodes.size()) {
             return 5;
         }
         String validatedNodes = checkLoopValidation("0", "", 0);
-        for (int i:nodes.keySet()) {
+        for (int i : nodes.keySet()) {
             if (!validatedNodes.contains(String.valueOf(i))) {
                 return 5;
             }
@@ -180,8 +187,39 @@ public class Circuit {
         return 0;
     }
 
-    void solveCircuit(){
+    void solveCircuit() {
+        double i1, i2;
+        for (time = 0; time <= maximumTime; time += dt) {
+            for (int l = 0; l <100 ; l++) {
+                for (int i = 1; i < unions.size(); i++) {
+                    for (int j = 0; j < unions.get(i).size(); j++) {
+                        i1 = obtainCurrent(unions.get(i));
+                        unions.get(i).get(j).setVoltage(unions.get(i).get(j).getVoltage() + dv);
+                        i2 = obtainCurrent(unions.get(i));
+                        unions.get(i).get(j).setVoltage(unions.get(i).get(j).getVoltage() - dv + dv * (Math.abs(i1) - Math.abs(i2)) / di);
+                    }
+                }
+            }
 
+
+        }
+
+    }
+
+    private double obtainCurrent(ArrayList<Node> union) {
+        double current = 0;
+        for (int j = 0; j < union.size(); j++) {
+            for (int i = 0; i < union.get(j).getPositives().size(); i++) {
+                if (elements.get(union.get(j).getPositives().get(i)).negativeNode.getUnion() != union.get(j).getUnion()) {
+                    current -= elements.get(union.get(j).getPositives().get(i)).getCurrent();
+                }
+            }
+            for (int i = 0; i < union.get(j).getNegatives().size(); i++) {
+                if (elements.get(union.get(j).getNegatives().get(i)).positiveNode.getUnion() != union.get(j).getUnion())
+                    current += elements.get(union.get(j).getNegatives().get(i)).getCurrent();
+            }
+        }
+        return current;
     }
 
     private void setAddedNodes(int name) {
@@ -212,13 +250,13 @@ public class Circuit {
     }
 
     private void initializeUnions() {
-        int currentUnion = 0;
+        ArrayList<Integer> seenUnions=new ArrayList<>();
         for (int i = 0; i < nodeNameQueue.size(); i++) {
-            if (nodes.get(nodeNameQueue.get(i)).getUnion() >= currentUnion) {
+            if (!seenUnions.contains(nodes.get(nodeNameQueue.get(i)).getUnion())) {
                 ArrayList<Node> temp = new ArrayList<>();
-                currentUnion++;
                 temp.add(nodes.get(nodeNameQueue.get(i)));
                 unions.add(temp);
+                seenUnions.add(nodes.get(nodeNameQueue.get(i)).getUnion());
             } else {
                 unions.get(nodes.get(nodeNameQueue.get(i)).getUnion()).add(nodes.get(nodeNameQueue.get(i)));
             }
@@ -240,9 +278,16 @@ public class Circuit {
 
     @Override
     public String toString() {
+        String s = "";
+        for (int i = 0; i < unions.size(); i++) {
+            for (int j = 0; j < unions.get(i).size(); j++) {
+                s = s + " " + unions.get(i).get(j).toString();
+            }
+            s = s + "\n";
+        }
         return "Circuit{" +
-                "nodes=" + nodes +"\n"+
+                "nodes=" + nodes + "\n" +
                 ", elements=" + elements +
-                '}';
+                '}' + "\n\n" + s;
     }
 }

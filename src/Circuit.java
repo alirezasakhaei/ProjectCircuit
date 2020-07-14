@@ -94,25 +94,40 @@ public class Circuit {
         }
     }
 
-    //dependent sources
+    //voltage dependent sources
     void addElement(String name, int positive, int negative, String type, double gain, int positiveDepended, int negativeDepended) {
         if (!elementNames.contains(name)) {
             switch (type) {
-                case "CurrentDependentCurrent":
-                    elements.put(name, new CurrentDependentCurrentSource(name, nodes.get(positive), nodes.get(negative), gain,
-                            nodes.get(positiveDepended), nodes.get(negativeDepended)));
-                    break;
-                case "CurrentDependentVoltage":
-                    elements.put(name, new CurrentDependentVoltageSource(name, nodes.get(positive), nodes.get(negative), gain,
-                            nodes.get(positiveDepended), nodes.get(negativeDepended)));
-                    break;
+
                 case "voltageDependentCurrent":
-                    elements.put(name, new VoltageDependentCurrentSource(name, nodes.get(positive), nodes.get(negative), gain,
-                            nodes.get(positiveDepended), nodes.get(negativeDepended)));
+                    elements.put(name, new VoltageDependentCurrentSource(name, nodes.get(positive), nodes.get(negative),
+                            nodes.get(positiveDepended), nodes.get(negativeDepended), gain));
                     break;
                 case "voltageDependentVoltage":
-                    elements.put(name, new VoltageDependentVoltageSource(name, nodes.get(positive), nodes.get(negative), gain,
-                            nodes.get(positiveDepended), nodes.get(negativeDepended)));
+                    elements.put(name, new VoltageDependentVoltageSource(name, nodes.get(positive), nodes.get(negative),
+                            nodes.get(positiveDepended), nodes.get(negativeDepended), gain));
+                    break;
+                default:
+                    return;
+            }
+            nodes.get(positive).setNeighbors(negative);
+            nodes.get(negative).setNeighbors(positive);
+            nodes.get(positive).setPositives(name);
+            nodes.get(negative).setNegatives(name);
+            elementNames.add(name);
+        }
+    }
+    //current dependent source
+    void addElement(String name, int positive, int negative, String type, double gain, String elementDependent) {
+        if (!elementNames.contains(name)) {
+            switch (type) {
+                case "CurrentDependentCurrent":
+                    elements.put(name, new CurrentDependentCurrentSource(name, nodes.get(positive), nodes.get(negative),
+                           elements.get(elementDependent), gain));
+                    break;
+                case "CurrentDependentVoltage":
+                    elements.put(name, new CurrentDependentVoltageSource(name, nodes.get(positive), nodes.get(negative),
+                            elements.get(elementDependent), gain));
                     break;
                 default:
                     return;

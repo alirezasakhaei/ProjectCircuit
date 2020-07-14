@@ -10,5 +10,16 @@ public abstract class Element extends Circuit{
         return positiveNode.getVoltage()-negativeNode.getVoltage();
     }
 
-//    abstract double getCurrent();
+    abstract double getCurrent();
+
+
+    @Override
+    public String toString() {
+        return "Element{" +
+                "name='" + name + '\'' +
+                ", positiveNode=" + positiveNode +
+                ", negativeNode=" + negativeNode +
+                ", current=" + current +
+                '}'+"\n";
+    }
 }

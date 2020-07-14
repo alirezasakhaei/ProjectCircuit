@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Circuit {
-    private HashMap<Integer, Node> nodes;
-    private HashMap<String, Element> elements;
+    protected HashMap<Integer, Node> nodes;
+    protected HashMap<String, Element> elements;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
@@ -29,8 +29,24 @@ public class Circuit {
         this.di = di;
     }
 
+    protected double getDt() {
+        return dt;
+    }
+
+    protected double getDv() {
+        return dv;
+    }
+
+    protected double getDi() {
+        return di;
+    }
+
     public void setTime(double time) {
         this.time = time;
+    }
+
+    public double getTime() {
+        return time;
     }
 
     void addNode(int name) {
@@ -145,24 +161,27 @@ public class Circuit {
         }
     }
 
-    boolean initializeGraph() {
+    int initializeGraph() {
         if (!nodes.containsKey(0)) {
-            //No Ground Error
+            return 4;
         }
         nodeNameQueue.add(0);
         setAddedNodes(0);
         if (nodeNameQueue.size() < nodes.size()) {
-            //Error5
+            return 5;
         }
         String validatedNodes = checkLoopValidation("0", "", 0);
-        for (int i = 0; i < nodes.size(); i++) {
-            if (!validatedNodes.contains(String.valueOf(nodes.get(i).getName()))) {
-                //Error5
+        for (int i:nodes.keySet()) {
+            if (!validatedNodes.contains(String.valueOf(i))) {
+                return 5;
             }
         }
         initializeUnions();
+        return 0;
+    }
 
-        return true;
+    void solveCircuit(){
+
     }
 
     private void setAddedNodes(int name) {
@@ -206,7 +225,7 @@ public class Circuit {
         }
     }
 
-    String checkLoopValidation(String s, String validated, int currentNode) {
+    private String checkLoopValidation(String s, String validated, int currentNode) {
         if (s.charAt(s.length() - 1) == '0' && s.length() > 3) {
             return s;
         }
@@ -222,7 +241,7 @@ public class Circuit {
     @Override
     public String toString() {
         return "Circuit{" +
-                "nodes=" + nodes +
+                "nodes=" + nodes +"\n"+
                 ", elements=" + elements +
                 '}';
     }

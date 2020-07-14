@@ -9,4 +9,9 @@ public class VoltageDependentCurrentSource extends Element{
         this.negativeDependence=negativeDependence;
         this.gain=gain;
     }
+
+    @Override
+    double getCurrent() {
+        return (positiveDependence.getVoltage()-negativeDependence.getVoltage())*gain;
+    }
 }

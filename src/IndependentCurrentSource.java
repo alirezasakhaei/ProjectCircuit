@@ -9,4 +9,9 @@ public class IndependentCurrentSource extends Element {
         this.frequency=frequency;
         this.phase=phase;
     }
+    double getCurrent() {
+        return offset+amplitude*Math.sin(2*Math.PI*frequency*getTime()+phase);
+    }
+
+
 }

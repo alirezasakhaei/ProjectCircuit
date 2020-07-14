@@ -9,4 +9,9 @@ public class CurrentDependentCurrentSource extends Element {
         this.gain=gain;
 
     }
+
+    @Override
+    double getCurrent() {
+        return dependentElement.getCurrent()*gain;
+    }
 }

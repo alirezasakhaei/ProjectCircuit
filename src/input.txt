@@ -2,3 +2,7 @@ Vin 0 1 10 2 2 3M
 D2 0 2 1
 R2 2 3 10
 C5 6 8 10m
+dv 1m
+di 1m
+dt 10u
+.tran 15m

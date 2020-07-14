@@ -5,14 +5,14 @@ import java.util.Scanner;
 public class InputManager{
     File input;
     Circuit circuit;
-    boolean flagTran, flag = true;
+    boolean flagTran=false, flag = true;
 
     InputManager(File input) {
         this.input = input;
         circuit = new Circuit();
     }
 
-    // this method is instantly called in the main method (right after the inputManager object is created
+    // this method is instantly called in the main method (right after the inputManager object is created)
     public Circuit analyzeTheInput() {
         ArrayList<String> inputLines = new ArrayList<String>(0);
         try {

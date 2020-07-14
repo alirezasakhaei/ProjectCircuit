@@ -14,4 +14,12 @@ public class Diode extends Element {
     boolean isOn(){
         return isOn;
     }
+
+    @Override
+    double getCurrent() {
+        if(!isOn)
+        return 0;
+        //to be completed...
+        return 0;
+    }
 }

@@ -7,13 +7,25 @@ public class Circuit {
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
-    double dt,dv,di;
+    private double dt,dv,di;
 
     public Circuit() {
         nodes = new HashMap<>();
         elements = new HashMap<>();
         nodeNameQueue = new ArrayList<>();
         unions=new ArrayList<>();
+    }
+
+    public void setDt(double dt) {
+        this.dt = dt;
+    }
+
+    public void setDv(double dv) {
+        this.dv = dv;
+    }
+
+    public void setDi(double di) {
+        this.di = di;
     }
 
     void addNode(int name) {

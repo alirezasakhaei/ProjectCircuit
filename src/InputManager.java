@@ -28,15 +28,15 @@ public class InputManager {
                     case 'd':
                         switch (secondLetter) {
                             case 'v':
-                                circuit.dv = unitCalculator(nthWord(string, 2));
+                                circuit.setDv(unitCalculator(nthWord(string, 2)));
                                 flagDv = true;
                                 break;
                             case 'i':
-                                circuit.di = unitCalculator(nthWord(string, 2));
+                                circuit.setDi(unitCalculator(nthWord(string, 2)));
                                 flagDi = true;
                                 break;
                             case 't':
-                                circuit.dt = unitCalculator(nthWord(string, 2));
+                                circuit.setDt(unitCalculator(nthWord(string, 2)));
                                 flagDt = true;
                                 break;
                         }

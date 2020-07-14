@@ -21,6 +21,7 @@ public class InputManager {
             Scanner inputScanner = new Scanner(input);
             while (inputScanner.hasNextLine()) {
                 String string = inputScanner.nextLine();
+                string = string.trim();
                 inputLines.add(string);
                 char firstLetter = string.charAt(0);
                 char secondLetter = string.charAt(1);
@@ -53,7 +54,9 @@ public class InputManager {
         }
     }
     public static void addCurrentSource(Circuit circuit, String string){
-
+        circuit.addNode(Integer.parseInt(nthWord(string,2)));
+        circuit.addNode(Integer.parseInt(nthWord(string,3)));
+        //circuit.addElement(nthWord(string,1),);
     }
     public static double unitCalculator(String dAmount) {
         double dReturn = 0;

@@ -5,7 +5,6 @@ public class Circuit {
     private ArrayList<Element> elements;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
-
     double dt,dv,di;
 
     public Circuit() {
@@ -62,7 +61,7 @@ public class Circuit {
     }
 
     //independent sources
-    void addElement(String name, int positive, int negative, String type, double value, double offset, double amplitude, double frequency, double phase) {
+    void addElement(String name, int positive, int negative, String type, double offset, double amplitude, double frequency, double phase) {
         if (!elementNames.contains(name)) {
             switch (type) {
                 case "independentCurrent":
@@ -113,7 +112,7 @@ public class Circuit {
         }
     }
 
-    private void setAddedNodes(int name) {
+    /*private void setAddedNodes(int name) {
         if (!nodes.get(name).isAdded()) {
             nodes.get(name).setAdded(true);
             nodeNameQueue.add(name);
@@ -137,16 +136,13 @@ public class Circuit {
             }
             setAddedNodes(nodes.get(name).getNeighbors().get(i));
         }
-    }
+    }*/
 
-    boolean initializeGraph() {
+   /* boolean initializeGraph() {
         nodeNameQueue.add(0);
         nodeNameQueue.addAll(nodes.get(0).getNeighbors());
         setAddedNodes(0);
-
-
-
         return true;
-    }
+    }*/
 
 }

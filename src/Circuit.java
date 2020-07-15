@@ -30,12 +30,25 @@ public class Circuit {
 
     /////////////////// Get-set codeBox
 
+
+    public HashMap<Integer, Node> getNodes() {
+        return nodes;
+    }
+
+    public HashMap<String, Element> getElements() {
+        return elements;
+    }
+
     public void setMaximumTime(double maximumTime) {
         this.maximumTime = maximumTime;
     }
 
     public double getMaximumTime() {
         return maximumTime;
+    }
+
+    public ArrayList<Integer> getNodeNameQueue() {
+        return nodeNameQueue;
     }
 
     public void setDt(double dt) {
@@ -186,42 +199,8 @@ public class Circuit {
     }
     /////////////////// End of adding codeBox
 
-    /////////////////// Print the data codeBox
-    public void printData(){
-        printNodesData();
-        printElementData();
-        printDData();
-        printMaxTimeData();
-    }
-
-    public void printNodesData(){
-        for (Map.Entry node : nodes.entrySet())
-            System.out.println(node.getValue().toString());
-    }
-    public void printElementData(){
-        for (Map.Entry element : elements.entrySet())
-            System.out.println(element.getValue().toString());
-    }
-    public void printDData(){
-        System.out.println("dt = " + dt);
-        System.out.println("dv = " + dv);
-        System.out.println("di = " + di);
-    }
-    public void printMaxTimeData(){
-        System.out.println("Tran = " + maximumTime);
-    }
-
-    /////////////////// End of printing Data codeBox
-
-
     int initializeGraph() {
-        if (!nodes.containsKey(0)) {
-            return 4;
-        }
-        setAddedNodes(0);
-        if (nodeNameQueue.size() < nodes.size()) {
-            return 5;
-        }
+
         String validatedNodes = checkLoopValidation("0", "", 0);
         for (int i : nodes.keySet()) {
             if (!validatedNodes.contains(String.valueOf(i))) {
@@ -232,7 +211,7 @@ public class Circuit {
         return 0;
     }
 
-    private void setAddedNodes(int name) {
+    protected void setAddedNodes(int name) {
         if (!nodes.get(name).isAdded()) {
             nodes.get(name).setAdded(true);
             nodeNameQueue.add(name);

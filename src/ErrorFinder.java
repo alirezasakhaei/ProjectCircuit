@@ -6,6 +6,8 @@ public class ErrorFinder {
     public int findErrors(){
         if (!isDSet())
             return -1;
+        if (!isCurrentSourceSeries())
+            return -2;
 
         if (!isGroundAdded())
             return -4;
@@ -44,6 +46,15 @@ public class ErrorFinder {
         if (circuit.getNodeNameQueue().size() < circuit.getNodes().size()) {
             return false;
         }
+        return true;
+    }
+    public boolean isCurrentSourceSeries(){
+
+
+
+
+
+
         return true;
     }
 

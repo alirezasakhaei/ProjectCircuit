@@ -5,7 +5,8 @@ public class Main {
         File input = new File("D:\\input.txt");
         InputManager inputManager = new InputManager(input);
         Circuit circuit = inputManager.analyzeTheInput();
-        circuit.printData();
+        Graphics graphics = new Graphics(circuit);
+        graphics.draw();
 
       /*  int error = circuit.initializeGraph();
         if (error != 0) {

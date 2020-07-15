@@ -3,8 +3,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Circuit {
-    protected HashMap<Integer, Node> nodes;
-    protected HashMap<String, Element> elements;
+    private static Circuit circuit;
+
+    public static void setCircuit(Circuit circuit) {
+        Circuit.circuit = circuit;
+    }
+
+    public static Circuit getCircuit() {
+        return circuit;
+    }
+
+    private HashMap<Integer, Node> nodes;
+    private HashMap<String, Element> elements;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
@@ -221,6 +231,7 @@ public class Circuit {
         initializeUnions();
         return 0;
     }
+
     private void setAddedNodes(int name) {
         if (!nodes.get(name).isAdded()) {
             nodes.get(name).setAdded(true);

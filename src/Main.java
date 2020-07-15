@@ -6,7 +6,6 @@ public class Main {
         InputManager inputManager = new InputManager(input);
         Circuit circuit = inputManager.analyzeTheInput();
         circuit.printData();
-        boolean tranFlag = inputManager.isTran();
 
       /*  int error = circuit.initializeGraph();
         if (error != 0) {

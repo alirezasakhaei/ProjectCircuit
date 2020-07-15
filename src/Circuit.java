@@ -185,12 +185,12 @@ public class Circuit {
     }
 
     public void printNodesData(){
-        for (Map.Entry moz : nodes.entrySet())
-            System.out.println(moz.getValue().toString());
+        for (Map.Entry node : nodes.entrySet())
+            System.out.println(node.getValue().toString());
     }
     public void printElementData(){
-        for (Map.Entry moz : elements.entrySet())
-            System.out.println(moz.getValue().toString());
+        for (Map.Entry element : elements.entrySet())
+            System.out.println(element.getValue().toString());
     }
     public void printDData(){
         System.out.println("dt = " + dt);

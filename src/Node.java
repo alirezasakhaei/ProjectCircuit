@@ -43,7 +43,7 @@ public class Node {
         return positives;
     }
 
-     ArrayList<String> getNegatives(){
+    ArrayList<String> getNegatives(){
         return negatives;
     }
 
@@ -71,6 +71,7 @@ public class Node {
         if(name!=0)
         this.voltage=voltage;
     }
+
     double getVoltage(){
         if(name!=0)
         return voltage;
@@ -80,6 +81,7 @@ public class Node {
     void setCurrent(double current){
         this.current=current;
     }
+
     double getCurrent(){
         return current;
     }
@@ -87,9 +89,11 @@ public class Node {
     @Override
     public String toString() {
         return "Node{" +
-                "name=" + name +
-                ", voltage=" + voltage +
-                ", union="+ union +
+                "voltage=" + voltage +
+                ", current=" + current +
+                ", union=" + union +
+                ", neighbors=" + neighbors +
+                ", name=" + name +
                 '}';
     }
 }

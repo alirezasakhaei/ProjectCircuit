@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Circuit {
     protected HashMap<Integer, Node> nodes;
@@ -16,6 +17,8 @@ public class Circuit {
         elementNames = new ArrayList<>();
         unions = new ArrayList<>();
     }
+
+    /////////////////// Get-set codeBox
 
     public void setMaximumTime(double maximumTime) {
         this.maximumTime = maximumTime;
@@ -57,7 +60,9 @@ public class Circuit {
         return time;
     }
 
+    /////////////////// End of get-set codeBox
 
+    /////////////////// Adding codeBox
     void addNode(int name) {
         int i = nodes.size();
         if (!nodes.containsKey(name)) {
@@ -169,6 +174,35 @@ public class Circuit {
             elementNames.add(name);
         }
     }
+    /////////////////// End of adding codeBox
+
+    /////////////////// Print the data codeBox
+    public void printData(){
+        printNodesData();
+        printElementData();
+        printDData();
+        printMaxTimeData();
+    }
+
+    public void printNodesData(){
+        for (Map.Entry moz : nodes.entrySet())
+            System.out.println(moz.getValue().toString());
+    }
+    public void printElementData(){
+        for (Map.Entry moz : elements.entrySet())
+            System.out.println(moz.getValue().toString());
+    }
+    public void printDData(){
+        System.out.println("dt = " + dt);
+        System.out.println("dv = " + dv);
+        System.out.println("di = " + di);
+    }
+    public void printMaxTimeData(){
+        System.out.println("Tran = " + maximumTime);
+    }
+
+    /////////////////// End of printing Data codeBox
+
 
     int initializeGraph() {
         if (!nodes.containsKey(0)) {
@@ -277,18 +311,5 @@ public class Circuit {
         return validated;
     }
 
-    @Override
-    public String toString() {
-        String s = "";
-        for (int i = 0; i < unions.size(); i++) {
-            for (int j = 0; j < unions.get(i).size(); j++) {
-                s = s + " " + unions.get(i).get(j).toString();
-            }
-            s = s + "\n";
-        }
-        return "Circuit{" +
-                "nodes=" + nodes + "\n" +
-                ", elements=" + elements +
-                '}' + "\n\n" + s;
-    }
+
 }

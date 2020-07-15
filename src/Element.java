@@ -18,8 +18,8 @@ public abstract class Element extends Circuit{
     public String toString() {
         return "Element{" +
                 "name='" + name + '\'' +
-                ", positiveNode=" + positiveNode +
-                ", negativeNode=" + negativeNode +
+                ", positiveNode=" + positiveNode.getName() +
+                ", negativeNode=" + negativeNode.getName() +
                 ", current=" + current +
                 '}'+"\n";
     }

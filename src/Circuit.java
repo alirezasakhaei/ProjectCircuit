@@ -21,6 +21,10 @@ public class Circuit {
         this.maximumTime = maximumTime;
     }
 
+    public double getMaximumTime() {
+        return maximumTime;
+    }
+
     public void setDt(double dt) {
         this.dt = dt;
     }
@@ -53,9 +57,6 @@ public class Circuit {
         return time;
     }
 
-    public double getMaximumTime() {
-        return maximumTime;
-    }
 
     void addNode(int name) {
         int i = nodes.size();

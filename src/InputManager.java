@@ -3,9 +3,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputManager {
-    File input;
-    Circuit circuit;
-    boolean flagTran = false, isInputValid = true, isEveryNumberValid = true;
+    protected File input;
+    protected Circuit circuit;
+    protected String string = null;
+    protected boolean flagTran = false, isInputValid = true, isEveryNumberValid = true;
 
     InputManager(File input) {
         this.input = input;
@@ -17,65 +18,66 @@ public class InputManager {
         ArrayList<String> inputLines = new ArrayList<String>(0);
         try {
             Scanner inputScanner = new Scanner(input);
-            while (inputScanner.hasNextLine() && isInputValid && isEveryNumberValid) {
-                String string = inputScanner.nextLine();
+            while (inputScanner.hasNextLine() && isInputValid && isEveryNumberValid && !flagTran) {
+                string = inputScanner.nextLine();
                 string = string.trim();
-                isEveryNumberValid = isEveryNumberValid(string);
+                isEveryNumberValid = isEveryNumberValid();
                 if (isEveryNumberValid) {
                     isInputValid = false;
                     inputLines.add(string);
                     char firstLetter = string.charAt(0);
                     switch (firstLetter) {
+                        case '*':
+                            isInputValid = true;
+                            break;
                         case 'd':
                             isInputValid = setD(circuit, string);
                             break;
 
                         case 'R':
-                            isInputValid = addRLC(circuit, string, 'R');
+                            isInputValid = addRLC('R');
                             break;
                         case 'C':
-                            isInputValid = addRLC(circuit, string, 'C');
+                            isInputValid = addRLC('C');
                             break;
                         case 'L':
-                            isInputValid = addRLC(circuit, string, 'L');
+                            isInputValid = addRLC('L');
                             break;
 
                         case 'I':
-                            isInputValid = addIndependentSource(circuit, string, 'I');
+                            isInputValid = addIndependentSource('I');
                             break;
                         case 'V':
-                            isInputValid = addIndependentSource(circuit, string, 'V');
+                            isInputValid = addIndependentSource('V');
                             break;
 
                         case 'F':
-                            isInputValid = addCurrentDependent(circuit, string, 'I');
+                            isInputValid = addCurrentDependent('I');
                             break;
                         case 'H':
-                            isInputValid = addCurrentDependent(circuit, string, 'V');
+                            isInputValid = addCurrentDependent('V');
                             break;
                         case 'G':
-                            isInputValid = addVoltageDependent(circuit, string, 'I');
+                            isInputValid = addVoltageDependent('I');
                             break;
                         case 'E':
-                            isInputValid = addVoltageDependent(circuit, string, 'V');
+                            isInputValid = addVoltageDependent('V');
                             break;
                         // adding Ideal Diode
                         case 'D':
-                            isInputValid = addDiode(circuit, string);
+                            isInputValid = addDiode();
                             break;
                         case '.':
                             Scanner scannerTran = new Scanner(string);
                             if (scannerTran.next().equals(".tran")) {
                                 circuit.setMaximumTime(unitCalculator(scannerTran.next()));
                                 flagTran = true;
+                                isInputValid = true;
                             }
-                        case '*':
-                            isInputValid = true;
-                            break;
+
                     }
-                }
-                else {
-                    System.out.println("(invalid number)There is a problem found in line " + inputLines.size() + 1);
+                } else {
+                    System.out.println("(invalid number)There is a problem found in line " + (inputLines.size() + 1));
                 }
             }
             if (!isInputValid) {
@@ -88,15 +90,12 @@ public class InputManager {
         return circuit;
     }
 
-
-
     public boolean setD(Circuit circuit, String string) {
         Scanner scanner = new Scanner(string);
-        System.out.println(string);
         char vdi = string.charAt(1);
         scanner.next();
         double dAmount = unitCalculator(scanner.next());
-          if (dAmount <= 0)
+        if (dAmount <= 0)
             return false;
         switch (vdi) {
             case 'v':
@@ -115,7 +114,7 @@ public class InputManager {
     }
 
     //methods to add an element to the circuit
-    public static boolean addRLC(Circuit circuit, String string, int RLC) {
+    public boolean addRLC(int RLC) {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = Integer.parseInt(scanner.next());
@@ -146,7 +145,7 @@ public class InputManager {
 
     }
 
-    public static boolean addIndependentSource(Circuit circuit, String string, int IV) {
+    public boolean addIndependentSource(int IV) {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = scanner.nextInt();
@@ -170,7 +169,7 @@ public class InputManager {
         return true;
     }
 
-    public static boolean addCurrentDependent(Circuit circuit, String string, int IV) {
+    public boolean addCurrentDependent(int IV) {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = scanner.nextInt();
@@ -192,7 +191,7 @@ public class InputManager {
         return true;
     }
 
-    public static boolean addVoltageDependent(Circuit circuit, String string, int IV) {
+    public boolean addVoltageDependent(int IV) {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = scanner.nextInt();
@@ -215,7 +214,7 @@ public class InputManager {
         return true;
     }
 
-    public static boolean addDiode(Circuit circuit, String string) {
+    public boolean addDiode() {
         Scanner scanner = new Scanner(string);
         String name = scanner.next();
         int positive = scanner.nextInt();
@@ -233,22 +232,23 @@ public class InputManager {
         return true;
     }
 
-    public static boolean isEveryNumberValid(String string) {
+    public boolean isEveryNumberValid() {
         Scanner scanner = new Scanner(string);
-        while (scanner.hasNext()){
+        while (scanner.hasNext()) {
             if (!isNumberValid(scanner.next()))
                 return false;
         }
         return true;
     }
-    public static boolean isNumberValid(String number){
+
+    public static boolean isNumberValid(String number) {
         char[] numberChar = number.toCharArray();
-        final char[] valids = {'G','M','k','m','u','n','p'};
+        final char[] valids = {'G', 'M', 'k', 'm', 'u', 'n', 'p'};
         char lastChar = numberChar[number.length() - 1];
         int dotsNumber = 0;
         if (numberChar[0] < '0' || numberChar[0] > '9')
             return true;
-        for (int i = 0;i < number.length() - 1;i++){
+        for (int i = 0; i < number.length() - 1; i++) {
             if (numberChar[i] == '.')
                 dotsNumber++;
             else if (numberChar[i] < '0' || numberChar[i] > '9')
@@ -256,9 +256,9 @@ public class InputManager {
         }
         if (dotsNumber > 1)
             return false;
-        if (!(lastChar >= '0' && lastChar <= '9')){
+        if (!(lastChar >= '0' && lastChar <= '9')) {
             boolean validFlag = false;
-            for (int i =0;i<valids.length;i++){
+            for (int i = 0; i < valids.length; i++) {
                 if (lastChar == valids[i])
                     validFlag = true;
             }
@@ -268,10 +268,10 @@ public class InputManager {
         return true;
     }
 
-
     public boolean isTran() {
         return flagTran;
     }
+
     //practical method
     public static double unitCalculator(String dAmount) {
         int length = dAmount.length();

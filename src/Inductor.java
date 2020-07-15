@@ -1,7 +1,7 @@
 public class Inductor extends Element {
     private double inductance;
     private double voltage;
-    private double history;
+    private double previousCurrent;
     private double time;
 
     public Inductor(String name,Node positiveNode,Node negativeNode,double inductance){
@@ -9,7 +9,7 @@ public class Inductor extends Element {
         this.positiveNode=positiveNode;
         this.negativeNode=negativeNode;
         this.inductance=inductance;
-        history=0;
+        previousCurrent=0;
         time=0;
     }
     double getInductance(){
@@ -18,9 +18,9 @@ public class Inductor extends Element {
     @Override
     double getCurrent() {
         updateVoltage();
-        double current=(getDt()*voltage+history)/inductance;
+        double current=(getDt()*voltage)/inductance + previousCurrent;
         if(getTime()>time) {
-            history += voltage * getDt();
+            previousCurrent = current;
             time = getTime();
         }
         return current;

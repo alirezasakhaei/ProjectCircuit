@@ -2,9 +2,10 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
-        File input = new File("D:\\input.txt");
+        File input = new File("C:\\input.txt");
         InputManager inputManager = new InputManager(input);
         Circuit circuit = inputManager.analyzeTheInput();
+        circuit.printData();
         Graphics graphics = new Graphics(circuit);
         graphics.draw();
 

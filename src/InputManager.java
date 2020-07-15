@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class InputManager{
     File input;
     Circuit circuit;
-    boolean flagTran=false, flag = true;
+    boolean flagTran=false, isInputValid = true;
 
     InputManager(File input) {
         this.input = input;
@@ -17,7 +17,8 @@ public class InputManager{
         ArrayList<String> inputLines = new ArrayList<String>(0);
         try {
             Scanner inputScanner = new Scanner(input);
-            while (inputScanner.hasNextLine() && flag) {
+            while (inputScanner.hasNextLine() && isInputValid) {
+                isInputValid = false;
                 String string = inputScanner.nextLine();
                 string = string.trim();
                 inputLines.add(string);
@@ -63,6 +64,8 @@ public class InputManager{
                             circuit.setMaximumTime(unitCalculator(scannerTran.next()));
                             flagTran = true;
                         }
+                    case '*':
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -197,7 +200,13 @@ public class InputManager{
         }
     }
 
-    //practical methods
+
+
+
+
+
+
+    //practical method
     public static double unitCalculator(String dAmount) {
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);

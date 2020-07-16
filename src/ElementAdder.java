@@ -59,7 +59,7 @@ public class ElementAdder {
                     break;
                 case "independentVoltage":
                     circuit.getElements().put(name, new IndependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative), offset, amplitude, frequency, phase));
-                    circuit.getVoltageSources().put(name, circuit.getElements().get(name));
+      //              circuit.getVoltageSources().put(name, circuit.getElements().get(name));
 
                     break;
                 default:

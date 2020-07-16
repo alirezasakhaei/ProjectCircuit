@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Circuit {
     private static Circuit circuit;
@@ -15,6 +14,7 @@ public class Circuit {
 
     private HashMap<Integer, Node> nodes;
     private HashMap<String, Element> elements;
+    private HashMap<String, Element> voltageSources;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
@@ -30,6 +30,10 @@ public class Circuit {
 
     /////////////////// Get-set codeBox
 
+
+    public HashMap<String, Element> getVoltageSources() {
+        return voltageSources;
+    }
 
     public HashMap<Integer, Node> getNodes() {
         return nodes;
@@ -83,121 +87,12 @@ public class Circuit {
         return time;
     }
 
+    public ArrayList<String> getElementNames() {
+        return elementNames;
+    }
+
     /////////////////// End of get-set codeBox
 
-    /////////////////// Adding codeBox
-    void addNode(int name) {
-        int i = nodes.size();
-        if (!nodes.containsKey(name)) {
-            nodes.put(name, new Node(name));
-            nodes.get(name).setUnion(i);
-        }
-    }
-
-    //resistor,capacitor,inductor
-    void addElement(String name, int positive, int negative, String type, double value) {
-        if (!elementNames.contains(name)) {
-            switch (type) {
-                case "resistor":
-                    elements.put(name, new Resistor(name, nodes.get(positive), nodes.get(negative), value));
-                    break;
-                case "capacitor":
-                    elements.put(name, new Capacitor(name, nodes.get(positive), nodes.get(negative), value));
-                    break;
-                case "inductance":
-                    elements.put(name, new Inductor(name, nodes.get(positive), nodes.get(negative), value));
-                    break;
-                default:
-                    return;
-            }
-            nodes.get(positive).setNeighbors(negative);
-            nodes.get(negative).setNeighbors(positive);
-            nodes.get(positive).setPositives(name);
-            nodes.get(negative).setNegatives(name);
-            elementNames.add(name);
-        }
-    }
-
-    //diode
-    void addElement(String name, int positive, int negative, String type) {
-        if (type.equals("diode") && !elementNames.contains(name)) {
-            elements.put(name, new Diode(name, nodes.get(positive), nodes.get(negative)));
-            nodes.get(positive).setNeighbors(negative);
-            nodes.get(negative).setNeighbors(positive);
-            nodes.get(positive).setPositives(name);
-            nodes.get(negative).setNegatives(name);
-            elementNames.add(name);
-        }
-    }
-
-    //independent sources
-    void addElement(String name, int positive, int negative, String type, double offset, double amplitude, double frequency, double phase) {
-        if (!elementNames.contains(name)) {
-            switch (type) {
-                case "independentCurrent":
-                    elements.put(name, new IndependentCurrentSource(name, nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
-                    break;
-                case "independentVoltage":
-                    elements.put(name, new IndependentVoltageSource(name, nodes.get(positive), nodes.get(negative), offset, amplitude, frequency, phase));
-                    break;
-                default:
-                    return;
-            }
-            nodes.get(positive).setNeighbors(negative);
-            nodes.get(negative).setNeighbors(positive);
-            nodes.get(positive).setPositives(name);
-            nodes.get(negative).setNegatives(name);
-            elementNames.add(name);
-        }
-    }
-
-    //voltage dependent sources
-    void addElement(String name, int positive, int negative, String type, int positiveDepended, int negativeDepended, double gain) {
-        if (!elementNames.contains(name)) {
-            switch (type) {
-
-                case "voltageDependentCurrent":
-                    elements.put(name, new VoltageDependentCurrentSource(name, nodes.get(positive), nodes.get(negative),
-                            nodes.get(positiveDepended), nodes.get(negativeDepended), gain));
-                    break;
-                case "voltageDependentVoltage":
-                    elements.put(name, new VoltageDependentVoltageSource(name, nodes.get(positive), nodes.get(negative),
-                            nodes.get(positiveDepended), nodes.get(negativeDepended), gain));
-                    break;
-                default:
-                    return;
-            }
-            nodes.get(positive).setNeighbors(negative);
-            nodes.get(negative).setNeighbors(positive);
-            nodes.get(positive).setPositives(name);
-            nodes.get(negative).setNegatives(name);
-            elementNames.add(name);
-        }
-    }
-
-    //current dependent source
-    void addElement(String name, int positive, int negative, String type, String elementDependent, double gain) {
-        if (!elementNames.contains(name)) {
-            switch (type) {
-                case "CurrentDependentCurrent":
-                    elements.put(name, new CurrentDependentCurrentSource(name, nodes.get(positive), nodes.get(negative),
-                            elements.get(elementDependent), gain));
-                    break;
-                case "CurrentDependentVoltage":
-                    elements.put(name, new CurrentDependentVoltageSource(name, nodes.get(positive), nodes.get(negative),
-                            elements.get(elementDependent), gain));
-                    break;
-                default:
-                    return;
-            }
-            nodes.get(positive).setNeighbors(negative);
-            nodes.get(negative).setNeighbors(positive);
-            nodes.get(positive).setPositives(name);
-            nodes.get(negative).setNegatives(name);
-            elementNames.add(name);
-        }
-    }
-    /////////////////// End of adding codeBox
 
     int initializeGraph() {
 

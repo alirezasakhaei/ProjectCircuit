@@ -8,6 +8,7 @@ public class VoltageDependentCurrentSource extends Element{
         this.positiveDependence=positiveDependence;
         this.negativeDependence=negativeDependence;
         this.gain=gain;
+        data = String.valueOf(gain) + "," + String.valueOf(positiveDependence.getName()) + "," + String.valueOf(negativeDependence.getName());
     }
 
     @Override

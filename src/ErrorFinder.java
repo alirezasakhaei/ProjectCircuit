@@ -1,3 +1,5 @@
+import java.util.Map;
+
 public class ErrorFinder {
     Circuit circuit;
     public ErrorFinder(Circuit circuit) {
@@ -6,7 +8,7 @@ public class ErrorFinder {
     public int findErrors(){
         if (!isDSet())
             return -1;
-        if (!isCurrentSourceSeries())
+        if (!isVoltageSourcesParallel())
             return -2;
 
         if (!isGroundAdded())
@@ -14,6 +16,8 @@ public class ErrorFinder {
 
         if (!isLoopValid())
             return -5;
+
+
 
 
 
@@ -50,11 +54,26 @@ public class ErrorFinder {
     }
     public boolean isCurrentSourceSeries(){
 
-
-
-
-
-
+        return true;
+    }
+    public boolean isVoltageSourcesParallel(){
+        int count;
+        Element elementOne,elementTwo;
+        for (Map.Entry voltageSource : circuit.getVoltageSources().entrySet()){
+            elementOne = (Element) voltageSource.getValue();
+            count = 0;
+            for (Map.Entry voltageSourceTwo : circuit.getVoltageSources().entrySet()){
+                elementTwo = (Element) voltageSourceTwo.getValue();
+                if (elementOne.isParallel(elementTwo)){
+                    if (Element.isTheSameKind(elementOne,elementTwo)){
+                        if (elementOne.data == elementTwo.data)
+                            count++;
+                    }
+                }
+            }
+            if (count > 1)
+                return false;
+        }
         return true;
     }
 

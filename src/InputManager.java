@@ -5,12 +5,14 @@ import java.util.Scanner;
 public class InputManager {
     protected File input;
     protected Circuit circuit;
+    protected ElementAdder elementAdder;
     protected String string = null;
     protected boolean flagTran = false, isInputValid = true, isEveryNumberValid = true;
 
     InputManager(File input) {
         this.input = input;
         circuit = new Circuit();
+        elementAdder = new ElementAdder(circuit);
     }
 
     // this method is instantly called in the main method (right after the inputManager object is created)
@@ -121,21 +123,21 @@ public class InputManager {
         int negative = Integer.parseInt(scanner.next());
         if (positive < 0 || negative < 0)
             return false;
-        circuit.addNode(positive);
-        circuit.addNode(negative);
+        elementAdder.addNode(positive);
+        elementAdder.addNode(negative);
         double value = unitCalculator(scanner.next());
         if (value <= 0)
             return false;
         if (positive != negative) {
             switch (RLC) {
                 case 'R':
-                    circuit.addElement(name, positive, negative, "resistor", value);
+                    elementAdder.addElement(name, positive, negative, "resistor", value);
                     break;
                 case 'C':
-                    circuit.addElement(name, positive, negative, "capacitor", value);
+                    elementAdder.addElement(name, positive, negative, "capacitor", value);
                     break;
                 case 'L':
-                    circuit.addElement(name, positive, negative, "inductance", value);
+                    elementAdder.addElement(name, positive, negative, "inductance", value);
                     break;
                 default:
                     return false;
@@ -152,18 +154,18 @@ public class InputManager {
         int negative = scanner.nextInt();
         if (positive < 0 || negative < 0)
             return false;
-        circuit.addNode(positive);
-        circuit.addNode(negative);
+        elementAdder.addNode(positive);
+        elementAdder.addNode(negative);
         double offset = unitCalculator(scanner.next());
         double amplitude = unitCalculator(scanner.next());
         double frequency = unitCalculator(scanner.next());
         double phase = unitCalculator(scanner.next());
         switch (IV) {
             case 'I':
-                circuit.addElement(name, positive, negative, "independentCurrent", offset, amplitude, frequency, phase);
+                elementAdder.addElement(name, positive, negative, "independentCurrent", offset, amplitude, frequency, phase);
                 break;
             case 'V':
-                circuit.addElement(name, positive, negative, "independentVoltage", offset, amplitude, frequency, phase);
+                elementAdder.addElement(name, positive, negative, "independentVoltage", offset, amplitude, frequency, phase);
                 break;
         }
         return true;
@@ -176,16 +178,16 @@ public class InputManager {
         int negative = scanner.nextInt();
         if (positive < 0 || negative < 0)
             return false;
-        circuit.addNode(positive);
-        circuit.addNode(negative);
+        elementAdder.addNode(positive);
+        elementAdder.addNode(negative);
         String elementDependedOn = scanner.next();
         double gain = scanner.nextDouble();
         switch (IV) {
             case 'I':
-                circuit.addElement(name, positive, negative, "CurrentDependentCurrent", elementDependedOn, gain);
+                elementAdder.addElement(name, positive, negative, "CurrentDependentCurrent", elementDependedOn, gain);
                 break;
             case 'V':
-                circuit.addElement(name, positive, negative, "CurrentDependentVoltage", elementDependedOn, gain);
+                elementAdder.addElement(name, positive, negative, "CurrentDependentVoltage", elementDependedOn, gain);
                 break;
         }
         return true;
@@ -198,17 +200,17 @@ public class InputManager {
         int negative = scanner.nextInt();
         if (positive < 0 || negative < 0)
             return false;
-        circuit.addNode(positive);
-        circuit.addNode(negative);
+        elementAdder.addNode(positive);
+        elementAdder.addNode(negative);
         int positiveDependent = scanner.nextInt();
         int negativeDependent = scanner.nextInt();
         double gain = scanner.nextDouble();
         switch (IV) {
             case 'I':
-                circuit.addElement(name, positive, negative, "voltageDependentCurrent", positiveDependent, negativeDependent, gain);
+                elementAdder.addElement(name, positive, negative, "voltageDependentCurrent", positiveDependent, negativeDependent, gain);
                 break;
             case 'V':
-                circuit.addElement(name, positive, negative, "voltageDependentVoltage", positiveDependent, negativeDependent, gain);
+                elementAdder.addElement(name, positive, negative, "voltageDependentVoltage", positiveDependent, negativeDependent, gain);
                 break;
         }
         return true;
@@ -221,16 +223,22 @@ public class InputManager {
         int negative = scanner.nextInt();
         if (positive < 0 || negative < 0)
             return false;
-        circuit.addNode(positive);
-        circuit.addNode(negative);
+        elementAdder.addNode(positive);
+        elementAdder.addNode(negative);
         int isIdeal = scanner.nextInt();
         switch (isIdeal) {
             case 1:
-                circuit.addElement(name, positive, negative, "diode");
+                elementAdder.addElement(name, positive, negative, "diode");
                 break;
         }
         return true;
     }
+
+    public boolean isTran() {
+        return flagTran;
+    }
+
+    //practical method
 
     public boolean isEveryNumberValid() {
         Scanner scanner = new Scanner(string);
@@ -268,11 +276,6 @@ public class InputManager {
         return true;
     }
 
-    public boolean isTran() {
-        return flagTran;
-    }
-
-    //practical method
     public static double unitCalculator(String dAmount) {
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);

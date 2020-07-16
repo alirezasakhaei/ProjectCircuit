@@ -6,6 +6,10 @@ public class Main {
         InputManager inputManager = new InputManager(input);
         Circuit circuit = inputManager.analyzeTheInput();
         Circuit.setCircuit(circuit);
+        CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
+        circuitPrinter.printData();
+        ErrorFinder errorFinder = new ErrorFinder(circuit);
+        System.out.println(errorFinder.findErrors());
 
 
       /*  int error = circuit.initializeGraph();

@@ -8,6 +8,8 @@ public class IndependentCurrentSource extends Element {
         this.amplitude=amplitude;
         this.frequency=frequency;
         this.phase=phase;
+        data = String.valueOf(offset) + "," + String.valueOf(amplitude) + "," + String.valueOf(frequency) + "," + String.valueOf(phase);
+
     }
     double getCurrent() {
         return offset+amplitude*Math.sin(2*Math.PI*frequency*getTime()+phase);

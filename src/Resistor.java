@@ -6,6 +6,7 @@ public class Resistor extends Element{
         this.positiveNode=positiveNode;
         this.negativeNode=negativeNode;
         this.resistance=resistance;
+        data = String.valueOf(resistance);
     }
     double getResistance(){
         return resistance;

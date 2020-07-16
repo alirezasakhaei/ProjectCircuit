@@ -5,6 +5,7 @@ public class Diode extends Element {
         this.name=name;
         this.positiveNode=positiveNode;
         this.negativeNode=negativeNode;
+        data = null;
     }
 
     void updateIsOn(){

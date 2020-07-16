@@ -8,6 +8,7 @@ public class IndependentVoltageSource extends Element{
         this.amplitude=amplitude;
         this.frequency=frequency;
         this.phase=phase;
+        data = String.valueOf(offset) + "," + String.valueOf(amplitude) + "," + String.valueOf(frequency) + "," + String.valueOf(phase);
     }
 
 
@@ -16,11 +17,11 @@ public class IndependentVoltageSource extends Element{
         current=0;
         for (int i = 0; i < positiveNode.getPositives().size(); i++) {
                 if (!positiveNode.getPositives().get(i).equals(this.name))
-                    current -= elements.get(positiveNode.getPositives().get(i)).getCurrent();
+                    current -= Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).getCurrent();
 
         }
         for (int i = 0; i < negativeNode.getPositives().size(); i++) {
-            current+=elements.get(positiveNode.getNegatives().get(i)).getCurrent();
+            current+=Circuit.getCircuit().getElements().get(positiveNode.getNegatives().get(i)).getCurrent();
         }
         return current;
     }

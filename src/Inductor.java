@@ -11,6 +11,7 @@ public class Inductor extends Element {
         this.inductance=inductance;
         previousCurrent=0;
         time=0;
+        data = String.valueOf(inductance);
     }
     double getInductance(){
         return inductance;

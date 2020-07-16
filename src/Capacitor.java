@@ -12,6 +12,7 @@ public class Capacitor extends Element {
         previousVoltage=0;
         voltage=0;
         time=0;
+        data = String.valueOf(capacity);
     }
     double getCapacity(){
         return capacity;

@@ -10,7 +10,11 @@ public class Node {
     private ArrayList<String> negatives;
     private int name;;
 
-
+    public boolean equals(Node node){
+        if (name == node.name)
+            return true;
+        return false;
+    }
     public Node(int name){
         this.name=name;
         voltage=0;

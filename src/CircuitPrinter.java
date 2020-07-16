@@ -1,9 +1,9 @@
 import java.util.Map;
 
-public class PrintDataClass {
+public class CircuitPrinter {
     Circuit circuit;
 
-    public PrintDataClass(Circuit circuit) {
+    public CircuitPrinter(Circuit circuit) {
         this.circuit = circuit;
     }
     public void printData(){

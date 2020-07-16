@@ -60,7 +60,8 @@ public class ErrorFinder {
                                 if (elementOne.data != elementTwo.data) {
                                     return false;
                                 }
-                            }
+                            } else
+                                return false;
                         }
                     }
                 }
@@ -82,7 +83,8 @@ public class ErrorFinder {
                                 if (elementOne.data != elementTwo.data) {
                                     return false;
                                 }
-                            }
+                            } else
+                                return false;
                         }
                     }
                 }

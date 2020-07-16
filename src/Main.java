@@ -9,7 +9,10 @@ public class Main {
         CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
         circuitPrinter.printData();
         ErrorFinder errorFinder = new ErrorFinder(circuit);
- //       System.out.println(errorFinder.findErrors());
+        int error = errorFinder.findErrors();
+        if (error != 0){
+            System.out.println("Error " + error + " is found!" );
+        }
 
 
       /*  int error = circuit.initializeGraph();

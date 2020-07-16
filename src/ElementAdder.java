@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+
 public class ElementAdder {
     Circuit circuit;
 
@@ -55,11 +57,14 @@ public class ElementAdder {
         if (!circuit.getElementNames().contains(name)) {
             switch (type) {
                 case "independentCurrent":
-                    circuit.getElements().put(name, new IndependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative), offset, amplitude, frequency, phase));
+                    IndependentCurrentSource independentCurrentSource = new IndependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative), offset, amplitude, frequency, phase);
+                    independentCurrentSource.setCurrentSource(true);
+                    circuit.getElements().put(name, independentCurrentSource);
                     break;
                 case "independentVoltage":
-                    circuit.getElements().put(name, new IndependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative), offset, amplitude, frequency, phase));
-      //              circuit.getVoltageSources().put(name, circuit.getElements().get(name));
+                    IndependentVoltageSource independentVoltageSource = new IndependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative), offset, amplitude, frequency, phase);
+                    independentVoltageSource.setVoltageSource(true);
+                    circuit.getElements().put(name, independentVoltageSource);
 
                     break;
                 default:
@@ -77,16 +82,17 @@ public class ElementAdder {
     void addElement(String name, int positive, int negative, String type, int positiveDepended, int negativeDepended, double gain) {
         if (!circuit.getElementNames().contains(name)) {
             switch (type) {
-
                 case "voltageDependentCurrent":
-                    circuit.getElements().put(name, new VoltageDependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getNodes().get(positiveDepended), circuit.getNodes().get(negativeDepended), gain));
+                    VoltageDependentCurrentSource voltageDependentCurrentSource = new VoltageDependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
+                            circuit.getNodes().get(positiveDepended), circuit.getNodes().get(negativeDepended), gain);
+                    voltageDependentCurrentSource.setCurrentSource(true);
+                    circuit.getElements().put(name, voltageDependentCurrentSource);
                     break;
                 case "voltageDependentVoltage":
-                    circuit.getElements().put(name, new VoltageDependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getNodes().get(positiveDepended), circuit.getNodes().get(negativeDepended), gain));
-                    circuit.getVoltageSources().put(name, circuit.getElements().get(name));
-
+                    VoltageDependentVoltageSource voltageDependentVoltageSource = new VoltageDependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
+                            circuit.getNodes().get(positiveDepended), circuit.getNodes().get(negativeDepended), gain);
+                    voltageDependentVoltageSource.setVoltageSource(true);
+                    circuit.getElements().put(name, voltageDependentVoltageSource);
                     break;
                 default:
                     return;
@@ -104,13 +110,16 @@ public class ElementAdder {
         if (!circuit.getElementNames().contains(name)) {
             switch (type) {
                 case "CurrentDependentCurrent":
-                    circuit.getElements().put(name, new CurrentDependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getElements().get(elementDependent), gain));
+                    CurrentDependentCurrentSource currentDependentCurrentSource = new CurrentDependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
+                            circuit.getElements().get(elementDependent), gain);
+                    currentDependentCurrentSource.setCurrentSource(true);
+                    circuit.getElements().put(name, currentDependentCurrentSource);
                     break;
                 case "CurrentDependentVoltage":
-                    circuit.getElements().put(name, new CurrentDependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getElements().get(elementDependent), gain));
-                    circuit.getVoltageSources().put(name, circuit.getElements().get(name));
+                    CurrentDependentVoltageSource currentDependentVoltageSource = new CurrentDependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
+                            circuit.getElements().get(elementDependent), gain);
+                    currentDependentVoltageSource.setVoltageSource(true);
+                    circuit.getElements().put(name, currentDependentVoltageSource);
                     break;
                 default:
                     return;

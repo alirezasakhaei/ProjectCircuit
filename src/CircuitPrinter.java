@@ -7,9 +7,13 @@ public class CircuitPrinter {
         this.circuit = circuit;
     }
     public void printData(){
+        System.out.println("NODES");
         printNodesData();
+        System.out.println("ELEMENTS");
         printElementData();
+        System.out.println("D DATA");
         printDData();
+        System.out.println("MAX TIME");
         printMaxTimeData();
     }
 
@@ -29,4 +33,5 @@ public class CircuitPrinter {
     public void printMaxTimeData(){
         System.out.println("Tran = " + circuit.getMaximumTime());
     }
+
 }

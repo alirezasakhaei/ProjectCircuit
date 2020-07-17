@@ -13,9 +13,10 @@ public class Main {
         if (error != 0){
             System.out.println("Error " + error + " is found!" );
         }
+        circuit.initializeGraph();
 
-
-      /*  int error = circuit.initializeGraph();
+/*
+        circuit.initializeGraph();
         if (error != 0) {
             System.out.println("Error " + error);
             return;
@@ -25,7 +26,7 @@ public class Main {
         System.out.println(circuit.toString());
 
         // THE REST OF THE CODE MUST BEGIN FROM HERE
+*/
 
-        */
     }
 }

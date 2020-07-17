@@ -12,7 +12,7 @@ public class IndependentCurrentSource extends Element {
 
     }
     double getCurrent() {
-        return offset+amplitude*Math.sin(2*Math.PI*frequency*getTime()+phase);
+        return offset + amplitude * Math.sin(2 * Math.PI * frequency * Circuit.getCircuit().getTime() + phase);
     }
 
 

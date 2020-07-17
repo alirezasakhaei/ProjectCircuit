@@ -10,10 +10,19 @@ public class ElementAdder {
     //node
     void addNode(int name) {
         int i = circuit.getNodes().size();
-        if (!circuit.getNodes().containsKey(name)) {
-            circuit.getNodes().put(name, new Node(name));
-            circuit.getNodes().get(name).setUnion(i);
+        if (!circuit.getNodes().containsKey(0)) {
+            i++;
         }
+        if (!circuit.getNodes().containsKey(name)) {
+            if (name == 0) {
+                circuit.getNodes().put(name, new Node(name));
+                circuit.getNodes().get(name).setUnion(0);
+            } else {
+                circuit.getNodes().put(name, new Node(name));
+                circuit.getNodes().get(name).setUnion(i);
+            }
+        }
+
     }
 
     //resistor,capacitor,inductor

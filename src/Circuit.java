@@ -95,10 +95,8 @@ public class Circuit {
     /////////////////// End of get-set codeBox
 
 
-    int initializeGraph() {
-
+    void initializeGraph() {
         initializeUnions();
-        return 0;
     }
 
     protected void setAddedNodes(int name) {
@@ -108,17 +106,13 @@ public class Circuit {
         } else return;
 
         for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
-            if (elements.get(nodes.get(name).getPositives().get(j)).getClass().equals(VoltageDependentCurrentSource.class) ||
-                    elements.get(nodes.get(name).getPositives().get(j)).getClass().equals(VoltageDependentVoltageSource.class) ||
-                    elements.get(nodes.get(name).getPositives().get(j)).getClass().equals(IndependentVoltageSource.class)) {
+            if (elements.get(nodes.get(name).getPositives().get(j)).isVoltageSource()) {
 
                 elements.get(nodes.get(name).getPositives().get(j)).negativeNode.setUnion(nodes.get(name).getUnion());
             }
         }
         for (int j = 0; j < nodes.get(name).getNegatives().size(); j++) {
-            if (elements.get(nodes.get(name).getNegatives().get(j)).getClass().equals(VoltageDependentCurrentSource.class) ||
-                    elements.get(nodes.get(name).getNegatives().get(j)).getClass().equals(VoltageDependentVoltageSource.class) ||
-                    elements.get(nodes.get(name).getNegatives().get(j)).getClass().equals(IndependentVoltageSource.class)) {
+            if (elements.get(nodes.get(name).getNegatives().get(j)).isVoltageSource()) {
 
                 elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
             }
@@ -126,6 +120,8 @@ public class Circuit {
         for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
             setAddedNodes(nodes.get(name).getNeighbors().get(i));
         }
+
+        System.out.println(name + ":" + nodes.get(name).getUnion());
     }
 
     void solveCircuit() {
@@ -142,8 +138,20 @@ public class Circuit {
                     }
                     i2 = obtainCurrent(unions.get(i));
                     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv + dv * (Math.abs(i1) - Math.abs(i2)) / di);
-                    for (int j = 0; j < unions.get(i).size(); j++) {
+                    for (int j = 1; j < unions.get(i).size(); j++) {
+                        for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
+                            int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getPositives().get(k)).negativeNode);
+                            if (elements.get(unions.get(i).get(j).getPositives().get(k)).isVoltageSource() && q < j) {
+                                unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() + elements.get(unions.get(i).get(j).getPositives().get(k)).getVoltage());
+                            }
+                        }
 
+                        for (int k = 0; k < unions.get(i).get(j).getNegatives().size(); k++) {
+                            int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getNegatives().get(k)).positiveNode);
+                            if (elements.get(unions.get(i).get(j).getNegatives().get(k)).isVoltageSource() && q < j) {
+                                unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() - elements.get(unions.get(i).get(j).getNegatives().get(k)).getVoltage());
+                            }
+                        }
                     }
                 }
             }
@@ -152,6 +160,10 @@ public class Circuit {
             System.out.println("r1 " + elements.get("R1").getCurrent());
             System.out.println("r2 " + elements.get("R2").getCurrent());
             System.out.println("V " + elements.get("Vin").getCurrent());
+
+            System.out.println(unions.get(0).get(0).getName());
+            System.out.println(unions.get(1).get(1).getName());
+
 
             System.out.println(nodes.get(1).getVoltage() + " " + nodes.get(2).getVoltage());
             System.out.println();

@@ -97,15 +97,6 @@ public class Circuit {
 
     int initializeGraph() {
 
-        for (int i = 0; i < nodeNameQueue.size(); i++) {
-            nodes.get(nodeNameQueue.get(i)).setAdded(false);
-        }
-        checkLoopValidation(new ArrayList<>(), new ArrayList<>(), 0);
-        for (int i = 0; i < nodeNameQueue.size(); i++) {
-            if (!nodes.get(nodeNameQueue.get(i)).isAdded()) {
-                return 5;
-            }
-        }
         initializeUnions();
         return 0;
     }
@@ -140,15 +131,19 @@ public class Circuit {
     void solveCircuit() {
         double i1, i2;
         for (time = 0; time <= maximumTime; time += dt) {
-            for (int l = 0; l <100 ; l++) {
+            for (int l = 0; l < 1000; l++) {
 
 
                 for (int i = 1; i < unions.size(); i++) {
+                    i1 = obtainCurrent(unions.get(i));
+                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + dv);
+                    for (int j = 1; j < unions.get(i).size(); j++) {
+                        unions.get(i).get(j).setVoltage(unions.get(i).get(0).getVoltage());
+                    }
+                    i2 = obtainCurrent(unions.get(i));
+                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv + dv * (Math.abs(i1) - Math.abs(i2)) / di);
                     for (int j = 0; j < unions.get(i).size(); j++) {
-                        i1 = obtainCurrent(unions.get(i));
-                        unions.get(i).get(j).setVoltage(unions.get(i).get(j).getVoltage() + dv);
-                        i2 = obtainCurrent(unions.get(i));
-                        unions.get(i).get(j).setVoltage(unions.get(i).get(j).getVoltage() - dv + dv * (Math.abs(i1) - Math.abs(i2)) / di);
+
                     }
                 }
             }
@@ -156,7 +151,7 @@ public class Circuit {
             System.out.println(Circuit.getCircuit().getTime());
             System.out.println("r1 " + elements.get("R1").getCurrent());
             System.out.println("r2 " + elements.get("R2").getCurrent());
-            System.out.println("I " + elements.get("Iin").getCurrent());
+            System.out.println("V " + elements.get("Vin").getCurrent());
 
             System.out.println(nodes.get(1).getVoltage() + " " + nodes.get(2).getVoltage());
             System.out.println();
@@ -197,7 +192,7 @@ public class Circuit {
     }
 
 
-    private void checkLoopValidation(ArrayList<String> elementsUsed, ArrayList<Integer> nodesPassed, int currentNode) {
+    protected void checkLoopValidation(ArrayList<String> elementsUsed, ArrayList<Integer> nodesPassed, int currentNode) {
         if (nodesPassed.size() > 1 && currentNode == 0) {
             for (int i = 0; i < nodesPassed.size(); i++) {
                 nodes.get(nodesPassed.get(i)).setAdded(true);

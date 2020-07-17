@@ -16,13 +16,17 @@ public class IndependentVoltageSource extends Element{
     double getCurrent() {
         current=0;
         for (int i = 0; i < positiveNode.getPositives().size(); i++) {
-                if (!positiveNode.getPositives().get(i).equals(this.name))
-                    current -= Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).getCurrent();
+            if (!positiveNode.getPositives().get(i).equals(this.name))
+                current -= Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).getCurrent();
 
         }
         for (int i = 0; i < negativeNode.getPositives().size(); i++) {
-            current+=Circuit.getCircuit().getElements().get(positiveNode.getNegatives().get(i)).getCurrent();
+            current += Circuit.getCircuit().getElements().get(positiveNode.getNegatives().get(i)).getCurrent();
         }
         return current;
+    }
+
+    public double getVoltage() {
+        return offset + amplitude * Math.sin(2 * Math.PI * frequency * Circuit.getCircuit().getTime() + phase);
     }
 }

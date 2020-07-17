@@ -2,7 +2,7 @@ import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
-        File input = new File("D:\\input.txt");
+        File input = new File("C:\\input.txt");
         InputManager inputManager = new InputManager(input);
         Circuit circuit = inputManager.analyzeTheInput();
         Circuit.setCircuit(circuit);
@@ -15,8 +15,6 @@ public class Main {
         }
         circuit.initializeGraph();
 
-/*
-        circuit.initializeGraph();
         if (error != 0) {
             System.out.println("Error " + error);
             return;
@@ -26,7 +24,6 @@ public class Main {
         System.out.println(circuit.toString());
 
         // THE REST OF THE CODE MUST BEGIN FROM HERE
-*/
 
     }
 }

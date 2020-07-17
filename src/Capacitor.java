@@ -21,7 +21,7 @@ public class Capacitor extends Element {
     double getCurrent() {
         updateVoltage();
         double current= capacity*(voltage-previousVoltage)/getDt();
-        if(getTime()>time) {
+        if (Circuit.getCircuit().getTime() > time) {
             previousVoltage = voltage;
             time = getTime();
         }

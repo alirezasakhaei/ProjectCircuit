@@ -20,7 +20,7 @@ public class Inductor extends Element {
     double getCurrent() {
         updateVoltage();
         double current=(getDt()*voltage)/inductance + previousCurrent;
-        if(getTime()>time) {
+        if (Circuit.getCircuit().getTime() > time) {
             previousCurrent = current;
             time = getTime();
         }

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ErrorFinder {
@@ -40,9 +41,18 @@ public class ErrorFinder {
 
     private boolean isLoopValid() {
         circuit.setAddedNodes(0);
-        circuit.setAddedNodes(0);
         if (circuit.getNodeNameQueue().size() < circuit.getNodes().size()) {
             return false;
+        }
+
+        for (int i = 0; i < circuit.getNodeNameQueue().size(); i++) {
+            circuit.getNodes().get(circuit.getNodeNameQueue().get(i)).setAdded(false);
+        }
+        circuit.checkLoopValidation(new ArrayList<>(), new ArrayList<>(), 0);
+        for (int i = 0; i < circuit.getNodeNameQueue().size(); i++) {
+            if (!circuit.getNodes().get(circuit.getNodeNameQueue().get(i)).isAdded()) {
+                return false;
+            }
         }
         return true;
     }

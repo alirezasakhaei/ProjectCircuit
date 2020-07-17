@@ -4,11 +4,16 @@ public class Node {
     private double voltage;
     private double current;
     private int union;
+    private int branchsNumer;
     private boolean added;
     private ArrayList<Integer> neighbors;
     private ArrayList<String> positives;
     private ArrayList<String> negatives;
     private int name;;
+
+    public int getBranchsNumer() {
+        return branchsNumer;
+    }
 
     public boolean equals(Node node){
         if (name == node.name)
@@ -34,13 +39,17 @@ public class Node {
     }
 
     void setPositives(String name){
-        if(!positives.contains(name))
+        if(!positives.contains(name)) {
+            branchsNumer++;
             positives.add(name);
+        }
     }
 
     void setNegatives(String name){
-        if(!negatives.contains(name))
+        if(!negatives.contains(name)) {
+            branchsNumer++;
             negatives.add(name);
+        }
     }
 
     ArrayList<String> getPositives(){

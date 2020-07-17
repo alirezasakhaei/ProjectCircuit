@@ -13,6 +13,8 @@ public class Main {
         if (error != 0){
             System.out.println("Error " + error + " is found!" );
         }
+        CircuitSolver circuitSolver = new CircuitSolver(circuit);
+   //     circuitSolver.solve();
 
 
       /*  int error = circuit.initializeGraph();

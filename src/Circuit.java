@@ -14,7 +14,6 @@ public class Circuit {
 
     private HashMap<Integer, Node> nodes;
     private HashMap<String, Element> elements;
-    private HashMap<String, Element> voltageSources;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
@@ -106,6 +105,8 @@ public class Circuit {
         return 0;
     }
 
+
+
     protected void setAddedNodes(int name) {
         if (!nodes.get(name).isAdded()) {
             nodes.get(name).setAdded(true);
@@ -146,10 +147,7 @@ public class Circuit {
                     }
                 }
             }
-
-
         }
-
     }
 
 

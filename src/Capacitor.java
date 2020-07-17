@@ -19,16 +19,12 @@ public class Capacitor extends Element {
     }
     @Override
     double getCurrent() {
-        updateVoltage();
-        double current= capacity*(voltage-previousVoltage)/getDt();
         if (Circuit.getCircuit().getTime() > time) {
-            previousVoltage = voltage;
-            time = getTime();
+            previousVoltage = getVoltage();
+            time = Circuit.getCircuit().getTime();
         }
+        double current = capacity * (getVoltage() - previousVoltage) / Circuit.getCircuit().getDt();
         return current;
     }
 
-    private void updateVoltage(){
-        voltage=positiveNode.getVoltage()-negativeNode.getVoltage();
-    }
 }

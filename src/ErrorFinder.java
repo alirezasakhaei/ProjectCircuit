@@ -40,10 +40,6 @@ public class ErrorFinder {
     }
 
     private boolean isLoopValid() {
-        System.out.println("0:" + circuit.getNodes().get(0).getUnion());
-        System.out.println("1:" + circuit.getNodes().get(1).getUnion());
-        System.out.println("2:" + circuit.getNodes().get(2).getUnion());
-        System.out.println("***");
         circuit.setAddedNodes(0);
         if (circuit.getNodeNameQueue().size() < circuit.getNodes().size()) {
             return false;

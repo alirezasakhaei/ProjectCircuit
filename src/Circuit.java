@@ -127,8 +127,6 @@ public class Circuit {
         double i1, i2;
         for (time = 0; time <= maximumTime; time += dt) {
             for (int l = 0; l < 1000; l++) {
-
-
                 for (int i = 0; i < unions.size(); i++) {
                     i1 = obtainCurrent(unions.get(i));
                     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + dv);
@@ -173,7 +171,7 @@ public class Circuit {
             }
 
 
-            System.out.println(nodes.get(1).getVoltage() + " " + nodes.get(2).getVoltage());
+            System.out.println(nodes.get(1).getVoltage() + " " + nodes.get(0).getVoltage());
             System.out.println();
         }
 
@@ -198,7 +196,7 @@ public class Circuit {
 
 
     private void initializeUnions() {
-        ArrayList<Integer> seenUnions=new ArrayList<>();
+        ArrayList<Integer> seenUnions = new ArrayList<>();
         for (int i = 0; i < nodeNameQueue.size(); i++) {
             if (!seenUnions.contains(nodes.get(nodeNameQueue.get(i)).getUnion())) {
                 ArrayList<Node> temp = new ArrayList<>();

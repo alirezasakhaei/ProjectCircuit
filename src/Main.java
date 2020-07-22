@@ -14,14 +14,7 @@ public class Main {
             System.out.println("Error " + error + " is found!" );
         }
         circuit.initializeGraph();
-
-        if (error != 0) {
-            System.out.println("Error " + error);
-            return;
-        }
-
         circuit.solveCircuit();
-        System.out.println(circuit.toString());
 
     }
 }

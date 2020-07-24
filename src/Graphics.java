@@ -5,55 +5,57 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Scanner;
 
 public class Graphics {
     private Circuit circuit;
     boolean isSomethingLoaded = false;
     JTextArea textAreaOnTop;
+    File selectedFile;
 
-    public Graphics() {
-
-    }
-
-    public void run(){
+    public void start(){
         Border border = BorderFactory.createLineBorder(Color.BLACK,2,false);
 
         JFrame frame = new JFrame("Circuit Simulator");
         frame.setBounds(0,0,600,600);
         frame.setLayout(null);
 
-        JPanel pText,pRun,pDraw,pLoad;
-        JButton buttonRun,buttonDraw,buttonLoad;
+        JPanel pText,pRun,pDraw,pLoad,pReset;
+        JButton buttonRun,buttonDraw,buttonLoad,buttonReset;
 
         pText = new JPanel();
-        pText.setBounds(0,300,300,300);
+        pText.setBounds(0,0,300,600);
         pText.setBorder(border);
         pText.setLayout(null);
         frame.add(pText);
 
         pRun = new JPanel();
-        pRun.setBounds(300,0,300,300);
+        pRun.setBounds(300,0,300,150);
         pRun.setBorder(border);
         pRun.setLayout(null);
         frame.add(pRun);
 
         pDraw = new JPanel();
-        pDraw.setBounds(300,300,300,300);
+        pDraw.setBounds(300,150,300,150);
         pDraw.setBorder(border);
         pDraw.setLayout(null);
         frame.add(pDraw);
 
         pLoad = new JPanel();
-        pLoad.setBounds(0,0,300,300);
+        pLoad.setBounds(300,300,300,150);
         pLoad.setBorder(border);
         pLoad.setLayout(null);
         frame.add(pLoad);
 
+        pReset = new JPanel();
+        pReset.setBounds(300,450,300,150);
+        pReset.setBorder(border);
+        pReset.setLayout(null);
+        frame.add(pReset);
+
         buttonRun = new JButton("RUN");
-        buttonRun.setBounds(100,100,100,100);
+        buttonRun.setBounds(100,50,100,50);
         pRun.add(buttonRun);
 
         buttonRun.addActionListener(new ActionListener() {
@@ -63,30 +65,27 @@ public class Graphics {
                     JFileChooser fileChooser = new JFileChooser();
                     fileChooser.showSaveDialog(null);
                     File input = fileChooser.getSelectedFile();
-                    InputManager inputManager = new InputManager(input);
-                    Circuit circuit = inputManager.analyzeTheInput();
-                    Circuit.setCircuit(circuit);
-                    CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
-                    circuitPrinter.printData();
-                    ErrorFinder errorFinder = new ErrorFinder(circuit);
-                    int error = errorFinder.findErrors();
-                    if (error != 0) {
-                        System.out.println("Error " + error + " is found!");
+                    run(input);
+                }else {
+                    try {
+                        FileWriter fileWriter = new FileWriter(selectedFile);
+                        String string = textAreaOnTop.getText();
+                        Scanner scanner = new Scanner(string);
+                        while (scanner.hasNextLine()){
+                            fileWriter.write(scanner.nextLine());
+                            fileWriter.write("\n");
+                        }
+                        fileWriter.close();
+                        run(selectedFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    circuit.initializeGraph();
-                    circuit.solveCircuit();
                 }
-
             }
         });
 
-
-        buttonDraw = new JButton("Draw");
-        buttonDraw.setBounds(100,100,100,100);
-        pDraw.add(buttonDraw);
-
         buttonLoad = new JButton("Load");
-        buttonLoad.setBounds(100,100,100,100);
+        buttonLoad.setBounds(100,50,100,50);
         pLoad.add(buttonLoad);
 
         buttonLoad.addActionListener(new ActionListener() {
@@ -103,19 +102,52 @@ public class Graphics {
                             preText += scanner.nextLine();
                             preText += "\n";
                         }
+                        JTextArea textArea = new JTextArea(preText);
+                        textArea.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
+                        textAreaOnTop = textArea;
+                        isSomethingLoaded = true;
+                        selectedFile = input;
+                        pText.add(textArea);
                     }catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                    JTextArea textArea = new JTextArea(preText);
-                    textArea.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
-                    textAreaOnTop = textArea;
-                    isSomethingLoaded = true;
-                    pText.add(textArea);
                 }
             }
         });
 
+        buttonReset = new JButton("Reset");
+        buttonReset.setBounds(100,50,100,50);
+        pReset.add(buttonReset);
+
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                isSomethingLoaded = false;
+                textAreaOnTop.setVisible(false);
+                textAreaOnTop = null;
+                selectedFile = null;
+            }
+        });
+
+        buttonDraw = new JButton("Draw");
+        buttonDraw.setBounds(100,50,100,50);
+        pDraw.add(buttonDraw);
+
         frame.setVisible(true);
+    }
+    private void run(File input){
+        InputManager inputManager = new InputManager(input);
+        Circuit circuit = inputManager.analyzeTheInput();
+        Circuit.setCircuit(circuit);
+        CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
+        circuitPrinter.printData();
+        ErrorFinder errorFinder = new ErrorFinder(circuit);
+        int error = errorFinder.findErrors();
+        if (error != 0) {
+            System.out.println("Error " + error + " is found!");
+        }
+        circuit.initializeGraph();
+        circuit.solveCircuit();
     }
 
 }

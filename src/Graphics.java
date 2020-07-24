@@ -11,13 +11,14 @@ import java.util.Scanner;
 public class Graphics {
     private Circuit circuit;
     boolean isSomethingLoaded = false;
-    JTextArea textAreaOnTop;
+    JTextArea textArea;
     File selectedFile;
+    JFrame frame;
 
     public void start(){
         Border border = BorderFactory.createLineBorder(Color.BLACK,2,false);
 
-        JFrame frame = new JFrame("Circuit Simulator");
+        frame = new JFrame("Circuit Simulator");
         frame.setBounds(0,0,600,600);
         frame.setLayout(null);
 
@@ -62,14 +63,14 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!isSomethingLoaded) {
-                    JFileChooser fileChooser = new JFileChooser();
+                    JFileChooser fileChooser = new JFileChooser("D:\\");
                     fileChooser.showSaveDialog(null);
                     File input = fileChooser.getSelectedFile();
                     run(input);
                 }else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
-                        String string = textAreaOnTop.getText();
+                        String string = textArea.getText();
                         Scanner scanner = new Scanner(string);
                         while (scanner.hasNextLine()){
                             fileWriter.write(scanner.nextLine());
@@ -78,7 +79,7 @@ public class Graphics {
                         fileWriter.close();
                         run(selectedFile);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -102,9 +103,8 @@ public class Graphics {
                             preText += scanner.nextLine();
                             preText += "\n";
                         }
-                        JTextArea textArea = new JTextArea(preText);
+                        textArea = new JTextArea(preText);
                         textArea.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
-                        textAreaOnTop = textArea;
                         isSomethingLoaded = true;
                         selectedFile = input;
                         pText.add(textArea);
@@ -123,8 +123,8 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 isSomethingLoaded = false;
-                textAreaOnTop.setVisible(false);
-                textAreaOnTop = null;
+                textArea.setVisible(false);
+                textArea = null;
                 selectedFile = null;
             }
         });
@@ -136,18 +136,24 @@ public class Graphics {
         frame.setVisible(true);
     }
     private void run(File input){
-        InputManager inputManager = new InputManager(input);
-        Circuit circuit = inputManager.analyzeTheInput();
-        Circuit.setCircuit(circuit);
-        CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
-        circuitPrinter.printData();
-        ErrorFinder errorFinder = new ErrorFinder(circuit);
-        int error = errorFinder.findErrors();
-        if (error != 0) {
-            System.out.println("Error " + error + " is found!");
-        }
-        circuit.initializeGraph();
-        circuit.solveCircuit();
+        if (input.canExecute()) {
+            InputManager inputManager = new InputManager(input);
+            Circuit circuit = inputManager.analyzeTheInput();
+            Circuit.setCircuit(circuit);
+            CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
+            circuitPrinter.printData();
+            ErrorFinder errorFinder = new ErrorFinder(circuit);
+            int error = errorFinder.findErrors();
+            if (error != 0) {
+                JOptionPane.showMessageDialog(frame, "Error " + error + " is found!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            if (error == 0) {
+                circuit.initializeGraph();
+                circuit.solveCircuit();
+            }
+        }else
+            JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
+
     }
 
 }

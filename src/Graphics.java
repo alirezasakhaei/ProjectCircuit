@@ -6,13 +6,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Graphics {
     private Circuit circuit;
-
-    public void setCircuit(Circuit circuit) {
-        this.circuit = circuit;
-    }
+    boolean isSomethingLoaded = false;
+    JTextArea textAreaOnTop;
 
     public Graphics() {
 
@@ -59,21 +59,23 @@ public class Graphics {
         buttonRun.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.showSaveDialog(null);
-                File input = fileChooser.getSelectedFile();
-                InputManager inputManager = new InputManager(input);
-                Circuit circuit = inputManager.analyzeTheInput();
-                Circuit.setCircuit(circuit);
-                CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
-                circuitPrinter.printData();
-                ErrorFinder errorFinder = new ErrorFinder(circuit);
-                int error = errorFinder.findErrors();
-                if (error != 0){
-                    System.out.println("Error " + error + " is found!" );
+                if (!isSomethingLoaded) {
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.showSaveDialog(null);
+                    File input = fileChooser.getSelectedFile();
+                    InputManager inputManager = new InputManager(input);
+                    Circuit circuit = inputManager.analyzeTheInput();
+                    Circuit.setCircuit(circuit);
+                    CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
+                    circuitPrinter.printData();
+                    ErrorFinder errorFinder = new ErrorFinder(circuit);
+                    int error = errorFinder.findErrors();
+                    if (error != 0) {
+                        System.out.println("Error " + error + " is found!");
+                    }
+                    circuit.initializeGraph();
+                    circuit.solveCircuit();
                 }
-                circuit.initializeGraph();
-                circuit.solveCircuit();
 
             }
         });
@@ -83,9 +85,35 @@ public class Graphics {
         buttonDraw.setBounds(100,100,100,100);
         pDraw.add(buttonDraw);
 
-        buttonDraw = new JButton("Load");
-        buttonDraw.setBounds(100,100,100,100);
-        pLoad.add(buttonDraw);
+        buttonLoad = new JButton("Load");
+        buttonLoad.setBounds(100,100,100,100);
+        pLoad.add(buttonLoad);
+
+        buttonLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = new JFileChooser("D:\\");
+                fileChooser.showSaveDialog(null);
+                File input = fileChooser.getSelectedFile();
+                String preText = "";
+                if (input.canExecute()){
+                    try {
+                        Scanner scanner = new Scanner(input);
+                        while (scanner.hasNextLine()) {
+                            preText += scanner.nextLine();
+                            preText += "\n";
+                        }
+                    }catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    JTextArea textArea = new JTextArea(preText);
+                    textArea.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
+                    textAreaOnTop = textArea;
+                    isSomethingLoaded = true;
+                    pText.add(textArea);
+                }
+            }
+        });
 
         frame.setVisible(true);
     }

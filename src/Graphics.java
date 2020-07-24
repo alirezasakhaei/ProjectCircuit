@@ -1,13 +1,24 @@
+import javafx.stage.FileChooser;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 public class Graphics {
-    Circuit circuit;
-    Graphics (Circuit circuit){
+    private Circuit circuit;
+
+    public void setCircuit(Circuit circuit) {
         this.circuit = circuit;
     }
-    public void draw(){
+
+    public Graphics() {
+
+    }
+
+    public void run(){
         Border border = BorderFactory.createLineBorder(Color.BLACK,2,false);
 
         JFrame frame = new JFrame("Circuit Simulator");
@@ -45,6 +56,29 @@ public class Graphics {
         buttonRun.setBounds(100,100,100,100);
         pRun.add(buttonRun);
 
+        buttonRun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.showSaveDialog(null);
+                File input = fileChooser.getSelectedFile();
+                InputManager inputManager = new InputManager(input);
+                Circuit circuit = inputManager.analyzeTheInput();
+                Circuit.setCircuit(circuit);
+                CircuitPrinter circuitPrinter = new CircuitPrinter(circuit);
+                circuitPrinter.printData();
+                ErrorFinder errorFinder = new ErrorFinder(circuit);
+                int error = errorFinder.findErrors();
+                if (error != 0){
+                    System.out.println("Error " + error + " is found!" );
+                }
+                circuit.initializeGraph();
+                circuit.solveCircuit();
+
+            }
+        });
+
+
         buttonDraw = new JButton("Draw");
         buttonDraw.setBounds(100,100,100,100);
         pDraw.add(buttonDraw);
@@ -52,8 +86,6 @@ public class Graphics {
         buttonDraw = new JButton("Load");
         buttonDraw.setBounds(100,100,100,100);
         pLoad.add(buttonDraw);
-
-
 
         frame.setVisible(true);
     }

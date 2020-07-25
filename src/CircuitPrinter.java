@@ -11,10 +11,10 @@ public class CircuitPrinter {
         printNodesData();
         System.out.println("ELEMENTS");
         printElementData();
-        System.out.println("D DATA");
-        printDData();
-        System.out.println("MAX TIME");
-        printMaxTimeData();
+        //System.out.println("D DATA");
+        //printDData();
+        //System.out.println("MAX TIME");
+        //printMaxTimeData();
     }
 
     public void printNodesData(){

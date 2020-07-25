@@ -125,6 +125,7 @@ public class Circuit {
 
     void solveCircuit() {
         double i1, i2;
+        CircuitPrinter circuitPrinter = new CircuitPrinter(Circuit.getCircuit());
         for (time = 0; time <= maximumTime; time += dt) {
             for (int l = 0; l < 1000; l++) {
                 for (int i = 0; i < unions.size(); i++) {
@@ -146,7 +147,7 @@ public class Circuit {
                         }
                     }
                     i2 = obtainCurrent(unions.get(i));
-                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv + dv * (Math.abs(i1) - Math.abs(i2)) / di);
+                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di);
                     for (int j = 1; j < unions.get(i).size(); j++) {
                         for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
                             int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getPositives().get(k)).negativeNode);
@@ -166,13 +167,9 @@ public class Circuit {
             }
 
             System.out.println(Circuit.getCircuit().getTime());
-            for (int i = 0; i < elementNames.size(); i++) {
-                System.out.println(elementNames.get(i) + " " + elements.get(elementNames.get(i)).getCurrent());
-            }
-
-
-            System.out.println(nodes.get(1).getVoltage() + " " + nodes.get(0).getVoltage());
             System.out.println();
+            circuitPrinter.printData();
+
         }
 
     }

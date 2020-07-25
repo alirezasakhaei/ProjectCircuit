@@ -9,24 +9,28 @@ public class Node {
     private ArrayList<Integer> neighbors;
     private ArrayList<String> positives;
     private ArrayList<String> negatives;
-    private int name;;
+    private int name;
+    private double previousVoltage;
+    private double time;
 
     public int getBranchsNumer() {
         return branchsNumer;
     }
 
-    public boolean equals(Node node){
+    public boolean equals(Node node) {
         if (name == node.name)
             return true;
         return false;
     }
-    public Node(int name){
-        this.name=name;
-        voltage=0;
+    public Node(int name) {
+        this.name = name;
+        voltage = 0;
+        previousVoltage = 0;
+        time = 0;
         added = false;
-        neighbors=new ArrayList<>();
-        positives=new ArrayList<>();
-        negatives=new ArrayList<>();
+        neighbors = new ArrayList<>();
+        positives = new ArrayList<>();
+        negatives = new ArrayList<>();
     }
 
     int getName(){
@@ -80,22 +84,31 @@ public class Node {
         this.added = added;
     }
 
-    void setVoltage(double voltage){
-        if(name!=0)
-        this.voltage=voltage;
+    void setVoltage(double voltage) {
+        if (name != 0)
+            this.voltage = voltage;
     }
 
-    double getVoltage(){
-        if(name!=0)
-        return voltage;
+    double getVoltage() {
+        if (name != 0)
+            return voltage;
         else return 0;
     }
 
-    void setCurrent(double current){
-        this.current=current;
+    double getPreviousVoltage() {
+        double temp = previousVoltage;
+        if (time < Circuit.getCircuit().getTime()) {
+            time = Circuit.getCircuit().getTime();
+            previousVoltage = voltage;
+        }
+        return temp;
     }
 
-    double getCurrent(){
+    void setCurrent(double current) {
+        this.current = current;
+    }
+
+    double getCurrent() {
         return current;
     }
 

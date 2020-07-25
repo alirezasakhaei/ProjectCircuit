@@ -8,7 +8,6 @@ public class CurrentDependentCurrentSource extends Element {
         this.dependentElement = dependentElement;
         this.gain=gain;
         data = String.valueOf(gain) + "," + String.valueOf(dependentElement.name) ;
-
     }
 
     @Override

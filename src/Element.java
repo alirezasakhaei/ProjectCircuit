@@ -14,6 +14,7 @@ public abstract class Element extends Circuit {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
     }
 
+
     abstract double getCurrent();
 
     public static boolean isParallel(Element elementOne, Element elementTwo) {
@@ -81,7 +82,7 @@ public abstract class Element extends Circuit {
                 "name='" + name + '\'' +
                 ", positiveNode=" + positiveNode.getName() +
                 ", negativeNode=" + negativeNode.getName() +
-                ", current=" + current +
+                ", current=" + getCurrent() +
                 '}' + "\n";
     }
 }

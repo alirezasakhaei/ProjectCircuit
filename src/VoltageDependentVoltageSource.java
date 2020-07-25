@@ -13,13 +13,6 @@ public class VoltageDependentVoltageSource extends Element{
     }
     @Override
     double getCurrent() {
-        current=0;
-        for (int i = 0; i < positiveNode.getPositives().size(); i++) {
-            current-=Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).getCurrent();
-        }
-        for (int i = 0; i < negativeNode.getPositives().size(); i++) {
-            current+=Circuit.getCircuit().getElements().get(positiveNode.getNegatives().get(i)).getCurrent();
-        }
-        return current;
+        return (positiveDependence.getVoltage() - negativeDependence.getVoltage()) * gain;
     }
 }

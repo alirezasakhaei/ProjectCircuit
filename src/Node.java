@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class Node {
     private double voltage;
-    private double current;
     private int union;
     private int branchsNumer;
     private boolean added;
@@ -96,27 +95,19 @@ public class Node {
     }
 
     double getPreviousVoltage() {
-        double temp = previousVoltage;
-        if (time < Circuit.getCircuit().getTime()) {
-            time = Circuit.getCircuit().getTime();
-            previousVoltage = voltage;
-        }
-        return temp;
+        return previousVoltage;
     }
 
-    void setCurrent(double current) {
-        this.current = current;
+    void updatePreviousVoltage() {
+        time = Circuit.getCircuit().getTime();
+        previousVoltage = voltage;
     }
 
-    double getCurrent() {
-        return current;
-    }
 
     @Override
     public String toString() {
         return "Node{" +
                 "voltage=" + voltage +
-                ", current=" + current +
                 ", union=" + union +
                 ", neighbors=" + neighbors +
                 ", name=" + name +

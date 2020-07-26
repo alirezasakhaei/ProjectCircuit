@@ -14,7 +14,7 @@ public class IndependentVoltageSource extends Element{
 
     @Override
     double getCurrent() {
-        current=0;
+        double current = 0;
         for (int i = 0; i < positiveNode.getPositives().size(); i++) {
             if (!positiveNode.getPositives().get(i).equals(this.name))
                 current -= Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).getCurrent();

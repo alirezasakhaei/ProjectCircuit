@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     String data = null;
-    double current;
     ArrayList<Double> currentsArray = new ArrayList<Double>();
     String name;
     private boolean isVoltageSource = false;
@@ -12,6 +11,13 @@ public abstract class Element extends Circuit {
 
     public double getVoltage() {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
+    }
+
+    public double getPreviousVoltage() {
+        return positiveNode.getPreviousVoltage() - negativeNode.getPreviousVoltage();
+    }
+
+    public void updateTime() {
     }
 
 

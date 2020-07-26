@@ -1,17 +1,11 @@
 public class Capacitor extends Element {
     private double capacity;
-    private double voltage;
-    private double time;
-    double previousVoltage;
 
     public Capacitor(String name,Node positiveNode,Node negativeNode,double capacity){
         this.name=name;
         this.positiveNode=positiveNode;
         this.negativeNode=negativeNode;
         this.capacity=capacity;
-        previousVoltage=0;
-        voltage=0;
-        time=0;
         data = String.valueOf(capacity);
 
     }
@@ -20,14 +14,11 @@ public class Capacitor extends Element {
     }
     @Override
     double getCurrent() {
-
-        double current = capacity * (getVoltage() - previousVoltage) / Circuit.getCircuit().getDt();
-        if (Circuit.getCircuit().getTime() > time) {
-
-            previousVoltage = getVoltage();
-            time = Circuit.getCircuit().getTime();
-        }
-        return current;
+        // System.out.println("dd");
+        // System.out.println(getVoltage()+"\t"+getPreviousVoltage());
+        // System.out.println(capacity * (getVoltage() - getPreviousVoltage()) / Circuit.getCircuit().getDt());
+        //  System.out.println("cc");
+        return capacity * (getVoltage() - getPreviousVoltage()) / Circuit.getCircuit().getDt();
     }
 
 }

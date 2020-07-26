@@ -7,9 +7,9 @@ public class CircuitPrinter {
         this.circuit = circuit;
     }
     public void printData(){
-        System.out.println("NODES");
+       // System.out.println("NODES");
         printNodesData();
-        System.out.println("ELEMENTS");
+        // System.out.println("ELEMENTS");
         printElementData();
         //System.out.println("D DATA");
         //printDData();

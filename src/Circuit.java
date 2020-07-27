@@ -106,21 +106,45 @@ public class Circuit {
 
         for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
             if (elements.get(nodes.get(name).getPositives().get(j)).isVoltageSource()) {
-
                 elements.get(nodes.get(name).getPositives().get(j)).negativeNode.setUnion(nodes.get(name).getUnion());
             }
         }
         for (int j = 0; j < nodes.get(name).getNegatives().size(); j++) {
             if (elements.get(nodes.get(name).getNegatives().get(j)).isVoltageSource()) {
-
                 elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
             }
         }
         for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
             setAddedNodes(nodes.get(name).getNeighbors().get(i));
         }
-
     }
+
+
+    void reconstructUnions() {
+        for (int i = 0; i < nodeNameQueue.size(); i++) {
+            nodes.get(nodeNameQueue.get(i)).setAdded(false);
+            nodes.get(nodeNameQueue.get(i)).setUnion(i);
+        }
+        for (int i = 0; i < elementNames.size(); i++) {
+            if (elementNames.get(i).charAt(0) == 'D') {
+                if (elements.get(elementNames.get(i)).positiveNode.getVoltage() < elements.get(elementNames.get(i)).negativeNode.getVoltage() || (elements.get(elementNames.get(i)).getVoltage() == 0 && elements.get(elementNames.get(i)).getCurrent() <= 0)) {
+                    Element temp = elements.remove(elementNames.get(i));
+                    IndependentCurrentSource d = new IndependentCurrentSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
+                    d.setCurrentSource(true);
+                    elements.put(elementNames.get(i), d);
+                } else {
+                    Element temp = elements.remove(elementNames.get(i));
+                    IndependentVoltageSource d = new IndependentVoltageSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
+                    d.setVoltageSource(true);
+                    elements.put(elementNames.get(i), d);
+                }
+            }
+        }
+        nodeNameQueue.clear();
+        setAddedNodes(0);
+        initializeUnions();
+    }
+
 
     private void setVoltagesInUnion(int i) {
         for (int j = 1; j < unions.get(i).size(); j++) {
@@ -145,6 +169,8 @@ public class Circuit {
         CircuitPrinter circuitPrinter = new CircuitPrinter(Circuit.getCircuit());
         for (time = 0; time <= maximumTime; time += dt) {
             for (int i = 0; i < unions.size(); i++) {
+                reconstructUnions();
+
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
                 setVoltagesInUnion(i);
                 i1 = obtainCurrent(unions.get(i));
@@ -154,7 +180,10 @@ public class Circuit {
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
                 setVoltagesInUnion(i);
             }
-            //circuitPrinter.printData();
+            // circuitPrinter.printData();
+            //if(Math.floor(1000000*time%10)==5)
+
+            System.out.println(elements.get("R1").getCurrent() + "\t" + elements.get("D1").isVoltageSource() + "\t" + elements.get("Vin").getVoltage() + "\t" + elements.get("D1").getCurrent());
             for (int p = 0; p < nodeNameQueue.size(); p++) {
                 nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
             }
@@ -186,6 +215,7 @@ public class Circuit {
 
     private void initializeUnions() {
         ArrayList<Integer> seenUnions = new ArrayList<>();
+        unions.clear();
         for (int i = 0; i < nodeNameQueue.size(); i++) {
             if (!seenUnions.contains(nodes.get(nodeNameQueue.get(i)).getUnion())) {
                 ArrayList<Node> temp = new ArrayList<>();
@@ -193,7 +223,6 @@ public class Circuit {
                 unions.add(temp);
                 seenUnions.add(nodes.get(nodeNameQueue.get(i)).getUnion());
             } else {
-
                 unions.get(seenUnions.indexOf(nodes.get(nodeNameQueue.get(i)).getUnion())).add(nodes.get(nodeNameQueue.get(i)));
             }
         }

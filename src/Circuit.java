@@ -166,11 +166,9 @@ public class Circuit {
 
     void solveCircuit() {
         double i1, i2;
-        CircuitPrinter circuitPrinter = new CircuitPrinter(Circuit.getCircuit());
         for (time = 0; time <= maximumTime; time += dt) {
+            reconstructUnions();
             for (int i = 0; i < unions.size(); i++) {
-                reconstructUnions();
-
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
                 setVoltagesInUnion(i);
                 i1 = obtainCurrent(unions.get(i));
@@ -180,10 +178,7 @@ public class Circuit {
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
                 setVoltagesInUnion(i);
             }
-            // circuitPrinter.printData();
-            //if(Math.floor(1000000*time%10)==5)
 
-            System.out.println(elements.get("R1").getCurrent() + "\t" + elements.get("D1").isVoltageSource() + "\t" + elements.get("Vin").getVoltage() + "\t" + elements.get("D1").getCurrent());
             for (int p = 0; p < nodeNameQueue.size(); p++) {
                 nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
             }

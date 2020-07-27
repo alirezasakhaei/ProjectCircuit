@@ -29,6 +29,9 @@ public class Inductor extends Element {
 
     @Override
     public void updateTime() {
+        currentsArray.add(getCurrent());
+        voltagesArray.add(getVoltage());
+        powersArray.add(getVoltage() * getCurrent());
         previousCurrent = current;
         time = Circuit.getCircuit().getTime();
     }

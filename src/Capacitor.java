@@ -7,18 +7,15 @@ public class Capacitor extends Element {
         this.negativeNode=negativeNode;
         this.capacity=capacity;
         data = String.valueOf(capacity);
-
     }
     double getCapacity(){
         return capacity;
     }
     @Override
     double getCurrent() {
-        // System.out.println("dd");
-        // System.out.println(getVoltage()+"\t"+getPreviousVoltage());
-        // System.out.println(capacity * (getVoltage() - getPreviousVoltage()) / Circuit.getCircuit().getDt());
-        //  System.out.println("cc");
+
         return capacity * (getVoltage() - getPreviousVoltage()) / Circuit.getCircuit().getDt();
     }
+
 
 }

@@ -10,7 +10,11 @@ public class Node {
     private ArrayList<String> negatives;
     private int name;
     private double previousVoltage;
-    private double time;
+    private ArrayList<Double> voltagesArray;
+
+    public ArrayList<Double> getVoltagesArray() {
+        return voltagesArray;
+    }
 
     public int getBranchsNumer() {
         return branchsNumer;
@@ -25,11 +29,11 @@ public class Node {
         this.name = name;
         voltage = 0;
         previousVoltage = 0;
-        time = 0;
         added = false;
         neighbors = new ArrayList<>();
         positives = new ArrayList<>();
         negatives = new ArrayList<>();
+        voltagesArray = new ArrayList<>();
     }
 
     int getName(){
@@ -99,7 +103,7 @@ public class Node {
     }
 
     void updatePreviousVoltage() {
-        time = Circuit.getCircuit().getTime();
+        voltagesArray.add(voltage);
         previousVoltage = voltage;
     }
 

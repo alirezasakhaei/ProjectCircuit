@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Circuit {
@@ -15,11 +14,11 @@ public class Circuit {
 
     private HashMap<Integer, Node> nodes;
     private HashMap<String, Element> elements;
-    private HashMap<String, Element> voltageSources;
     private ArrayList<Integer> nodeNameQueue;
     private ArrayList<String> elementNames;
     private ArrayList<ArrayList<Node>> unions;
     private double dt = 0, dv = 0, di = 0, time, maximumTime;
+    ArrayList<Double> timeArray;
 
     public Circuit() {
         nodes = new HashMap<>();
@@ -27,13 +26,13 @@ public class Circuit {
         nodeNameQueue = new ArrayList<>();
         elementNames = new ArrayList<>();
         unions = new ArrayList<>();
+        timeArray = new ArrayList<>();
     }
 
     /////////////////// Get-set codeBox
 
-
-    public HashMap<String, Element> getVoltageSources() {
-        return voltageSources;
+    public ArrayList<Double> getTimeArray() {
+        return timeArray;
     }
 
     public HashMap<Integer, Node> getNodes() {
@@ -123,65 +122,47 @@ public class Circuit {
 
     }
 
+    private void setVoltagesInUnion(int i) {
+        for (int j = 1; j < unions.get(i).size(); j++) {
+            for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
+                int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getPositives().get(k)).negativeNode);
+                if (elements.get(unions.get(i).get(j).getPositives().get(k)).isVoltageSource() && q < j) {
+                    unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() + elements.get(unions.get(i).get(j).getPositives().get(k)).getVoltage());
+                }
+            }
+
+            for (int k = 0; k < unions.get(i).get(j).getNegatives().size(); k++) {
+                int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getNegatives().get(k)).positiveNode);
+                if (elements.get(unions.get(i).get(j).getNegatives().get(k)).isVoltageSource() && q < j) {
+                    unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() - elements.get(unions.get(i).get(j).getNegatives().get(k)).getVoltage());
+                }
+            }
+        }
+    }
+
     void solveCircuit() {
         double i1, i2;
         CircuitPrinter circuitPrinter = new CircuitPrinter(Circuit.getCircuit());
         for (time = 0; time <= maximumTime; time += dt) {
             for (int i = 0; i < unions.size(); i++) {
+                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
+                setVoltagesInUnion(i);
                 i1 = obtainCurrent(unions.get(i));
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + dv);
-                for (int j = 1; j < unions.get(i).size(); j++) {
-                    for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
-                        int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getPositives().get(k)).negativeNode);
-                        if (elements.get(unions.get(i).get(j).getPositives().get(k)).isVoltageSource() && q < j) {
-                            unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() + elements.get(unions.get(i).get(j).getPositives().get(k)).getVoltage());
-                        }
-                    }
-
-                    for (int k = 0; k < unions.get(i).get(j).getNegatives().size(); k++) {
-                        int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getNegatives().get(k)).positiveNode);
-                        if (elements.get(unions.get(i).get(j).getNegatives().get(k)).isVoltageSource() && q < j) {
-                            unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() - elements.get(unions.get(i).get(j).getNegatives().get(k)).getVoltage());
-                        }
-                    }
-                }
+                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + 2 * dv);
+                setVoltagesInUnion(i);
                 i2 = obtainCurrent(unions.get(i));
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di);
-                // if(i==2) {
-                //     System.out.println("///////////////");
-                //     System.out.println(i1 + " " + i2);
-                //     System.out.println(unions.get(i).get(0).getPreviousVoltage() + " " + unions.get(i).get(0).getVoltage());
-                // }
-                for (int j = 1; j < unions.get(i).size(); j++) {
-                    for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
-                        int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getPositives().get(k)).negativeNode);
-                        if (elements.get(unions.get(i).get(j).getPositives().get(k)).isVoltageSource() && q < j) {
-                            unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() + elements.get(unions.get(i).get(j).getPositives().get(k)).getVoltage());
-                        }
-                    }
-
-                    for (int k = 0; k < unions.get(i).get(j).getNegatives().size(); k++) {
-                        int q = unions.get(i).indexOf(elements.get(unions.get(i).get(j).getNegatives().get(k)).positiveNode);
-                        if (elements.get(unions.get(i).get(j).getNegatives().get(k)).isVoltageSource() && q < j) {
-                            unions.get(i).get(j).setVoltage(unions.get(i).get(q).getVoltage() - elements.get(unions.get(i).get(j).getNegatives().get(k)).getVoltage());
-                        }
-                    }
-                }
+                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
+                setVoltagesInUnion(i);
             }
-
-            System.out.println("Time:" + Circuit.getCircuit().getTime());
-            //  System.out.println();
-            circuitPrinter.printData();
+            //circuitPrinter.printData();
             for (int p = 0; p < nodeNameQueue.size(); p++) {
                 nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
             }
             for (int p = 0; p < elementNames.size(); p++) {
                 elements.get(elementNames.get(p)).updateTime();
             }
-
-
+            timeArray.add(time);
         }
-
     }
 
 
@@ -194,8 +175,9 @@ public class Circuit {
                 }
             }
             for (int i = 0; i < union.get(j).getNegatives().size(); i++) {
-                if (elements.get(union.get(j).getNegatives().get(i)).positiveNode.getUnion() != union.get(j).getUnion())
+                if (elements.get(union.get(j).getNegatives().get(i)).positiveNode.getUnion() != union.get(j).getUnion()) {
                     current += elements.get(union.get(j).getNegatives().get(i)).getCurrent();
+                }
             }
         }
         return current;
@@ -246,6 +228,4 @@ public class Circuit {
             }
         }
     }
-
-
 }

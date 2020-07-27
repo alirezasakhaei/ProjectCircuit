@@ -5,9 +5,23 @@ public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     String data = null;
     ArrayList<Double> currentsArray = new ArrayList<Double>();
-    String name;
+    protected ArrayList<Double> voltagesArray = new ArrayList<Double>();
+    protected ArrayList<Double> powersArray = new ArrayList<Double>();
+    protected String name;
     private boolean isVoltageSource = false;
     private boolean isCurrentSource = false;
+
+    public ArrayList<Double> getCurrentsArray() {
+        return currentsArray;
+    }
+
+    public ArrayList<Double> getVoltagesArray() {
+        return voltagesArray;
+    }
+
+    public ArrayList<Double> getPowersArray() {
+        return powersArray;
+    }
 
     public double getVoltage() {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
@@ -18,8 +32,10 @@ public abstract class Element extends Circuit {
     }
 
     public void updateTime() {
+        currentsArray.add(getCurrent());
+        voltagesArray.add(getVoltage());
+        powersArray.add(getVoltage() * getCurrent());
     }
-
 
     abstract double getCurrent();
 

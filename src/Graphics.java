@@ -24,6 +24,7 @@ public class Graphics {
         frame.setBounds(0,0,600,600);
         frame.setLayout(null);
 
+
         JPanel pText,pRun,pDraw,pLoad,pReset;
         JButton buttonRun,buttonDraw,buttonLoad,buttonReset;
 
@@ -31,34 +32,40 @@ public class Graphics {
         pText.setBounds(0,0,300,600);
         pText.setBorder(border);
         pText.setLayout(null);
+        pText.setBackground(Color.white);
         frame.add(pText);
 
         pRun = new JPanel();
         pRun.setBounds(300,0,300,150);
         pRun.setBorder(border);
         pRun.setLayout(null);
+        pRun.setBackground(Color.gray.darker().darker().darker().darker());
         frame.add(pRun);
 
         pDraw = new JPanel();
         pDraw.setBounds(300,150,300,150);
         pDraw.setBorder(border);
         pDraw.setLayout(null);
+        pDraw.setBackground(Color.gray.darker());
         frame.add(pDraw);
 
         pLoad = new JPanel();
         pLoad.setBounds(300,300,300,150);
         pLoad.setBorder(border);
         pLoad.setLayout(null);
+        pLoad.setBackground(Color.gray.darker());
         frame.add(pLoad);
 
         pReset = new JPanel();
         pReset.setBounds(300,450,300,150);
         pReset.setBorder(border);
         pReset.setLayout(null);
+        pReset.setBackground(Color.gray.darker().darker().darker().darker());
         frame.add(pReset);
 
         buttonRun = new JButton("RUN");
         buttonRun.setBounds(100,50,100,50);
+        buttonRun.setBackground(Color.white);
         pRun.add(buttonRun);
 
         buttonRun.addActionListener(new ActionListener() {
@@ -89,6 +96,7 @@ public class Graphics {
 
         buttonLoad = new JButton("Load");
         buttonLoad.setBounds(100,50,100,50);
+        buttonLoad.setBackground(Color.white);
         pLoad.add(buttonLoad);
 
         buttonLoad.addActionListener(new ActionListener() {
@@ -117,23 +125,9 @@ public class Graphics {
             }
         });
 
-        buttonReset = new JButton("Reset");
-        buttonReset.setBounds(100,50,100,50);
-        pReset.add(buttonReset);
-
-        buttonReset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                isSomethingLoaded = false;
-                isCircuitSolved = false;
-                textArea.setVisible(false);
-                textArea = null;
-                selectedFile = null;
-            }
-        });
-
         buttonDraw = new JButton("Draw");
         buttonDraw.setBounds(100,50,100,50);
+        buttonDraw.setBackground(Color.white);
         pDraw.add(buttonDraw);
 
         buttonDraw.addActionListener(new ActionListener() {
@@ -144,6 +138,22 @@ public class Graphics {
                 }else {
                     JOptionPane.showMessageDialog(frame,"There is no circuit solved!");
                 }
+            }
+        });
+
+        buttonReset = new JButton("Reset");
+        buttonReset.setBounds(100,50,100,50);
+        buttonReset.setBackground(Color.white);
+        pReset.add(buttonReset);
+
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                isSomethingLoaded = false;
+                isCircuitSolved = false;
+                textArea.setVisible(false);
+                textArea = null;
+                selectedFile = null;
             }
         });
 
@@ -209,10 +219,41 @@ public class Graphics {
 
     }
     private void draw(Element element){
+        JDialog dialogVoltage,dialogCurrent,dialogPower;
+        // Voltage
+        dialogVoltage = new JDialog();
+        dialogVoltage.setBounds(0,0,500,500);
+        dialogVoltage.setLayout(null);
+
+
+
+        dialogVoltage.setVisible(true);
 
 
 
 
+        // Current
+        dialogCurrent = new JDialog();
+        dialogCurrent.setBounds(0,0,500,500);
+        dialogCurrent.setLayout(null);
+
+
+
+
+        dialogCurrent.setVisible(true);
+
+
+
+        // Power
+        dialogPower = new JDialog();
+        dialogPower.setBounds(0,0,500,500);
+        dialogPower.setLayout(null);
+
+
+
+
+
+        dialogPower.setVisible(true);
     }
 
 }

@@ -227,6 +227,7 @@ public class Graphics {
 
 
 
+
         dialogVoltage.setVisible(true);
 
 
@@ -240,7 +241,7 @@ public class Graphics {
 
 
 
-        dialogCurrent.setVisible(true);
+        //dialogCurrent.setVisible(true);
 
 
 
@@ -253,7 +254,7 @@ public class Graphics {
 
 
 
-        dialogPower.setVisible(true);
+        //dialogPower.setVisible(true);
     }
 
 }

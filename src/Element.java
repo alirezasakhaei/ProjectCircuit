@@ -36,6 +36,33 @@ public abstract class Element extends Circuit {
         voltagesArray.add(getVoltage());
         powersArray.add(getVoltage() * getCurrent());
     }
+    public double getCurrentMax(){
+        double max = 0;
+        for (int i =0; i<currentsArray.size();i++){
+            if (Math.abs(currentsArray.get(i)) >= max)
+                max = Math.abs(currentsArray.get(i));
+        }
+        return max;
+    }
+
+    public double getPowerMax(){
+        double max = 0;
+        for (int i =0; i<powersArray.size();i++){
+            if (Math.abs(powersArray.get(i)) >= max)
+                max = Math.abs(powersArray.get(i));
+        }
+        return max;
+    }
+
+
+    public double getVoltageMax(){
+        double max = 0;
+        for (int i =0; i<voltagesArray.size();i++){
+            if (Math.abs(voltagesArray.get(i)) >= max)
+                max = Math.abs(voltagesArray.get(i));
+        }
+        return max;
+    }
 
     abstract double getCurrent();
 

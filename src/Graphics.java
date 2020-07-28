@@ -6,11 +6,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Graphics {
     private Circuit circuit;
-    boolean isSomethingLoaded = false;
+    boolean isSomethingLoaded = false, isCircuitSolved = false;
     JTextArea textArea;
     File selectedFile;
     JFrame frame;
@@ -123,6 +124,7 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 isSomethingLoaded = false;
+                isCircuitSolved = false;
                 textArea.setVisible(false);
                 textArea = null;
                 selectedFile = null;
@@ -132,6 +134,17 @@ public class Graphics {
         buttonDraw = new JButton("Draw");
         buttonDraw.setBounds(100,50,100,50);
         pDraw.add(buttonDraw);
+
+        buttonDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isCircuitSolved) {
+
+                }else {
+                    JOptionPane.showMessageDialog(frame,"There is no circuit solved!");
+                }
+            }
+        });
 
         frame.setVisible(true);
     }
@@ -150,6 +163,7 @@ public class Graphics {
             if (error == 0) {
                 circuit.initializeGraph();
                 circuit.solveCircuit();
+                isCircuitSolved = true;
             }
         }else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);

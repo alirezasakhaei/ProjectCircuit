@@ -214,51 +214,113 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 dialogElement.setVisible(false);
-                draw(circuit.getElements().get((String) comboBox.getSelectedItem()));
+                drawVoltage(circuit.getElements().get((String) comboBox.getSelectedItem()));
+                drawCurrent(circuit.getElements().get((String) comboBox.getSelectedItem()));
+                drawPower(circuit.getElements().get((String) comboBox.getSelectedItem()));
+
             }
         });
 
         dialogElement.setVisible(true);
     }
 
-    private void draw(Element element){
-        JDialog dialogVoltage,dialogCurrent,dialogPower;
-        // Voltage
-        dialogVoltage = new JDialog();
-        dialogVoltage.setBounds(0,0,500,500);
+    private void drawVoltage(Element element){
+        JDialog dialogVoltage = new JDialog();
+        dialogVoltage.setBounds(0,0,600,600);
         dialogVoltage.setLayout(null);
 
+        JLabel labelTitle = new JLabel("Voltage " + element.name);
+        labelTitle.setBounds(250,20,100,30);
+        dialogVoltage.add(labelTitle);
 
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500,550,50,50);
+        dialogVoltage.add(labelTime);
 
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550,300,50,50);
+        dialogVoltage.add(labelMaxTime);
+
+        JLabel labelMaxPositive = new JLabel(Double.toString(element.getVoltageMax()) + "V");
+        labelMaxPositive.setBounds(20,40,50,50);
+        dialogVoltage.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getVoltageMax()) + "V");
+        labelMaxNegative.setBounds(20,520,50,50);
+        dialogVoltage.add(labelMaxNegative);
+
+        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getVoltageMax(),element.getVoltagesArray());
+        graphVoltage.setBounds(50,50,500,500);
+        dialogVoltage.add(graphVoltage);
 
 
         dialogVoltage.setVisible(true);
+    }
 
-
-
-
-        // Current
-        dialogCurrent = new JDialog();
-        dialogCurrent.setBounds(0,0,500,500);
+    private void drawCurrent(Element element){
+        JDialog dialogCurrent = new JDialog();
+        dialogCurrent.setBounds(0,0,600,600);
         dialogCurrent.setLayout(null);
 
+        JLabel labelTitle = new JLabel("Currnet " + element.name);
+        labelTitle.setBounds(250,20,100,30);
+        dialogCurrent.add(labelTitle);
+
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500,550,50,50);
+        dialogCurrent.add(labelTime);
+
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550,300,50,50);
+        dialogCurrent.add(labelMaxTime);
+
+        JLabel labelMaxPositive = new JLabel(Double.toString(element.getCurrentMax()) + "A");
+        labelMaxPositive.setBounds(20,40,50,50);
+        dialogCurrent.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getCurrentMax()) + "A");
+        labelMaxNegative.setBounds(20,520,50,50);
+        dialogCurrent.add(labelMaxNegative);
+
+        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getCurrentMax(),element.getCurrentsArray());
+        graphVoltage.setBounds(50,50,500,500);
+        dialogCurrent.add(graphVoltage);
 
 
+        dialogCurrent.setVisible(true);
+    }
 
-        //dialogCurrent.setVisible(true);
-
-
-
-        // Power
-        dialogPower = new JDialog();
-        dialogPower.setBounds(0,0,500,500);
+    private void drawPower(Element element){
+        JDialog dialogPower = new JDialog();
+        dialogPower.setBounds(0,0,600,600);
         dialogPower.setLayout(null);
 
+        JLabel labelTitle = new JLabel("Power " + element.name);
+        labelTitle.setBounds(250,20,100,30);
+        dialogPower.add(labelTitle);
+
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500,550,50,50);
+        dialogPower.add(labelTime);
+
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550,300,50,50);
+        dialogPower.add(labelMaxTime);
+
+        JLabel labelMaxPositive = new JLabel(Double.toString(element.getPowerMax()) + "W");
+        labelMaxPositive.setBounds(20,40,50,50);
+        dialogPower.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getPowerMax()) + "W");
+        labelMaxNegative.setBounds(20,520,50,50);
+        dialogPower.add(labelMaxNegative);
+
+        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getPowerMax(),element.getPowersArray());
+        graphVoltage.setBounds(50,50,500,500);
+        dialogPower.add(graphVoltage);
 
 
-
-
-        //dialogPower.setVisible(true);
+        dialogPower.setVisible(true);
     }
 
 }

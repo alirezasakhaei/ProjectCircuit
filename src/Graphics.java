@@ -159,46 +159,6 @@ public class Graphics {
 
         frame.setVisible(true);
     }
-    private void dialogChooseElement(){
-        JDialog dialogElement = new JDialog();
-        dialogElement.setLayout(null);
-        dialogElement.setBounds(0,0,500,500);
-        Container container = dialogElement.getContentPane();
-        container.setBackground(Color.RED.brighter().brighter());
-
-        int elementsNumber = circuit.getElements().size();
-        String[] elements = new String[elementsNumber];
-        int i = 0;
-        for (Map.Entry element : circuit.getElements().entrySet()){
-            elements[i] = ((Element) element.getValue()).name;
-            i++;
-        }
-
-        JComboBox comboBox = new JComboBox(elements);
-        comboBox.setBounds(200,150,100,20);
-        dialogElement.add(comboBox);
-
-        JLabel labelChoose = new JLabel("Choose the element!");
-        labelChoose.setFont(new Font("Arial",Font.BOLD,20));
-        labelChoose.setBounds(150,50,200,20);
-        dialogElement.add(labelChoose);
-
-        JButton buttonChoose = new JButton("Draw");
-        buttonChoose.setFont(new Font("Arial",Font.BOLD,10));
-        buttonChoose.setBounds(210,250,80,80);
-        dialogElement.add(buttonChoose);
-
-
-        buttonChoose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                dialogElement.setVisible(false);
-                draw(circuit.getElements().get((String) comboBox.getSelectedItem()));
-            }
-        });
-
-        dialogElement.setVisible(true);
-    }
     private void run(File input){
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
@@ -218,12 +178,56 @@ public class Graphics {
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
 
     }
+    private void dialogChooseElement(){
+        JDialog dialogElement = new JDialog();
+        dialogElement.setLayout(null);
+        dialogElement.setBounds(0,0,500,500);
+        Container container = dialogElement.getContentPane();
+        container.setBackground(Color.black);
+
+        int elementsNumber = circuit.getElements().size();
+        String[] elements = new String[elementsNumber];
+        int i = 0;
+        for (Map.Entry element : circuit.getElements().entrySet()){
+            elements[i] = ((Element) element.getValue()).name;
+            i++;
+        }
+
+        JComboBox comboBox = new JComboBox(elements);
+        comboBox.setBounds(200,150,100,20);
+        dialogElement.add(comboBox);
+
+        JLabel labelChoose = new JLabel("Choose the element!");
+        labelChoose.setFont(new Font("Arial",Font.BOLD,20));
+        labelChoose.setBounds(150,50,200,20);
+        labelChoose.setForeground(Color.white);
+        dialogElement.add(labelChoose);
+
+        JButton buttonChoose = new JButton("Draw");
+        buttonChoose.setFont(new Font("Arial",Font.BOLD,10));
+        buttonChoose.setBounds(210,250,80,80);
+        buttonChoose.setBackground(Color.white);
+        dialogElement.add(buttonChoose);
+
+
+        buttonChoose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                dialogElement.setVisible(false);
+                draw(circuit.getElements().get((String) comboBox.getSelectedItem()));
+            }
+        });
+
+        dialogElement.setVisible(true);
+    }
+
     private void draw(Element element){
         JDialog dialogVoltage,dialogCurrent,dialogPower;
         // Voltage
         dialogVoltage = new JDialog();
         dialogVoltage.setBounds(0,0,500,500);
         dialogVoltage.setLayout(null);
+
 
 
 

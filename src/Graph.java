@@ -35,13 +35,20 @@ public class Graph extends JPanel {
     public void paint(Graphics g) {
         g.drawLine(0,250,500,250);
         g.drawLine(0,0,0,500);
-        g.drawLine(0,10,500,10);
-        g.drawLine(0,490,500,490);
+        Graphics2D g2d = (Graphics2D) g;
+
 
         for (int i =0;i<499;i++){
-            Graphics2D graphics2D = (Graphics2D) g;
-            graphics2D.setStroke(new BasicStroke(5));
-            graphics2D.drawLine(i,250 - finalArray[i],i+1,250 - finalArray[i+1]);
+            g2d.setStroke(new BasicStroke(5));
+            g2d.drawLine(i,250 - finalArray[i],i+1,250 - finalArray[i+1]);
         }
+
+        float[] dashingPattern1 = {2f, 2f};
+        Stroke stroke1 = new BasicStroke(2f, BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f);
+        g2d.setStroke(stroke1);
+        g2d.drawLine(0,10,500,10);
+        g2d.drawLine(0,490,500,490);
+        g2d.drawLine(0,130,500,130);
+        g2d.drawLine(0,370,500,370);
     }
 }

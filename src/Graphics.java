@@ -13,23 +13,30 @@ import java.util.Scanner;
 public class Graphics {
     private Circuit circuit;
     private boolean isSomethingLoaded = false, isCircuitSolved = false;
-    private JTextArea textArea;
+    private JTextArea textAreaInput,textAreaOutput;
     private File selectedFile;
     private JFrame frame;
 
     public void start(){
-        Border border = BorderFactory.createLineBorder(Color.BLACK,2,false);
+        Border border = BorderFactory.createLineBorder(Color.BLACK,3,false);
 
         frame = new JFrame("Circuit Simulator");
         frame.setBounds(0,0,600,600);
         frame.setLayout(null);
 
 
-        JPanel pText,pRun,pDraw,pLoad,pReset;
+        JPanel pText,pRun,pDraw,pLoad,pReset,pOut;
         JButton buttonRun,buttonDraw,buttonLoad,buttonReset;
 
+        pOut = new JPanel();
+        pOut.setBounds(0,300,300,300);
+        pOut.setBorder(border);
+        pOut.setLayout(null);
+        pOut.setBackground(Color.white);
+        frame.add(pOut);
+
         pText = new JPanel();
-        pText.setBounds(0,0,300,600);
+        pText.setBounds(0,0,300,300);
         pText.setBorder(border);
         pText.setLayout(null);
         pText.setBackground(Color.white);
@@ -79,7 +86,7 @@ public class Graphics {
                 }else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
-                        String string = textArea.getText();
+                        String string = textAreaInput.getText();
                         Scanner scanner = new Scanner(string);
                         while (scanner.hasNextLine()){
                             fileWriter.write(scanner.nextLine());
@@ -113,11 +120,11 @@ public class Graphics {
                             preText += scanner.nextLine();
                             preText += "\n";
                         }
-                        textArea = new JTextArea(preText);
-                        textArea.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
+                        textAreaInput = new JTextArea(preText);
+                        textAreaInput.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
                         isSomethingLoaded = true;
                         selectedFile = input;
-                        pText.add(textArea);
+                        pText.add(textAreaInput);
                     }catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -151,11 +158,22 @@ public class Graphics {
             public void actionPerformed(ActionEvent actionEvent) {
                 isSomethingLoaded = false;
                 isCircuitSolved = false;
-                textArea.setVisible(false);
-                textArea = null;
+                textAreaInput.setVisible(false);
+                textAreaInput = null;
                 selectedFile = null;
             }
         });
+
+        textAreaOutput = new JTextArea();
+        textAreaOutput.setBounds(5,5,pOut.getWidth() - 5,pOut.getHeight() - 5);
+        textAreaOutput.setEditable(false);
+        /*
+        JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
+        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        pOut.add(scrollableTextArea);
+         */
+        pOut.add(textAreaOutput);
 
         frame.setVisible(true);
     }
@@ -245,12 +263,22 @@ public class Graphics {
         dialogVoltage.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(Double.toString(element.getVoltageMax()) + "V");
-        labelMaxPositive.setBounds(20,40,50,50);
+        labelMaxPositive.setBounds(10,40,50,50);
         dialogVoltage.add(labelMaxPositive);
 
         JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getVoltageMax()) + "V");
-        labelMaxNegative.setBounds(20,520,50,50);
+        labelMaxNegative.setBounds(10,520,50,50);
         dialogVoltage.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getVoltageMax()/2) + "V");
+        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        dialogVoltage.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getVoltageMax()/2) + "V");
+        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        dialogVoltage.add(labelMaxNegativeHalf);
+
+
 
         Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getVoltageMax(),element.getVoltagesArray());
         graphVoltage.setBounds(50,50,500,500);
@@ -279,12 +307,20 @@ public class Graphics {
         dialogCurrent.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(Double.toString(element.getCurrentMax()) + "A");
-        labelMaxPositive.setBounds(20,40,50,50);
+        labelMaxPositive.setBounds(10,40,50,50);
         dialogCurrent.add(labelMaxPositive);
 
         JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getCurrentMax()) + "A");
-        labelMaxNegative.setBounds(20,520,50,50);
+        labelMaxNegative.setBounds(10,520,50,50);
         dialogCurrent.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getCurrentMax()/2) + "A");
+        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        dialogCurrent.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getCurrentMax()/2) + "A");
+        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        dialogCurrent.add(labelMaxNegativeHalf);
 
         Graph graphCurrent = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getCurrentMax(),element.getCurrentsArray());
         graphCurrent.setBounds(50,50,500,500);
@@ -312,13 +348,21 @@ public class Graphics {
         labelMaxTime.setBounds(550,300,50,50);
         dialogPower.add(labelMaxTime);
 
-        JLabel labelMaxPositive = new JLabel(Double.toString(element.getPowerMax()) + "W");
-        labelMaxPositive.setBounds(20,40,50,50);
+        JLabel labelMaxPositive = new JLabel(Double.toString(element.getPowerMax()) + "V");
+        labelMaxPositive.setBounds(10,40,50,50);
         dialogPower.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getPowerMax()) + "W");
-        labelMaxNegative.setBounds(20,520,50,50);
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getPowerMax()) + "V");
+        labelMaxNegative.setBounds(10,520,50,50);
         dialogPower.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getPowerMax()/2) + "V");
+        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        dialogPower.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getPowerMax()/2) + "V");
+        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        dialogPower.add(labelMaxNegativeHalf);
 
         Graph graphPower = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getPowerMax(),element.getPowersArray());
         graphPower.setBounds(50,50,500,500);

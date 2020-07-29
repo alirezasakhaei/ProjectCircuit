@@ -341,8 +341,6 @@ public class Graphics {
 
 
 
-
-
         dialog.setVisible(true);
     }
 

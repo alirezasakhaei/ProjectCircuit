@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 public class Graphics {
     private Circuit circuit;
-    boolean isSomethingLoaded = false, isCircuitSolved = false;
-    JTextArea textArea;
-    File selectedFile;
-    JFrame frame;
+    private boolean isSomethingLoaded = false, isCircuitSolved = false;
+    private JTextArea textArea;
+    private File selectedFile;
+    private JFrame frame;
 
     public void start(){
         Border border = BorderFactory.createLineBorder(Color.BLACK,2,false);
@@ -159,6 +159,7 @@ public class Graphics {
 
         frame.setVisible(true);
     }
+
     private void run(File input){
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
@@ -172,12 +173,14 @@ public class Graphics {
             if (error == 0) {
                 circuit.initializeGraph();
                 circuit.solveCircuit();
+                drawCircuit();
                 isCircuitSolved = true;
             }
         }else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
 
     }
+
     private void dialogChooseElement(){
         JDialog dialogElement = new JDialog();
         dialogElement.setLayout(null);
@@ -251,6 +254,7 @@ public class Graphics {
 
         Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getVoltageMax(),element.getVoltagesArray());
         graphVoltage.setBounds(50,50,500,500);
+        graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
 
 
@@ -282,9 +286,10 @@ public class Graphics {
         labelMaxNegative.setBounds(20,520,50,50);
         dialogCurrent.add(labelMaxNegative);
 
-        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getCurrentMax(),element.getCurrentsArray());
-        graphVoltage.setBounds(50,50,500,500);
-        dialogCurrent.add(graphVoltage);
+        Graph graphCurrent = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getCurrentMax(),element.getCurrentsArray());
+        graphCurrent.setBounds(50,50,500,500);
+        graphCurrent.setBackground(Color.gray);
+        dialogCurrent.add(graphCurrent);
 
 
         dialogCurrent.setVisible(true);
@@ -315,12 +320,30 @@ public class Graphics {
         labelMaxNegative.setBounds(20,520,50,50);
         dialogPower.add(labelMaxNegative);
 
-        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getPowerMax(),element.getPowersArray());
-        graphVoltage.setBounds(50,50,500,500);
-        dialogPower.add(graphVoltage);
+        Graph graphPower = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getPowerMax(),element.getPowersArray());
+        graphPower.setBounds(50,50,500,500);
+        graphPower.setBackground(Color.gray);
+        dialogPower.add(graphPower);
 
 
         dialogPower.setVisible(true);
+    }
+
+    private void drawCircuit(){
+        JDialog dialog = new JDialog();
+        dialog.setBounds(0,0,600,600);
+        dialog.setLayout(null);
+
+        JLabel label = new JLabel("Simulated Circuit");
+        label.setBounds(250,10,100,40);
+        dialog.add(label);
+
+
+
+
+
+
+        dialog.setVisible(true);
     }
 
 }

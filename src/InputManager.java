@@ -230,6 +230,8 @@ public class InputManager {
             case 1:
                 elementAdder.addElement(name, positive, negative, "diode");
                 break;
+            default:
+                return false;
         }
         return true;
     }

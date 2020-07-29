@@ -179,12 +179,13 @@ public class Circuit {
                 setVoltagesInUnion(i);
             }
 
-            for (int p = 0; p < nodeNameQueue.size(); p++) {
-                nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
-            }
             for (int p = 0; p < elementNames.size(); p++) {
                 elements.get(elementNames.get(p)).updateTime();
             }
+            for (int p = 0; p < nodeNameQueue.size(); p++) {
+                nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
+            }
+
             timeArray.add(time);
         }
     }

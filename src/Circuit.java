@@ -178,13 +178,13 @@ public class Circuit {
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
                 setVoltagesInUnion(i);
             }
-
-            for (int p = 0; p < nodeNameQueue.size(); p++) {
-                nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
-            }
             for (int p = 0; p < elementNames.size(); p++) {
                 elements.get(elementNames.get(p)).updateTime();
             }
+            for (int p = 0; p < nodeNameQueue.size(); p++) {
+                nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
+            }
+
             timeArray.add(time);
         }
     }

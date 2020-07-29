@@ -67,7 +67,7 @@ public class ErrorFinder {
                     if (elementTwo.isCurrentSource()) {
                         if (Element.isSeries(elementOne,elementTwo)) {
                             if (Element.isTheSameKind(elementOne, elementTwo)) {
-                                if (elementOne.data != elementTwo.data) {
+                                if (!elementOne.data.equals(elementTwo.data)) {
                                     return false;
                                 }
                             } else
@@ -90,7 +90,7 @@ public class ErrorFinder {
                     if (elementTwo.isVoltageSource()) {
                         if (Element.isParallel(elementOne,elementTwo)) {
                             if (Element.isTheSameKind(elementOne, elementTwo)) {
-                                if (elementOne.data != elementTwo.data) {
+                                if (!elementOne.data.equals(elementTwo.data)) {
                                     return false;
                                 }
                             } else

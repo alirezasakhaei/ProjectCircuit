@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -38,7 +39,9 @@ public class Graph extends JPanel {
         g.drawLine(0,490,500,490);
 
         for (int i =0;i<499;i++){
-            g.drawLine(i,250 - finalArray[i],i+1,250 - finalArray[i+1]);
+            Graphics2D graphics2D = (Graphics2D) g;
+            graphics2D.setStroke(new BasicStroke(5));
+            graphics2D.drawLine(i,250 - finalArray[i],i+1,250 - finalArray[i+1]);
         }
     }
 }

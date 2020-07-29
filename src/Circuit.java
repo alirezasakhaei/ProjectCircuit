@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Circuit {
@@ -251,5 +252,35 @@ public class Circuit {
                 elementsUsed.remove(elementsUsed.size() - 1);
             }
         }
+    }
+
+
+    String getOutput() {
+        StringBuilder output = new StringBuilder();
+        int[] nodeNames = new int[nodeNameQueue.size()];
+        System.arraycopy(nodeNameQueue.toArray(), 0, nodeNames, 0, nodeNameQueue.size());
+        Arrays.sort(nodeNames);
+        for (int i = 1; i < nodeNames.length; i++) {
+            output.append(nodeNames[i]);
+            for (int j = 0; j < nodes.get(nodeNames[i]).getVoltagesArray().size(); j++) {
+                output.append(" ");
+                output.append(nodes.get(nodeNames[i]).getVoltagesArray().get(j));
+            }
+            output.append("\n");
+        }
+        output.append("\n");
+        for (int i = 0; i < elementNames.size(); i++) {
+            output.append(elementNames.get(i));
+            for (int j = 0; j < elements.get(elementNames.get(i)).getVoltagesArray().size(); j++) {
+                output.append(" ");
+                output.append(elements.get(elementNames.get(i)).getVoltagesArray().get(i));
+                output.append(" ");
+                output.append(elements.get(elementNames.get(i)).getCurrentsArray().get(i));
+                output.append(" ");
+                output.append(elements.get(elementNames.get(i)).getPowersArray().get(i));
+            }
+            output.append("\n");
+        }
+        return output.toString();
     }
 }

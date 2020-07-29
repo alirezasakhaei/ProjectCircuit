@@ -174,6 +174,7 @@ public class Graphics {
         pOut.add(scrollableTextArea);
          */
         pOut.add(textAreaOutput);
+        //moz
 
         frame.setVisible(true);
     }

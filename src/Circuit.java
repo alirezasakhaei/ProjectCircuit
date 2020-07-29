@@ -258,7 +258,9 @@ public class Circuit {
     String getOutput() {
         StringBuilder output = new StringBuilder();
         int[] nodeNames = new int[nodeNameQueue.size()];
-        System.arraycopy(nodeNameQueue.toArray(), 0, nodeNames, 0, nodeNameQueue.size());
+        for (int i = 0; i < nodeNames.length; i++) {
+            nodeNames[i] = nodeNameQueue.get(i);
+        }
         Arrays.sort(nodeNames);
         for (int i = 1; i < nodeNames.length; i++) {
             output.append(nodeNames[i]);

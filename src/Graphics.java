@@ -194,6 +194,7 @@ public class Graphics {
                 circuit.solveCircuit();
                 drawCircuit();
                 isCircuitSolved = true;
+                textAreaOutput.setText(circuit.getOutput());
             }
         }else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);

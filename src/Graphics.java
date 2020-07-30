@@ -31,7 +31,7 @@ public class Graphics {
         pOut = new JPanel();
         pOut.setBounds(0,300,300,300);
         pOut.setBorder(border);
-        pOut.setLayout(null);
+        pOut.setLayout(new BorderLayout());
         pOut.setBackground(Color.white);
         frame.add(pOut);
 
@@ -166,17 +166,16 @@ public class Graphics {
 
         textAreaOutput = new JTextArea();
         textAreaOutput.setEditable(false);
-        textAreaOutput.setAutoscrolls(true);
-        textAreaOutput.setBounds(5, 5, pOut.getWidth() - 5, pOut.getHeight() - 5);
+        //textAreaOutput.setAutoscrolls(true);
 
 
-        /*
         JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
-        scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableTextArea.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollableTextArea.setBounds(5, 5, pOut.getWidth() - 5, pOut.getHeight() - 5);
         pOut.add(scrollableTextArea);
-         */
-        pOut.add(textAreaOutput);
+
+        pOut.add(scrollableTextArea);
         //moz
 
         frame.setVisible(true);

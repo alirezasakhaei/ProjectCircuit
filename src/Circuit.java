@@ -185,7 +185,6 @@ public class Circuit {
             for (int p = 0; p < nodeNameQueue.size(); p++) {
                 nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
             }
-
             timeArray.add(time);
         }
     }
@@ -275,11 +274,11 @@ public class Circuit {
             output.append(elementNames.get(i));
             for (int j = 0; j < elements.get(elementNames.get(i)).getVoltagesArray().size(); j++) {
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getVoltagesArray().get(i));
+                output.append(elements.get(elementNames.get(i)).getVoltagesArray().get(j));
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getCurrentsArray().get(i));
+                output.append(elements.get(elementNames.get(i)).getCurrentsArray().get(j));
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getPowersArray().get(i));
+                output.append(elements.get(elementNames.get(i)).getPowersArray().get(j));
             }
             output.append("\n");
         }

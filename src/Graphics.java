@@ -165,8 +165,11 @@ public class Graphics {
         });
 
         textAreaOutput = new JTextArea();
-        textAreaOutput.setBounds(5,5,pOut.getWidth() - 5,pOut.getHeight() - 5);
         textAreaOutput.setEditable(false);
+        textAreaOutput.setAutoscrolls(true);
+        textAreaOutput.setBounds(5, 5, pOut.getWidth() - 5, pOut.getHeight() - 5);
+
+
         /*
         JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
         scrollableTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -195,6 +198,17 @@ public class Graphics {
                 drawCircuit();
                 isCircuitSolved = true;
                 textAreaOutput.setText(circuit.getOutput());
+                try {
+                    String path = input.getPath().substring(0, input.getPath().lastIndexOf("\\"));
+                    File outputFile = new File(path + "\\output.txt");
+                    FileWriter fileWriter = new FileWriter(outputFile);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(circuit.getOutput());
+                    bufferedWriter.close();
+                    fileWriter.close();
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(frame, "Can't write the output file!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);

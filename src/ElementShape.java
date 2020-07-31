@@ -69,6 +69,32 @@ public class ElementShape extends JPanel {
                     g.drawLine(30,5,35,0);
                     g.drawLine(30,5,35,10);
                     break;
+
+
+                case 'E' :
+                case 'H' :
+                    g.drawLine(50,0,25,5);
+                    g.drawLine(50,0,75,5);
+                    g.drawLine(50,10,25,5);
+                    g.drawLine(50,10,75,5);
+
+                    g.drawLine(44,3,44,7);
+                    g.drawLine(41,5,47,5);
+
+                    g.drawLine(55,3,55,7);
+                    break;
+
+                case 'G' :
+                case 'F' :
+                    g.drawLine(50,0,25,5);
+                    g.drawLine(50,0,75,5);
+                    g.drawLine(50,10,25,5);
+                    g.drawLine(50,10,75,5);
+
+                    g.drawLine(30,5,70,5);
+                    g.drawLine(30,5,35,0);
+                    g.drawLine(30,5,35,10);
+                    break;
             }
         }
 
@@ -83,6 +109,66 @@ public class ElementShape extends JPanel {
                     g.drawLine(45,10,55,0);
                     g.drawLine(55,0,65,10);
                     g.drawLine(65,10,75,5);
+                    break;
+                case 'C' :
+                    g.drawLine(40,5,0,5);
+                    g.drawLine(60,5,100,5);
+                    g.drawLine(100,5,40,10);
+                    g.drawLine(60,0,60,10);
+                    break;
+                case 'L' :
+                    for (int k=0;k<5;k++)
+                        g.drawOval(25+10*k,3,10,10);
+                    break;
+
+                case 'V' :
+                    g.drawLine(25,0,75,10);
+                    g.drawLine(75,0,75,10);
+                    g.drawLine(25,1,75,1);
+                    g.drawLine(25,9,75,9);
+
+                    g.drawLine(56,3,56,7);
+                    g.drawLine(59,5,53,5);
+
+                    g.drawLine(45,3,45,7);
+                    break;
+
+                case 'I' :
+                    g.drawLine(25,0,75,10);
+                    g.drawLine(75,0,75,10);
+                    g.drawLine(25,1,75,1);
+                    g.drawLine(25,9,75,9);
+
+                    g.drawLine(30,5,70,5);
+
+                    g.drawLine(70,5,65,0);
+                    g.drawLine(70,5,65,10);
+                    break;
+
+
+                case 'E' :
+                case 'H' :
+                    g.drawLine(50,0,25,5);
+                    g.drawLine(50,0,75,5);
+                    g.drawLine(50,10,25,5);
+                    g.drawLine(50,10,75,5);
+
+                    g.drawLine(56,3,56,7);
+                    g.drawLine(59,5,53,5);
+
+                    g.drawLine(45,3,45,7);
+                    break;
+
+                case 'G' :
+                case 'F' :
+                    g.drawLine(50,0,25,5);
+                    g.drawLine(50,0,75,5);
+                    g.drawLine(50,10,25,5);
+                    g.drawLine(50,10,75,5);
+
+                    g.drawLine(30,5,70,5);
+                    g.drawLine(70,5,65,0);
+                    g.drawLine(70,5,65,10);
                     break;
             }
         }

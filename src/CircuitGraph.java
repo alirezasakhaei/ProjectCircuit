@@ -34,5 +34,16 @@ public class CircuitGraph extends JPanel {
                 g.drawLine(100*(i-1),400,100*(i-1) + 30*(node.getEarthConnections() - 1),400);
             }
         }
+        int parralles;
+        for(int i=1;i<nodes.size();i++){
+            for (int j = i+1;j<nodes.size();j++){
+                parralles = Node.elementsBetween(nodes.get(i),nodes.get(j));
+                for (int k = 0; k<parralles ; k++){
+
+
+
+                }
+            }
+        }
     }
 }

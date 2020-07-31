@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Node {
@@ -12,19 +13,22 @@ public class Node {
     private double previousVoltage;
     private ArrayList<Double> voltagesArray;
     private int earthConnections = 0;
+    private Point location;
+
+
 
     public int getEarthConnections() {
         return earthConnections;
     }
 
     public void setEarthConnections() {
-        for (int i=0;i<positives.size();i++){
-            if (Circuit.getCircuit().getElements().get(positives.get(i)).negativeNode.name == 0){
+        for (int i = 0; i < positives.size(); i++) {
+            if (Circuit.getCircuit().getElements().get(positives.get(i)).negativeNode.name == 0) {
                 earthConnections++;
             }
         }
-        for (int i=0;i<negatives.size();i++){
-            if (Circuit.getCircuit().getElements().get(negatives.get(i)).positiveNode.name == 0){
+        for (int i = 0; i < negatives.size(); i++) {
+            if (Circuit.getCircuit().getElements().get(negatives.get(i)).positiveNode.name == 0) {
                 earthConnections++;
             }
         }
@@ -43,6 +47,7 @@ public class Node {
             return true;
         return false;
     }
+
     public Node(int name) {
         this.name = name;
         voltage = 0;
@@ -54,38 +59,38 @@ public class Node {
         voltagesArray = new ArrayList<>();
     }
 
-    int getName(){
+    int getName() {
         return name;
     }
 
-    void setNeighbors(int neighbor){
-        if(!neighbors.contains(neighbor))
+    void setNeighbors(int neighbor) {
+        if (!neighbors.contains(neighbor))
             neighbors.add(neighbor);
     }
 
-    void setPositives(String name){
-        if(!positives.contains(name)) {
+    void setPositives(String name) {
+        if (!positives.contains(name)) {
             branchsNumer++;
             positives.add(name);
         }
     }
 
-    void setNegatives(String name){
-        if(!negatives.contains(name)) {
+    void setNegatives(String name) {
+        if (!negatives.contains(name)) {
             branchsNumer++;
             negatives.add(name);
         }
     }
 
-    ArrayList<String> getPositives(){
+    ArrayList<String> getPositives() {
         return positives;
     }
 
-    ArrayList<String> getNegatives(){
+    ArrayList<String> getNegatives() {
         return negatives;
     }
 
-    ArrayList<Integer> getNeighbors(){
+    ArrayList<Integer> getNeighbors() {
         return neighbors;
     }
 
@@ -123,6 +128,18 @@ public class Node {
     void updatePreviousVoltage() {
         voltagesArray.add(voltage);
         previousVoltage = voltage;
+    }
+
+    public static int elementsBetween(Node node1, Node node2) {
+        int number = 0;
+        for (int i = 0; i < node1.getNegatives().size(); i++)
+            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getNegatives().get(i)).positiveNode.getName())
+                number++;
+        for (int i = 0; i < node1.getPositives().size(); i++)
+            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getPositives().get(i)).negativeNode.getName())
+                number++;
+
+        return number;
     }
 
 

@@ -5,6 +5,8 @@ public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     String data = null;
     ArrayList<Double> currentsArray = new ArrayList<Double>();
+    String label;
+    void setLabel(String label){};
     protected ArrayList<Double> voltagesArray = new ArrayList<Double>();
     protected ArrayList<Double> powersArray = new ArrayList<Double>();
     protected String name;

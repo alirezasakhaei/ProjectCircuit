@@ -7,9 +7,15 @@ public class Resistor extends Element{
         this.negativeNode=negativeNode;
         this.resistance=resistance;
         data = String.valueOf(resistance);
+        setLabel(Double.toString(resistance));
     }
     double getResistance(){
         return resistance;
+    }
+
+    @Override
+    void setLabel(String label) {
+        this.label = label;
     }
 
     @Override

@@ -393,7 +393,7 @@ public class Graphics {
         Border border = BorderFactory.createLineBorder(Color.BLACK,3,false);
 
         JDialog dialog = new JDialog();
-        dialog.setBounds(0,0,600,600);
+        dialog.setBounds(0,0,700,700);
         dialog.setLayout(null);
 
         JLabel label = new JLabel("Simulated Circuit");
@@ -404,14 +404,16 @@ public class Graphics {
         nodes.add(0,circuit.getNodes().get(0));
         for (Map.Entry node : circuit.getNodes().entrySet())
             nodes.add((Node) node.getValue());
+
         drawEarthConnecteds(dialog,nodes);
 
 
 
-        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit);
+
+        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit,nodes);
         circuitGraph.setLayout(null);
         circuitGraph.setBorder(border);
-        circuitGraph.setBounds(50,50,500,500);
+        circuitGraph.setBounds(50,50,600,600);
         dialog.add(circuitGraph);
 
 
@@ -423,6 +425,7 @@ public class Graphics {
         ElementShape elementShape;
         int elementNumber = 1;
         Element element;
+        JLabel label,name;
         for (int i=1;i<nodes.size();i++){
             elementNumber = 1;
             node = nodes.get(i);
@@ -430,9 +433,19 @@ public class Graphics {
                 element = circuit.getElements().get(node.getNegatives().get(j));
                 if (element.positiveNode.getName() == 0){
                     elementShape = new ElementShape(element);
-                    elementShape.setBounds(50 ,425,10,50);
-                    //mooooooooooooooz
+                    elementShape.setBounds(45 + 30*(elementNumber-1) + 100*(i-1) ,450,10,100);
                     dialog.add(elementShape);
+
+                    name = new JLabel(element.name);
+                    name.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,445 + 80*(elementNumber%2),100,20);
+                    name.setFont(new Font("Arial",Font.ITALIC,8));
+                    dialog.add(name);
+
+                    label = new JLabel(element.label);
+                    label.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,455 + 80*(elementNumber%2),100,20);
+                    label.setFont(new Font("Arial",Font.ITALIC,8));
+                    dialog.add(label);
+
                     elementNumber++;
                 }
             }
@@ -440,8 +453,21 @@ public class Graphics {
                 element = circuit.getElements().get(node.getPositives().get(j));
                 if (element.negativeNode.getName() == 0){
                     elementShape = new ElementShape(element);
-                    elementShape.setBounds(50 ,425,10,50);
+                    elementShape.setBounds(45 + 30*(elementNumber-1) + 100*(i-1) ,450,10,100);
                     dialog.add(elementShape);
+
+                    name = new JLabel(element.name);
+                    name.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,445 + 80*(elementNumber%2),100,20);
+                    name.setFont(new Font("Arial",Font.ITALIC,8));
+                    dialog.add(name);
+
+                    label = new JLabel(element.label);
+                    label.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,455 + 80*(elementNumber%2),100,20);
+                    label.setFont(new Font("Arial",Font.ITALIC,8));
+                    dialog.add(label);
+
+                    System.out.println(label.getText());
+
                     elementNumber++;
                 }
             }

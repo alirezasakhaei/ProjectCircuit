@@ -14,6 +14,7 @@ public class Inductor extends Element {
         time = 0;
         current = 0;
         data = String.valueOf(inductance);
+        setLabel(Double.toString(inductance));
     }
 
     double getInductance() {
@@ -24,6 +25,11 @@ public class Inductor extends Element {
     double getCurrent() {
         current = (Circuit.getCircuit().getDt() * getVoltage()) / inductance + previousCurrent;
         return current;
+    }
+
+    @Override
+    void setLabel(String label) {
+        this.label = label;
     }
 
     @Override

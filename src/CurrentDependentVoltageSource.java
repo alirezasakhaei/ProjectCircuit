@@ -9,9 +9,14 @@ public class CurrentDependentVoltageSource extends Element{
         this.elementDependent=elementDependent;
         this.gain=gain;
         data = String.valueOf(gain) + "," + String.valueOf(elementDependent.name) ;
+        setLabel(gain + "(" + elementDependent.name + ")");
+
 
     }
-
+    @Override
+    void setLabel(String label) {
+        this.label = label;
+    }
     @Override
     double getCurrent() {
         return elementDependent.getCurrent() * gain;

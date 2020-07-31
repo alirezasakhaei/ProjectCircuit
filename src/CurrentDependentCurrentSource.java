@@ -8,8 +8,13 @@ public class CurrentDependentCurrentSource extends Element {
         this.dependentElement = dependentElement;
         this.gain=gain;
         data = String.valueOf(gain) + "," + String.valueOf(dependentElement.name) ;
-    }
+        setLabel(gain + "(" + dependentElement.name + ")");
 
+    }
+    @Override
+    void setLabel(String label) {
+        this.label = label;
+    }
     @Override
     double getCurrent() {
         return dependentElement.getCurrent()*gain;

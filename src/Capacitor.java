@@ -7,10 +7,17 @@ public class Capacitor extends Element {
         this.negativeNode=negativeNode;
         this.capacity=capacity;
         data = String.valueOf(capacity);
+        setLabel(Double.toString(capacity));
     }
     double getCapacity(){
         return capacity;
     }
+
+    @Override
+    void setLabel(String label) {
+        this.label = label;
+    }
+
     @Override
     double getCurrent() {
 

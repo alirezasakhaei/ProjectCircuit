@@ -15,7 +15,13 @@ public class Node {
     private int earthConnections = 0;
     private Point location;
 
+    public Point getLocation() {
+        return location;
+    }
 
+    public void setLocation(Point location) {
+        this.location = location;
+    }
 
     public int getEarthConnections() {
         return earthConnections;
@@ -133,11 +139,13 @@ public class Node {
     public static int elementsBetween(Node node1, Node node2) {
         int number = 0;
         for (int i = 0; i < node1.getNegatives().size(); i++)
-            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getNegatives().get(i)).positiveNode.getName())
+            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getNegatives().get(i)).positiveNode.getName()) {
                 number++;
+            }
         for (int i = 0; i < node1.getPositives().size(); i++)
-            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getPositives().get(i)).negativeNode.getName())
+            if (node2.getName() == Circuit.getCircuit().getElements().get(node1.getPositives().get(i)).negativeNode.getName()) {
                 number++;
+            }
 
         return number;
     }

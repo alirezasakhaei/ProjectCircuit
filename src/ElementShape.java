@@ -9,10 +9,8 @@ public class ElementShape extends JPanel {
     ElementShape (Element element){
         this.element = element;
         if (element.positiveNode.getName() == 0 || element.negativeNode.getName() == 0){
-            System.out.println("moz" + element.name);
             isHorizental = false;
         }else {
-            System.out.println("bitch");
             isHorizental = true;
         }
         type = element.name.charAt(0);

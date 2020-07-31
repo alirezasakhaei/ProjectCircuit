@@ -402,78 +402,26 @@ public class Graphics {
 
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0,circuit.getNodes().get(0));
-        for (Map.Entry node : circuit.getNodes().entrySet())
-            nodes.add((Node) node.getValue());
+        for (Map.Entry node : circuit.getNodes().entrySet()) {
+            if (((Node)node.getValue()).getName() != 0) {
+                nodes.add((Node) node.getValue());
+            }
+        }
 
-        drawEarthConnecteds(dialog,nodes);
 
 
 
-
-        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit,nodes);
+        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit,nodes,dialog);
         circuitGraph.setLayout(null);
         circuitGraph.setBorder(border);
         circuitGraph.setBounds(50,50,600,600);
+
         dialog.add(circuitGraph);
 
 
 
         dialog.setVisible(true);
     }
-    private void drawEarthConnecteds(Dialog dialog, ArrayList<Node> nodes){
-        Node node;
-        ElementShape elementShape;
-        int elementNumber = 1;
-        Element element;
-        JLabel label,name;
-        for (int i=1;i<nodes.size();i++){
-            elementNumber = 1;
-            node = nodes.get(i);
-            for (int j=0; j<node.getNegatives().size(); j++){
-                element = circuit.getElements().get(node.getNegatives().get(j));
-                if (element.positiveNode.getName() == 0){
-                    elementShape = new ElementShape(element);
-                    elementShape.setBounds(45 + 30*(elementNumber-1) + 100*(i-1) ,450,10,100);
-                    dialog.add(elementShape);
 
-                    name = new JLabel(element.name);
-                    name.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,445 + 80*(elementNumber%2),100,20);
-                    name.setFont(new Font("Arial",Font.ITALIC,8));
-                    dialog.add(name);
-
-                    label = new JLabel(element.label);
-                    label.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,455 + 80*(elementNumber%2),100,20);
-                    label.setFont(new Font("Arial",Font.ITALIC,8));
-                    dialog.add(label);
-
-                    elementNumber++;
-                }
-            }
-            for (int j=0; j<node.getPositives().size(); j++){
-                element = circuit.getElements().get(node.getPositives().get(j));
-                if (element.negativeNode.getName() == 0){
-                    elementShape = new ElementShape(element);
-                    elementShape.setBounds(45 + 30*(elementNumber-1) + 100*(i-1) ,450,10,100);
-                    dialog.add(elementShape);
-
-                    name = new JLabel(element.name);
-                    name.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,445 + 80*(elementNumber%2),100,20);
-                    name.setFont(new Font("Arial",Font.ITALIC,8));
-                    dialog.add(name);
-
-                    label = new JLabel(element.label);
-                    label.setBounds(30 + 30*(elementNumber-1) + 100*(i-1) ,455 + 80*(elementNumber%2),100,20);
-                    label.setFont(new Font("Arial",Font.ITALIC,8));
-                    dialog.add(label);
-
-
-                    elementNumber++;
-                }
-            }
-        }
-
-
-
-    }
 
 }

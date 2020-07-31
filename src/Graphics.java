@@ -466,7 +466,6 @@ public class Graphics {
                     label.setFont(new Font("Arial",Font.ITALIC,8));
                     dialog.add(label);
 
-                    System.out.println(label.getText());
 
                     elementNumber++;
                 }

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -389,6 +390,8 @@ public class Graphics {
     }
 
     private void drawCircuit(){
+        Border border = BorderFactory.createLineBorder(Color.BLACK,3,false);
+
         JDialog dialog = new JDialog();
         dialog.setBounds(0,0,600,600);
         dialog.setLayout(null);
@@ -397,20 +400,54 @@ public class Graphics {
         label.setBounds(250,10,100,40);
         dialog.add(label);
 
+        ArrayList<Node> nodes = new ArrayList<>(0);
+        nodes.add(0,circuit.getNodes().get(0));
+        for (Map.Entry node : circuit.getNodes().entrySet())
+            nodes.add((Node) node.getValue());
+        drawEarthConnecteds(dialog,nodes);
+
+
+
         CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit);
         circuitGraph.setLayout(null);
+        circuitGraph.setBorder(border);
         circuitGraph.setBounds(50,50,500,500);
-        circuitGraph.setBorder(BorderFactory.createLineBorder(Color.BLACK,2,false));
         dialog.add(circuitGraph);
-
-        ElementShape elementShape = new ElementShape(circuit.getElements().get("R1"));
-        elementShape.setBounds(100,100,50,10);
-        circuitGraph.add(elementShape);
-
 
 
 
         dialog.setVisible(true);
+    }
+    private void drawEarthConnecteds(Dialog dialog, ArrayList<Node> nodes){
+        Node node;
+        ElementShape elementShape;
+        int elementNumber = 1;
+        Element element;
+        for (int i=1;i<nodes.size();i++){
+            elementNumber = 1;
+            node = nodes.get(i);
+            for (int j=0; j<node.getNegatives().size(); j++){
+                element = circuit.getElements().get(node.getNegatives().get(j));
+                if (element.positiveNode.getName() == 0){
+                    elementShape = new ElementShape(element);
+                    elementShape.setBounds(50 ,425,10,50);
+                    dialog.add(elementShape);
+                    elementNumber++;
+                }
+            }
+            for (int j=0; j<node.getPositives().size(); j++){
+                element = circuit.getElements().get(node.getPositives().get(j));
+                if (element.negativeNode.getName() == 0){
+                    elementShape = new ElementShape(element);
+                    elementShape.setBounds(50 ,425,10,50);
+                    dialog.add(elementShape);
+                    elementNumber++;
+                }
+            }
+        }
+
+
+
     }
 
 }

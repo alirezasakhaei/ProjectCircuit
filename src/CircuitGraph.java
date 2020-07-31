@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.Graphics;
 
 public class CircuitGraph extends JPanel {
@@ -8,7 +9,6 @@ public class CircuitGraph extends JPanel {
     public CircuitGraph(int nodesNumber, Circuit circuit) {
         this.nodesNumber = nodesNumber;
         this.circuit = circuit;
-        setSize(500,500);
     }
 
     @Override

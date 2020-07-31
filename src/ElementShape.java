@@ -23,6 +23,9 @@ public class ElementShape extends JPanel {
     @Override
     public void paint(Graphics g) {
         if (isHorizental && isUpWardRightWard){
+            setSize(100,10);
+            g.drawLine(25,5,0,5);
+            g.drawLine(75,5,100,5);
             switch (type){
                 case 'R' :
                     setSize(100,10);
@@ -37,7 +40,7 @@ public class ElementShape extends JPanel {
                 case 'C' :
                     g.drawLine(40,5,0,5);
                     g.drawLine(60,5,100,5);
-                    g.drawLine(100,5,40,10);
+                    g.drawLine(40,0,40,10);
                     g.drawLine(60,0,60,10);
                     break;
                 case 'L' :
@@ -92,11 +95,24 @@ public class ElementShape extends JPanel {
                     g.drawLine(30,5,70,5);
                     g.drawLine(30,5,35,0);
                     g.drawLine(30,5,35,10);
+                    break;
+
+                case 'D' :
+                    g.drawLine(25,5,45,5);
+                    g.drawLine(55,5,75,5);
+                    g.drawLine(45,0,45,10);
+                    g.drawLine(55,0,55,10);
+
+                    g.drawLine(45,0,55,5);
+                    g.drawLine(45,10,55,5);
                     break;
             }
         }
 
         if (isHorizental && !isUpWardRightWard){
+            setSize(100,10);
+            g.drawLine(25,5,0,5);
+            g.drawLine(75,5,100,5);
             switch (type){
                 case 'R' :
                     setSize(100,10);
@@ -111,7 +127,7 @@ public class ElementShape extends JPanel {
                 case 'C' :
                     g.drawLine(40,5,0,5);
                     g.drawLine(60,5,100,5);
-                    g.drawLine(100,5,40,10);
+                    g.drawLine(40,0,40,10);
                     g.drawLine(60,0,60,10);
                     break;
                 case 'L' :
@@ -167,6 +183,16 @@ public class ElementShape extends JPanel {
                     g.drawLine(30,5,70,5);
                     g.drawLine(70,5,65,0);
                     g.drawLine(70,5,65,10);
+                    break;
+
+                case 'D' :
+                    g.drawLine(25,5,45,5);
+                    g.drawLine(55,5,75,5);
+                    g.drawLine(45,0,45,10);
+                    g.drawLine(55,0,55,10);
+
+                    g.drawLine(55,0,45,5);
+                    g.drawLine(55,10,45,5);
                     break;
             }
         }
@@ -240,6 +266,16 @@ public class ElementShape extends JPanel {
                     g.drawLine(5,30,10,35);
                     break;
 
+                case 'D' :
+                    g.drawLine(5,25,5,45);
+                    g.drawLine(5,75,5,55);
+                    g.drawLine(0,45,10,45);
+                    g.drawLine(0,55,10,55);
+
+                    g.drawLine(0,55,5,45);
+                    g.drawLine(10,55,5,45);
+                    break;
+
             }
         }
 
@@ -309,6 +345,15 @@ public class ElementShape extends JPanel {
                     g.drawLine(5,30,5,70);
                     g.drawLine(5,70,0,65);
                     g.drawLine(5,70,10,65);
+                    break;
+                case 'D' :
+                    g.drawLine(5,25,5,45);
+                    g.drawLine(5,75,5,55);
+                    g.drawLine(0,45,10,45);
+                    g.drawLine(0,55,10,55);
+
+                    g.drawLine(0,45,5,55);
+                    g.drawLine(10,45,5,55);
                     break;
             }
         }

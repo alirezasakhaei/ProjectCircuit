@@ -49,7 +49,7 @@ public class ElementShape extends JPanel {
                     break;
 
                 case 'V' :
-                    g.drawLine(25,0,75,10);
+                    g.drawLine(25,0,25,10);
                     g.drawLine(75,0,75,10);
                     g.drawLine(25,1,75,1);
                     g.drawLine(25,9,75,9);
@@ -61,7 +61,7 @@ public class ElementShape extends JPanel {
                     break;
 
                 case 'I' :
-                    g.drawLine(25,0,75,10);
+                    g.drawLine(25,0,25,10);
                     g.drawLine(75,0,75,10);
                     g.drawLine(25,1,75,1);
                     g.drawLine(25,9,75,9);
@@ -136,7 +136,7 @@ public class ElementShape extends JPanel {
                     break;
 
                 case 'V' :
-                    g.drawLine(25,0,75,10);
+                    g.drawLine(25,0,25,10);
                     g.drawLine(75,0,75,10);
                     g.drawLine(25,1,75,1);
                     g.drawLine(25,9,75,9);
@@ -148,7 +148,7 @@ public class ElementShape extends JPanel {
                     break;
 
                 case 'I' :
-                    g.drawLine(25,0,75,10);
+                    g.drawLine(25,0,25,10);
                     g.drawLine(75,0,75,10);
                     g.drawLine(25,1,75,1);
                     g.drawLine(25,9,75,9);

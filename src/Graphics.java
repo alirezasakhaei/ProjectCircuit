@@ -14,65 +14,65 @@ import java.util.Scanner;
 public class Graphics {
     private Circuit circuit;
     private boolean isSomethingLoaded = false, isCircuitSolved = false;
-    private JTextArea textAreaInput,textAreaOutput;
+    private JTextArea textAreaInput, textAreaOutput;
     private File selectedFile;
     private JFrame frame;
 
-    public void start(){
-        Border border = BorderFactory.createLineBorder(Color.BLACK,3,false);
+    public void start() {
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
 
         frame = new JFrame("Circuit Simulator");
-        frame.setBounds(0,0,600,600);
+        frame.setBounds(0, 0, 600, 600);
         frame.setLayout(null);
 
 
-        JPanel pText,pRun,pDraw,pLoad,pReset,pOut;
-        JButton buttonRun,buttonDraw,buttonLoad,buttonReset;
+        JPanel pText, pRun, pDraw, pLoad, pReset, pOut;
+        JButton buttonRun, buttonDraw, buttonLoad, buttonReset;
 
         pOut = new JPanel();
-        pOut.setBounds(0,300,300,300);
+        pOut.setBounds(0, 300, 300, 300);
         pOut.setBorder(border);
         pOut.setLayout(new BorderLayout());
         pOut.setBackground(Color.white);
         frame.add(pOut);
 
         pText = new JPanel();
-        pText.setBounds(0,0,300,300);
+        pText.setBounds(0, 0, 300, 300);
         pText.setBorder(border);
         pText.setLayout(null);
         pText.setBackground(Color.white);
         frame.add(pText);
 
         pRun = new JPanel();
-        pRun.setBounds(300,0,300,150);
+        pRun.setBounds(300, 0, 300, 150);
         pRun.setBorder(border);
         pRun.setLayout(null);
         pRun.setBackground(Color.gray.darker().darker().darker().darker());
         frame.add(pRun);
 
         pDraw = new JPanel();
-        pDraw.setBounds(300,150,300,150);
+        pDraw.setBounds(300, 150, 300, 150);
         pDraw.setBorder(border);
         pDraw.setLayout(null);
         pDraw.setBackground(Color.gray.darker());
         frame.add(pDraw);
 
         pLoad = new JPanel();
-        pLoad.setBounds(300,300,300,150);
+        pLoad.setBounds(300, 300, 300, 150);
         pLoad.setBorder(border);
         pLoad.setLayout(null);
         pLoad.setBackground(Color.gray.darker());
         frame.add(pLoad);
 
         pReset = new JPanel();
-        pReset.setBounds(300,450,300,150);
+        pReset.setBounds(300, 450, 300, 150);
         pReset.setBorder(border);
         pReset.setLayout(null);
         pReset.setBackground(Color.gray.darker().darker().darker().darker());
         frame.add(pReset);
 
         buttonRun = new JButton("RUN");
-        buttonRun.setBounds(100,50,100,50);
+        buttonRun.setBounds(100, 50, 100, 50);
         buttonRun.setBackground(Color.white);
         pRun.add(buttonRun);
 
@@ -84,12 +84,12 @@ public class Graphics {
                     fileChooser.showSaveDialog(null);
                     File input = fileChooser.getSelectedFile();
                     run(input);
-                }else {
+                } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
                         String string = textAreaInput.getText();
                         Scanner scanner = new Scanner(string);
-                        while (scanner.hasNextLine()){
+                        while (scanner.hasNextLine()) {
                             fileWriter.write(scanner.nextLine());
                             fileWriter.write("\n");
                         }
@@ -103,7 +103,7 @@ public class Graphics {
         });
 
         buttonLoad = new JButton("Load");
-        buttonLoad.setBounds(100,50,100,50);
+        buttonLoad.setBounds(100, 50, 100, 50);
         buttonLoad.setBackground(Color.white);
         pLoad.add(buttonLoad);
 
@@ -114,7 +114,7 @@ public class Graphics {
                 fileChooser.showSaveDialog(null);
                 File input = fileChooser.getSelectedFile();
                 String preText = "";
-                if (input.canExecute()){
+                if (input.canExecute()) {
                     try {
                         Scanner scanner = new Scanner(input);
                         while (scanner.hasNextLine()) {
@@ -122,11 +122,11 @@ public class Graphics {
                             preText += "\n";
                         }
                         textAreaInput = new JTextArea(preText);
-                        textAreaInput.setBounds(5,5,pText.getWidth() - 5,pText.getHeight() - 5);
+                        textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
                         isSomethingLoaded = true;
                         selectedFile = input;
                         pText.add(textAreaInput);
-                    }catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
@@ -134,7 +134,7 @@ public class Graphics {
         });
 
         buttonDraw = new JButton("Draw");
-        buttonDraw.setBounds(100,50,100,50);
+        buttonDraw.setBounds(100, 50, 100, 50);
         buttonDraw.setBackground(Color.white);
         pDraw.add(buttonDraw);
 
@@ -143,14 +143,14 @@ public class Graphics {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (isCircuitSolved) {
                     dialogChooseElement();
-                }else {
-                    JOptionPane.showMessageDialog(frame,"There is no circuit solved!");
+                } else {
+                    JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
                 }
             }
         });
 
         buttonReset = new JButton("Reset");
-        buttonReset.setBounds(100,50,100,50);
+        buttonReset.setBounds(100, 50, 100, 50);
         buttonReset.setBackground(Color.white);
         pReset.add(buttonReset);
 
@@ -182,7 +182,7 @@ public class Graphics {
         frame.setVisible(true);
     }
 
-    private void run(File input){
+    private void run(File input) {
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
             circuit = inputManager.analyzeTheInput();
@@ -210,94 +210,182 @@ public class Graphics {
                     JOptionPane.showMessageDialog(frame, "Can't write the output file!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        }else
+        } else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
 
     }
 
-    private void dialogChooseElement(){
+    private void dialogChooseElement() {
         JDialog dialogElement = new JDialog();
         dialogElement.setLayout(null);
-        dialogElement.setBounds(0,0,500,500);
+        dialogElement.setBounds(0, 0, 500, 500);
         Container container = dialogElement.getContentPane();
         container.setBackground(Color.black);
 
         int elementsNumber = circuit.getElements().size();
         String[] elements = new String[elementsNumber];
         int i = 0;
-        for (Map.Entry element : circuit.getElements().entrySet()){
+        for (Map.Entry element : circuit.getElements().entrySet()) {
             elements[i] = ((Element) element.getValue()).name;
             i++;
         }
 
         JComboBox comboBox = new JComboBox(elements);
-        comboBox.setBounds(200,150,100,20);
+        comboBox.setBounds(200, 120, 100, 20);
         dialogElement.add(comboBox);
 
         JLabel labelChoose = new JLabel("Choose the element!");
-        labelChoose.setFont(new Font("Arial",Font.BOLD,20));
-        labelChoose.setBounds(150,50,200,20);
+        labelChoose.setFont(new Font("Arial", Font.BOLD, 20));
+        labelChoose.setBounds(150, 30, 200, 20);
         labelChoose.setForeground(Color.white);
         dialogElement.add(labelChoose);
 
-        JButton buttonChoose = new JButton("Draw");
-        buttonChoose.setFont(new Font("Arial",Font.BOLD,10));
-        buttonChoose.setBounds(210,250,80,80);
+        JButton buttonChoose = new JButton("Select");
+        buttonChoose.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonChoose.setBounds(100, 200, 80, 80);
         buttonChoose.setBackground(Color.white);
         dialogElement.add(buttonChoose);
 
+        JButton buttonReset = new JButton("Reset");
+        buttonReset.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonReset.setBounds(200, 200, 80, 80);
+        buttonReset.setBackground(Color.white);
+        dialogElement.add(buttonReset);
+
+        JButton buttonDraw = new JButton("Draw");
+        buttonDraw.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonDraw.setBounds(300, 200, 80, 80);
+        buttonDraw.setBackground(Color.white);
+        dialogElement.add(buttonDraw);
+
+
+        int[] chosens = new int[1];
+        Element[] chosenElements = new Element[2];
+
+        JCheckBox checkBoxVoltage, checkBoxCurrent, checkBoxPower;
+        checkBoxVoltage = new JCheckBox();
+        checkBoxVoltage.setBounds(200, 300, 25, 25);
+        dialogElement.add(checkBoxVoltage);
+
+        checkBoxCurrent = new JCheckBox();
+        checkBoxCurrent.setBounds(200, 350, 25, 25);
+        dialogElement.add(checkBoxCurrent);
+
+        checkBoxPower = new JCheckBox();
+        checkBoxPower.setBounds(200, 400, 25, 25);
+        dialogElement.add(checkBoxPower);
+
+        JLabel labelVoltage, labelCurrent, labelPower;
+
+        labelVoltage = new JLabel("Voltage");
+        labelVoltage.setForeground(Color.white);
+        labelVoltage.setBounds(250, 290, 100, 50);
+        dialogElement.add(labelVoltage);
+
+        labelCurrent = new JLabel("Current");
+        labelCurrent.setForeground(Color.white);
+        labelCurrent.setBounds(250, 340, 100, 50);
+        dialogElement.add(labelCurrent);
+
+        labelPower = new JLabel("Power");
+        labelPower.setForeground(Color.white);
+        labelPower.setBounds(250, 390, 100, 50);
+        dialogElement.add(labelPower);
 
         buttonChoose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                dialogElement.setVisible(false);
-                drawVoltage(circuit.getElements().get((String) comboBox.getSelectedItem()));
-                drawCurrent(circuit.getElements().get((String) comboBox.getSelectedItem()));
-                drawPower(circuit.getElements().get((String) comboBox.getSelectedItem()));
-
+                if (chosens[0] == 2)
+                    JOptionPane.showMessageDialog(dialogElement, "You can choose maximum 2 elements");
+                else if (chosens[0] == 1) {
+                    if (chosenElements[0].name.equals((String) comboBox.getSelectedItem()))
+                        JOptionPane.showMessageDialog(dialogElement, "This element is already selected!");
+                    else {
+                        chosens[0]++;
+                        chosenElements[1] = circuit.getElements().get((String) comboBox.getSelectedItem());
+                        JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
+                    }
+                } else if (chosens[0] == 0) {
+                    chosens[0]++;
+                    chosenElements[0] = circuit.getElements().get((String) comboBox.getSelectedItem());
+                    JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
+                }
             }
         });
+
+        buttonDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (chosens[0] == 0)
+                    JOptionPane.showMessageDialog(dialogElement, "No element Selected");
+                if (chosens[0] == 1) {
+                    if (checkBoxVoltage.isSelected())
+                        drawVoltage(chosenElements[0]);
+                    if (checkBoxCurrent.isSelected())
+                        drawCurrent(chosenElements[0]);
+                    if (checkBoxPower.isSelected())
+                        drawPower(chosenElements[0]);
+                }
+                if (chosens[0] == 2) {
+                    if (checkBoxVoltage.isSelected())
+                        drawVoltage(chosenElements[0], chosenElements[1]);
+                    if (checkBoxCurrent.isSelected())
+                        drawCurrent(chosenElements[0], chosenElements[1]);
+                    if (checkBoxPower.isSelected())
+                        drawPower(chosenElements[0], chosenElements[1]);
+                }
+            }
+        });
+
+        buttonDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chosens[0] = 0;
+                chosenElements[0] = null;
+                chosenElements[1] = null;
+            }
+        });
+
 
         dialogElement.setVisible(true);
     }
 
-    private void drawVoltage(Element element){
+    private void drawVoltage(Element element) {
         JDialog dialogVoltage = new JDialog();
-        dialogVoltage.setBounds(0,0,600,600);
+        dialogVoltage.setBounds(0, 0, 600, 600);
         dialogVoltage.setLayout(null);
 
         JLabel labelTitle = new JLabel("Voltage " + element.name);
-        labelTitle.setBounds(250,20,100,30);
+        labelTitle.setBounds(250, 20, 100, 30);
         dialogVoltage.add(labelTitle);
 
         JLabel labelTime = new JLabel("Time");
-        labelTime.setBounds(500,550,50,50);
+        labelTime.setBounds(500, 550, 50, 50);
         dialogVoltage.add(labelTime);
 
         JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
-        labelMaxTime.setBounds(550,300,50,50);
+        labelMaxTime.setBounds(550, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(Double.toString(element.getVoltageMax()) + "V");
-        labelMaxPositive.setBounds(10,40,50,50);
+        labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogVoltage.add(labelMaxPositive);
 
         JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getVoltageMax()) + "V");
-        labelMaxNegative.setBounds(10,520,50,50);
+        labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogVoltage.add(labelMaxNegative);
 
-        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getVoltageMax()/2) + "V");
-        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getVoltageMax() / 2) + "V");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getVoltageMax()/2) + "V");
-        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getVoltageMax() / 2) + "V");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 
 
-
-        Graph graphVoltage = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getVoltageMax(),element.getVoltagesArray());
-        graphVoltage.setBounds(50,50,500,500);
+        Graph graphVoltage = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getVoltageMax(), element.getVoltagesArray());
+        graphVoltage.setBounds(50, 50, 500, 500);
         graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
 
@@ -305,41 +393,100 @@ public class Graphics {
         dialogVoltage.setVisible(true);
     }
 
-    private void drawCurrent(Element element){
+    private void drawVoltage(Element element, Element element1) {
+        JDialog dialogVoltage = new JDialog();
+        dialogVoltage.setBounds(0, 0, 600, 600);
+        dialogVoltage.setLayout(null);
+
+        JLabel labelTitle = new JLabel("Voltage " + element.name);
+        labelTitle.setBounds(250, 20, 100, 30);
+        dialogVoltage.add(labelTitle);
+
+        JLabel labelTitle1 = new JLabel(element1.name);
+        labelTitle1.setForeground(Color.RED);
+        labelTitle1.setBounds(350, 20, 100, 30);
+        dialogVoltage.add(labelTitle1);
+
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500, 550, 50, 50);
+        dialogVoltage.add(labelTime);
+
+        double maxAmount;
+        maxAmount = Math.max(element.getVoltageMax(), element1.getVoltageMax());
+
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550, 300, 50, 50);
+        dialogVoltage.add(labelMaxTime);
+
+        JLabel labelMaxPositive = new JLabel(Double.toString(maxAmount) + "V");
+        labelMaxPositive.setBounds(10, 40, 50, 50);
+        dialogVoltage.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(maxAmount) + "V");
+        labelMaxNegative.setBounds(10, 520, 50, 50);
+        dialogVoltage.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(maxAmount / 2) + "V");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
+        dialogVoltage.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(maxAmount / 2) + "V");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
+        dialogVoltage.add(labelMaxNegativeHalf);
+
+
+        Graph graphVoltage = new Graph(circuit.getMaximumTime(), circuit.getDt(), maxAmount, element.getVoltagesArray(), element1.getVoltagesArray());
+        graphVoltage.setBounds(50, 50, 500, 500);
+        graphVoltage.setBackground(Color.gray);
+        dialogVoltage.add(graphVoltage);
+
+
+        dialogVoltage.setVisible(true);
+    }
+
+    private void drawCurrent(Element element, Element element1) {
         JDialog dialogCurrent = new JDialog();
-        dialogCurrent.setBounds(0,0,600,600);
+        dialogCurrent.setBounds(0, 0, 600, 600);
         dialogCurrent.setLayout(null);
 
         JLabel labelTitle = new JLabel("Currnet " + element.name);
-        labelTitle.setBounds(250,20,100,30);
+        labelTitle.setBounds(250, 20, 100, 30);
         dialogCurrent.add(labelTitle);
 
+        JLabel labelTitle1 = new JLabel(element1.name);
+        labelTitle1.setForeground(Color.RED);
+        labelTitle1.setBounds(350, 20, 100, 30);
+        dialogCurrent.add(labelTitle1);
+
         JLabel labelTime = new JLabel("Time");
-        labelTime.setBounds(500,550,50,50);
+        labelTime.setBounds(500, 550, 50, 50);
         dialogCurrent.add(labelTime);
 
+        double maxAmount;
+        maxAmount = Math.max(element.getCurrentMax(), element1.getCurrentMax());
+
         JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
-        labelMaxTime.setBounds(550,300,50,50);
+        labelMaxTime.setBounds(550, 300, 50, 50);
         dialogCurrent.add(labelMaxTime);
 
-        JLabel labelMaxPositive = new JLabel(Double.toString(element.getCurrentMax()) + "A");
-        labelMaxPositive.setBounds(10,40,50,50);
+        JLabel labelMaxPositive = new JLabel(maxAmount + "A");
+        labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogCurrent.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getCurrentMax()) + "A");
-        labelMaxNegative.setBounds(10,520,50,50);
+        JLabel labelMaxNegative = new JLabel("-" + maxAmount + "A");
+        labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogCurrent.add(labelMaxNegative);
 
-        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getCurrentMax()/2) + "A");
-        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(maxAmount / 2) + "A");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogCurrent.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getCurrentMax()/2) + "A");
-        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(maxAmount / 2) + "A");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogCurrent.add(labelMaxNegativeHalf);
 
-        Graph graphCurrent = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getCurrentMax(),element.getCurrentsArray());
-        graphCurrent.setBounds(50,50,500,500);
+        Graph graphCurrent = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray(), element1.getCurrentsArray());
+        graphCurrent.setBounds(50, 50, 500, 500);
         graphCurrent.setBackground(Color.gray);
         dialogCurrent.add(graphCurrent);
 
@@ -347,41 +494,83 @@ public class Graphics {
         dialogCurrent.setVisible(true);
     }
 
-    private void drawPower(Element element){
+    private void drawCurrent(Element element) {
+        JDialog dialogCurrent = new JDialog();
+        dialogCurrent.setBounds(0, 0, 600, 600);
+        dialogCurrent.setLayout(null);
+
+        JLabel labelTitle = new JLabel("Currnet " + element.name);
+        labelTitle.setBounds(250, 20, 100, 30);
+        dialogCurrent.add(labelTitle);
+
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500, 550, 50, 50);
+        dialogCurrent.add(labelTime);
+
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550, 300, 50, 50);
+        dialogCurrent.add(labelMaxTime);
+
+        JLabel labelMaxPositive = new JLabel(Double.toString(element.getCurrentMax()) + "A");
+        labelMaxPositive.setBounds(10, 40, 50, 50);
+        dialogCurrent.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getCurrentMax()) + "A");
+        labelMaxNegative.setBounds(10, 520, 50, 50);
+        dialogCurrent.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getCurrentMax() / 2) + "A");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
+        dialogCurrent.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getCurrentMax() / 2) + "A");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
+        dialogCurrent.add(labelMaxNegativeHalf);
+
+        Graph graphCurrent = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray());
+        graphCurrent.setBounds(50, 50, 500, 500);
+        graphCurrent.setBackground(Color.gray);
+        dialogCurrent.add(graphCurrent);
+
+
+        dialogCurrent.setVisible(true);
+    }
+
+    private void drawPower(Element element) {
         JDialog dialogPower = new JDialog();
-        dialogPower.setBounds(0,0,600,600);
+        dialogPower.setBounds(0, 0, 600, 600);
         dialogPower.setLayout(null);
 
         JLabel labelTitle = new JLabel("Power " + element.name);
-        labelTitle.setBounds(250,20,100,30);
+        labelTitle.setBounds(250, 20, 100, 30);
         dialogPower.add(labelTitle);
 
         JLabel labelTime = new JLabel("Time");
-        labelTime.setBounds(500,550,50,50);
+        labelTime.setBounds(500, 550, 50, 50);
         dialogPower.add(labelTime);
 
         JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
-        labelMaxTime.setBounds(550,300,50,50);
+        labelMaxTime.setBounds(550, 300, 50, 50);
         dialogPower.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(Double.toString(element.getPowerMax()) + "V");
-        labelMaxPositive.setBounds(10,40,50,50);
+        labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogPower.add(labelMaxPositive);
 
         JLabel labelMaxNegative = new JLabel("-" + Double.toString(element.getPowerMax()) + "V");
-        labelMaxNegative.setBounds(10,520,50,50);
+        labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogPower.add(labelMaxNegative);
 
-        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getPowerMax()/2) + "V");
-        labelMaxPositiveHalf.setBounds(10,150,50,50);
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(element.getPowerMax() / 2) + "V");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogPower.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getPowerMax()/2) + "V");
-        labelMaxNegativeHalf.setBounds(10,390,50,50);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(element.getPowerMax() / 2) + "V");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogPower.add(labelMaxNegativeHalf);
 
-        Graph graphPower = new Graph(circuit.getMaximumTime(),circuit.getDt(),element.getPowerMax(),element.getPowersArray());
-        graphPower.setBounds(50,50,500,500);
+        Graph graphPower = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getPowerMax(), element.getPowersArray());
+        graphPower.setBounds(50, 50, 500, 500);
         graphPower.setBackground(Color.gray);
         dialogPower.add(graphPower);
 
@@ -389,35 +578,82 @@ public class Graphics {
         dialogPower.setVisible(true);
     }
 
-    private void drawCircuit(){
-        Border border = BorderFactory.createLineBorder(Color.BLACK,3,false);
+    private void drawPower(Element element, Element element1) {
+        JDialog dialogPower = new JDialog();
+        dialogPower.setBounds(0, 0, 600, 600);
+        dialogPower.setLayout(null);
+
+        JLabel labelTitle = new JLabel("Power " + element.name);
+        labelTitle.setBounds(250, 20, 100, 30);
+        dialogPower.add(labelTitle);
+
+        JLabel labelTitle1 = new JLabel(element1.name);
+        labelTitle1.setForeground(Color.RED);
+        labelTitle1.setBounds(350, 20, 100, 30);
+        dialogPower.add(labelTitle1);
+
+        JLabel labelTime = new JLabel("Time");
+        labelTime.setBounds(500, 550, 50, 50);
+        dialogPower.add(labelTime);
+
+        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        labelMaxTime.setBounds(550, 300, 50, 50);
+        dialogPower.add(labelMaxTime);
+
+        double maxAmount;
+        maxAmount = Math.max(element.getPowerMax(), element1.getPowerMax());
+
+        JLabel labelMaxPositive = new JLabel(maxAmount + "V");
+        labelMaxPositive.setBounds(10, 40, 50, 50);
+        dialogPower.add(labelMaxPositive);
+
+        JLabel labelMaxNegative = new JLabel("-" + maxAmount + "V");
+        labelMaxNegative.setBounds(10, 520, 50, 50);
+        dialogPower.add(labelMaxNegative);
+
+        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(maxAmount / 2) + "V");
+        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
+        dialogPower.add(labelMaxPositiveHalf);
+
+        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(maxAmount / 2) + "V");
+        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
+        dialogPower.add(labelMaxNegativeHalf);
+
+        Graph graphPower = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getPowerMax(), element.getPowersArray(), element1.getPowersArray());
+        graphPower.setBounds(50, 50, 500, 500);
+        graphPower.setBackground(Color.gray);
+        dialogPower.add(graphPower);
+
+
+        dialogPower.setVisible(true);
+    }
+
+    private void drawCircuit() {
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
 
         JDialog dialog = new JDialog();
-        dialog.setBounds(0,0,700,700);
+        dialog.setBounds(0, 0, 700, 700);
         dialog.setLayout(null);
 
         JLabel label = new JLabel("Simulated Circuit");
-        label.setBounds(250,10,100,40);
+        label.setBounds(250, 10, 100, 40);
         dialog.add(label);
 
         ArrayList<Node> nodes = new ArrayList<>(0);
-        nodes.add(0,circuit.getNodes().get(0));
+        nodes.add(0, circuit.getNodes().get(0));
         for (Map.Entry node : circuit.getNodes().entrySet()) {
-            if (((Node)node.getValue()).getName() != 0) {
+            if (((Node) node.getValue()).getName() != 0) {
                 nodes.add((Node) node.getValue());
             }
         }
 
 
-
-
-        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit,nodes,dialog);
+        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1, circuit, nodes, dialog);
         circuitGraph.setLayout(null);
         circuitGraph.setBorder(border);
-        circuitGraph.setBounds(50,50,600,600);
+        circuitGraph.setBounds(50, 50, 600, 600);
 
         dialog.add(circuitGraph);
-
 
 
         dialog.setVisible(true);

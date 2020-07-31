@@ -36,8 +36,6 @@ public abstract class Element extends Circuit {
     public void updateTime() {
         currentsArray.add(getCurrent());
         voltagesArray.add(getVoltage());
-        if (name.equals("Iin"))
-            System.out.println(getVoltage());
         powersArray.add(getVoltage() * getCurrent());
     }
     public double getCurrentMax(){

@@ -187,6 +187,12 @@ public class Circuit {
             }
             timeArray.add(time);
         }
+        for (int i = 0; i < elementNames.size(); i++) {
+            if (elementNames.get(i).charAt(0) == 'D') {
+                Element temp = elements.remove(elementNames.get(i));
+                elements.put(elementNames.get(i), new Diode(temp.name, temp.positiveNode, temp.negativeNode));
+            }
+        }
     }
 
 

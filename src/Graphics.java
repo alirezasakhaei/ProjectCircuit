@@ -397,6 +397,16 @@ public class Graphics {
         label.setBounds(250,10,100,40);
         dialog.add(label);
 
+        CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1,circuit);
+        circuitGraph.setLayout(null);
+        circuitGraph.setBounds(50,50,500,500);
+        circuitGraph.setBorder(BorderFactory.createLineBorder(Color.BLACK,2,false));
+        dialog.add(circuitGraph);
+
+        ElementShape elementShape = new ElementShape(circuit.getElements().get("R1"));
+        elementShape.setBounds(100,100,50,10);
+        circuitGraph.add(elementShape);
+
 
 
 

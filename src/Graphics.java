@@ -431,6 +431,7 @@ public class Graphics {
                 if (element.positiveNode.getName() == 0){
                     elementShape = new ElementShape(element);
                     elementShape.setBounds(50 ,425,10,50);
+                    //mooooooooooooooz
                     dialog.add(elementShape);
                     elementNumber++;
                 }

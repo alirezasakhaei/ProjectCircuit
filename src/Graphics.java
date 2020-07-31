@@ -219,7 +219,7 @@ public class Graphics {
         dialogElement.setLayout(null);
         dialogElement.setBounds(0, 0, 500, 500);
         Container container = dialogElement.getContentPane();
-        container.setBackground(Color.black);
+        container.setBackground(Color.gray.darker());
 
         int elementsNumber = circuit.getElements().size();
         String[] elements = new String[elementsNumber];
@@ -259,7 +259,10 @@ public class Graphics {
 
 
         int[] chosens = new int[1];
+        chosens[0] = 0;
         Element[] chosenElements = new Element[2];
+        chosenElements[0] = null;
+        chosenElements[1] = null;
 
         JCheckBox checkBoxVoltage, checkBoxCurrent, checkBoxPower;
         checkBoxVoltage = new JCheckBox();
@@ -307,7 +310,7 @@ public class Graphics {
                 } else if (chosens[0] == 0) {
                     chosens[0]++;
                     chosenElements[0] = circuit.getElements().get((String) comboBox.getSelectedItem());
-                    JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
+                    JOptionPane.showMessageDialog(dialogElement, "element moz" + (String) comboBox.getSelectedItem() + " is selected!" + chosens[0]);
                 }
             }
         });
@@ -315,8 +318,10 @@ public class Graphics {
         buttonDraw.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (chosens[0] == 0)
+                if (chosens[0] == 0) {
+                    System.out.println("botch" + chosens[0]);
                     JOptionPane.showMessageDialog(dialogElement, "No element Selected");
+                }
                 if (chosens[0] == 1) {
                     if (checkBoxVoltage.isSelected())
                         drawVoltage(chosenElements[0]);
@@ -336,7 +341,7 @@ public class Graphics {
             }
         });
 
-        buttonDraw.addActionListener(new ActionListener() {
+        buttonReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 chosens[0] = 0;
@@ -635,7 +640,7 @@ public class Graphics {
         dialog.setLayout(null);
 
         JLabel label = new JLabel("Simulated Circuit");
-        label.setBounds(250, 10, 100, 40);
+        label.setBounds(300, 10, 100, 40);
         dialog.add(label);
 
         ArrayList<Node> nodes = new ArrayList<>(0);

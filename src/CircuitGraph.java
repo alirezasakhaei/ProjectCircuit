@@ -32,7 +32,7 @@ public class CircuitGraph extends JPanel {
             node = nodes.get(i);
             node.setEarthConnections();
             if (node.getEarthConnections() > 1){
-                g.drawLine(100*(i-1),450,100*(i-1) + 30*(node.getEarthConnections() - 1),450);
+                g.drawLine(100*(i),450,100*(i) + 30*(node.getEarthConnections() - 1),450);
             }
         }
         int parralles;

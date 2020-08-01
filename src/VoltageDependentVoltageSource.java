@@ -50,6 +50,7 @@ public class VoltageDependentVoltageSource extends Element{
 
 
     public double getVoltage() {
+
         return (positiveDependence.getPreviousVoltage() - negativeDependence.getPreviousVoltage()) * gain;
     }
 }

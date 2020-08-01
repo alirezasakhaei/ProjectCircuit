@@ -19,6 +19,183 @@ public class Graphics {
     private File selectedFile;
     private JFrame frame;
 
+    public void starter() {
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
+
+        frame = new JFrame("Circuit Simulator");
+        frame.setBounds(0, 0, 600, 600);
+        GroupLayout frameLayout = new GroupLayout(frame.getContentPane());
+        frame.setLayout(frameLayout);
+
+
+        JPanel pText, pRun, pDraw, pLoad, pReset, pOut;
+        JButton buttonRun, buttonDraw, buttonLoad, buttonReset;
+
+        pOut = new JPanel();
+        pOut.setBorder(border);
+        pOut.setLayout(new BorderLayout());
+        pOut.setBackground(Color.white);
+
+        pText = new JPanel();
+        pText.setBorder(border);
+        pText.setLayout(new BorderLayout());
+        pText.setBackground(Color.YELLOW);
+
+        pRun = new JPanel();
+        pRun.setBorder(border);
+        pRun.setLayout(new BorderLayout());
+        pRun.setBackground(Color.gray.darker().darker().darker().darker());
+
+        pDraw = new JPanel();
+        pDraw.setBorder(border);
+        pDraw.setLayout(new BorderLayout());
+        pDraw.setBackground(Color.gray.darker());
+
+        pLoad = new JPanel();
+        pLoad.setBorder(border);
+        pLoad.setLayout(new BorderLayout());
+        pLoad.setBackground(Color.gray.darker());
+
+        pReset = new JPanel();
+        pReset.setBorder(border);
+        pReset.setLayout(new BorderLayout());
+        pReset.setBackground(Color.gray.darker().darker().darker().darker());
+
+        buttonRun = new JButton("RUN");
+        buttonRun.setBackground(Color.white);
+        buttonRun.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonRun.setForeground(Color.WHITE);
+        pRun.add(buttonRun);
+
+        buttonRun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!isSomethingLoaded) {
+                    JFileChooser fileChooser = new JFileChooser("D:\\");
+                    fileChooser.showOpenDialog(null);
+                    File input = fileChooser.getSelectedFile();
+                    if (Objects.nonNull(input))
+                        run(input);
+                } else {
+                    try {
+                        FileWriter fileWriter = new FileWriter(selectedFile);
+                        String string = textAreaInput.getText();
+                        Scanner scanner = new Scanner(string);
+                        while (scanner.hasNextLine()) {
+                            fileWriter.write(scanner.nextLine());
+                            fileWriter.write("\n");
+                        }
+                        fileWriter.close();
+                        run(selectedFile);
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        });
+
+        buttonLoad = new JButton("Load");
+        buttonLoad.setBackground(Color.white);
+        buttonLoad.setBackground(Color.gray.darker());
+        buttonLoad.setForeground(Color.WHITE);
+
+        pLoad.add(buttonLoad);
+
+        textAreaInput = new JTextArea();
+        textAreaInput.setEditable(false);
+        textAreaInput.setBackground(Color.WHITE);
+        textAreaInput.setForeground(Color.BLACK);
+
+        JScrollPane scrollableTextAreaInput = new JScrollPane(textAreaInput);
+        scrollableTextAreaInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollableTextAreaInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        pText.add(scrollableTextAreaInput);
+
+
+        buttonLoad.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = new JFileChooser("D:\\");
+                fileChooser.showOpenDialog(null);
+                File input = fileChooser.getSelectedFile();
+                String preText = "";
+                if (Objects.nonNull(input))
+                    if (input.canExecute()) {
+                        try {
+                            Scanner scanner = new Scanner(input);
+                            while (scanner.hasNextLine()) {
+                                preText += scanner.nextLine();
+                                preText += "\n";
+                            }
+                            textAreaInput.setText(preText);
+                            textAreaInput.setEditable(true);
+
+                            //textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
+
+
+                            isSomethingLoaded = true;
+                            selectedFile = input;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            }
+        });
+
+        buttonDraw = new JButton("Draw");
+        buttonDraw.setBackground(Color.white);
+        buttonDraw.setBackground(Color.gray.darker());
+        buttonDraw.setForeground(Color.WHITE);
+
+        pDraw.add(buttonDraw);
+
+        buttonDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isCircuitSolved) {
+                    dialogChooseElement();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+                }
+            }
+        });
+
+        buttonReset = new JButton("Reset");
+        buttonReset.setBackground(Color.white);
+        buttonReset.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonReset.setForeground(Color.WHITE);
+        pReset.add(buttonReset);
+
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                isSomethingLoaded = false;
+                isCircuitSolved = false;
+                textAreaInput.setVisible(false);
+                textAreaInput = null;
+                selectedFile = null;
+            }
+        });
+
+        textAreaOutput = new JTextArea();
+        textAreaOutput.setEditable(false);
+        //textAreaOutput.setAutoscrolls(true);
+
+
+        JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
+        scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        pOut.add(scrollableTextArea);
+
+
+        frameLayout.setHorizontalGroup(frameLayout.createSequentialGroup().addGroup(frameLayout.createParallelGroup().addComponent(pText).addComponent(pOut))
+                .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDraw).addComponent(pLoad).addComponent(pReset)));
+        frameLayout.setVerticalGroup(frameLayout.createParallelGroup().addGroup(frameLayout.createSequentialGroup().addComponent(pText).addComponent(pOut))
+                .addGroup(frameLayout.createSequentialGroup().addComponent(pRun).addComponent(pDraw).addComponent(pLoad).addComponent(pReset)));
+        frame.setVisible(true);
+
+    }
+
     public void start() {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
 
@@ -189,13 +366,16 @@ public class Graphics {
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
             circuit = inputManager.analyzeTheInput();
+            if (inputManager.getErrorLine() != -1) {
+                JOptionPane.showMessageDialog(frame, "There is a problem found in line " + inputManager.getErrorLine(), "ERROR", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             Circuit.setCircuit(circuit);
             ErrorFinder errorFinder = new ErrorFinder(circuit);
             int error = errorFinder.findErrors();
             if (error != 0) {
                 JOptionPane.showMessageDialog(frame, "Error " + error + " is found!", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-            if (error == 0) {
+            } else {
                 circuit.initializeGraph();
                 circuit.solveCircuit();
                 drawCircuit();

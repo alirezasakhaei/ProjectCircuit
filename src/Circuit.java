@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Circuit {
     private static Circuit circuit;
@@ -99,25 +100,53 @@ public class Circuit {
         initializeUnions();
     }
 
+    /*   protected void setAddedNodes(int name) {
+           if (!nodes.get(name).isAdded()) {
+               nodes.get(name).setAdded(true);
+               nodeNameQueue.add(name);
+           } else return;
+           for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
+               if (elements.get(nodes.get(name).getPositives().get(j)).isVoltageSource()&&!elements.get(nodes.get(name).getPositives().get(j)).negativeNode.isAdded()) {
+                   elements.get(nodes.get(name).getPositives().get(j)).negativeNode.setUnion(nodes.get(name).getUnion());
+               }
+           }
+           for (int j = 0; j < nodes.get(name).getNegatives().size(); j++) {
+               if (elements.get(nodes.get(name).getNegatives().get(j)).isVoltageSource()&&!elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.isAdded()) {
+                   elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
+               }
+           }
+           for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
+               setAddedNodes(nodes.get(name).getNeighbors().get(i));
+           }
+       }
+   */
     protected void setAddedNodes(int name) {
-        if (!nodes.get(name).isAdded()) {
-            nodes.get(name).setAdded(true);
-            nodeNameQueue.add(name);
-        } else return;
+        LinkedList<Integer> queue = new LinkedList<>();
+        queue.add(name);
+        nodes.get(name).setAdded(true);
+        nodeNameQueue.add(name);
+        while (queue.size() > 0) {
+            Node node = nodes.get(queue.poll());
+            for (int j = 0; j < node.getPositives().size(); j++) {
+                if (elements.get(node.getPositives().get(j)).isVoltageSource()) {
+                    elements.get(node.getPositives().get(j)).negativeNode.setUnion(node.getUnion());
+                }
+            }
+            for (int j = 0; j < node.getNegatives().size(); j++) {
+                if (elements.get(node.getNegatives().get(j)).isVoltageSource()) {
+                    elements.get(node.getNegatives().get(j)).positiveNode.setUnion(node.getUnion());
+                }
+            }
 
-        for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
-            if (elements.get(nodes.get(name).getPositives().get(j)).isVoltageSource()) {
-                elements.get(nodes.get(name).getPositives().get(j)).negativeNode.setUnion(nodes.get(name).getUnion());
+            for (int i = 0; i < node.getNeighbors().size(); i++) {
+                if (!nodes.get(node.getNeighbors().get(i)).isAdded()) {
+                    queue.add(node.getNeighbors().get(i));
+                    nodes.get(node.getNeighbors().get(i)).setAdded(true);
+                    nodeNameQueue.add(node.getNeighbors().get(i));
+                }
             }
         }
-        for (int j = 0; j < nodes.get(name).getNegatives().size(); j++) {
-            if (elements.get(nodes.get(name).getNegatives().get(j)).isVoltageSource()) {
-                elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
-            }
-        }
-        for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
-            setAddedNodes(nodes.get(name).getNeighbors().get(i));
-        }
+
     }
 
 
@@ -173,6 +202,7 @@ public class Circuit {
 
     void solveCircuit() {
         double i1, i2;
+
         for (time = 0; time <= maximumTime; time += dt) {
             reconstructUnions();
 
@@ -197,6 +227,7 @@ public class Circuit {
             }
             timeArray.add(time);
         }
+
         for (int i = 0; i < elementNames.size(); i++) {
             if (elementNames.get(i).charAt(0) == 'D') {
                 Element temp = elements.remove(elementNames.get(i));

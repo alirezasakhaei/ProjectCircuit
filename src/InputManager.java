@@ -8,16 +8,22 @@ public class InputManager {
     protected ElementAdder elementAdder;
     protected String string = null;
     protected boolean flagTran = false, isInputValid = true, isEveryNumberValid = true;
+    private int errorLine;
 
     InputManager(File input) {
         this.input = input;
         circuit = new Circuit();
         elementAdder = new ElementAdder(circuit);
+        errorLine = -1;
+    }
+
+    public int getErrorLine() {
+        return errorLine;
     }
 
     // this method is instantly called in the main method (right after the inputManager object is created)
     public Circuit analyzeTheInput() {
-        ArrayList<String> inputLines = new ArrayList<String>(0);
+        ArrayList<String> inputLines = new ArrayList<>(0);
         try {
             Scanner inputScanner = new Scanner(input);
             while (inputScanner.hasNextLine() && isInputValid && isEveryNumberValid && !flagTran) {
@@ -79,14 +85,17 @@ public class InputManager {
 
                     }
                 } else {
-                    System.out.println("(invalid number)There is a problem found in line " + (inputLines.size() + 1));
+                    errorLine = (inputLines.size() + 1);
+                    //    System.out.println("(invalid number)There is a problem found in line " + (inputLines.size() + 1));
                 }
             }
             if (!isInputValid) {
-                System.out.println("(invalid input)There is a problem found in line " + inputLines.size());
+                errorLine = (inputLines.size());
+                //  System.out.println("(invalid input)There is a problem found in line " + inputLines.size());
             }
         } catch (Exception e) {
-            System.out.println("(Exception)There is a problem found in line " + inputLines.size());
+            errorLine = (inputLines.size());
+            // System.out.println("(Exception)There is a problem found in line " + inputLines.size());
         }
 
         return circuit;
@@ -230,12 +239,10 @@ public class InputManager {
         elementAdder.addNode(positive);
         elementAdder.addNode(negative);
         int isIdeal = scanner.nextInt();
-        switch (isIdeal) {
-            case 1:
-                elementAdder.addElement(name, positive, negative, "diode");
-                break;
-            default:
-                return false;
+        if (isIdeal == 1) {
+            elementAdder.addElement(name, positive, negative, "diode");
+        } else {
+            return false;
         }
         return true;
     }
@@ -276,8 +283,7 @@ public class InputManager {
                 if (lastChar == valids[i])
                     validFlag = true;
             }
-            if (!validFlag)
-                return false;
+            return validFlag;
         }
         return true;
     }

@@ -529,7 +529,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogCurrent.add(labelMaxNegativeHalf);
 
-        Graph graphCurrent = new Graph(circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray(), element1.getCurrentsArray());
+        Graph graphCurrent = new Graph(circuit.getDt(), maxAmount, element.getCurrentsArray(), element1.getCurrentsArray());
         graphCurrent.setBounds(50, 50, 500, 500);
         graphCurrent.setBackground(Color.gray);
         dialogCurrent.add(graphCurrent);
@@ -663,7 +663,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogPower.add(labelMaxNegativeHalf);
 
-        Graph graphPower = new Graph(circuit.getDt(), element.getPowerMax(), element.getPowersArray(), element1.getPowersArray());
+        Graph graphPower = new Graph(circuit.getDt(), maxAmount, element.getPowersArray(), element1.getPowersArray());
         graphPower.setBounds(50, 50, 500, 500);
         graphPower.setBackground(Color.gray);
         dialogPower.add(graphPower);

@@ -251,6 +251,16 @@ public class Graphics {
         comboBox.setBounds(200, 120, 100, 20);
         dialogElement.add(comboBox);
 
+        JTextField textField = new JTextField();
+        textField.setBounds(240, 150, 100, 30);
+        dialogElement.add(textField);
+
+        JLabel labelTime = new JLabel("Draw until:");
+        labelTime.setFont(new Font("Arial", Font.BOLD, 15));
+        labelTime.setBounds(140, 150, 100, 20);
+        labelTime.setForeground(Color.white);
+        dialogElement.add(labelTime);
+
         JLabel labelChoose = new JLabel("Choose the element!");
         labelChoose.setFont(new Font("Arial", Font.BOLD, 20));
         labelChoose.setBounds(150, 30, 200, 20);
@@ -312,9 +322,7 @@ public class Graphics {
         labelPower.setBounds(250, 390, 100, 50);
         dialogElement.add(labelPower);
 
-        JTextField textField = new JTextField();
-        textField.setBounds(5, 5, 100, 30);
-        dialogElement.add(textField);
+
 
         buttonChoose.addActionListener(new ActionListener() {
             @Override

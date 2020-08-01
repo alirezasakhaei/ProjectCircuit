@@ -103,8 +103,8 @@ public class ElementShape extends JPanel {
                     g.drawLine(45,0,45,10);
                     g.drawLine(55,0,55,10);
 
-                    g.drawLine(45,0,55,5);
-                    g.drawLine(45,10,55,5);
+                    g.drawLine(55,0,45,5);
+                    g.drawLine(55,10,45,5);
                     break;
             }
         }
@@ -191,8 +191,8 @@ public class ElementShape extends JPanel {
                     g.drawLine(45,0,45,10);
                     g.drawLine(55,0,55,10);
 
-                    g.drawLine(55,0,45,5);
-                    g.drawLine(55,10,45,5);
+                    g.drawLine(45,0,55,5);
+                    g.drawLine(45,10,55,5);
                     break;
             }
         }
@@ -272,8 +272,8 @@ public class ElementShape extends JPanel {
                     g.drawLine(0,45,10,45);
                     g.drawLine(0,55,10,55);
 
-                    g.drawLine(0,55,5,45);
-                    g.drawLine(10,55,5,45);
+                    g.drawLine(0,45,5,55);
+                    g.drawLine(10,45,5,55);
                     break;
 
             }
@@ -352,8 +352,8 @@ public class ElementShape extends JPanel {
                     g.drawLine(0,45,10,45);
                     g.drawLine(0,55,10,55);
 
-                    g.drawLine(0,45,5,55);
-                    g.drawLine(10,45,5,55);
+                    g.drawLine(0,55,5,45);
+                    g.drawLine(10,55,5,45);
                     break;
             }
         }

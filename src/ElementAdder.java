@@ -120,13 +120,13 @@ public class ElementAdder {
             switch (type) {
                 case "CurrentDependentCurrent":
                     CurrentDependentCurrentSource currentDependentCurrentSource = new CurrentDependentCurrentSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getElements().get(elementDependent), gain);
+                            elementDependent, gain);
                     currentDependentCurrentSource.setCurrentSource(true);
                     circuit.getElements().put(name, currentDependentCurrentSource);
                     break;
                 case "CurrentDependentVoltage":
                     CurrentDependentVoltageSource currentDependentVoltageSource = new CurrentDependentVoltageSource(name, circuit.getNodes().get(positive), circuit.getNodes().get(negative),
-                            circuit.getElements().get(elementDependent), gain);
+                            elementDependent, gain);
                     currentDependentVoltageSource.setVoltageSource(true);
                     circuit.getElements().put(name, currentDependentVoltageSource);
                     break;

@@ -2,12 +2,14 @@ import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Graphics {
@@ -80,9 +82,10 @@ public class Graphics {
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!isSomethingLoaded) {
                     JFileChooser fileChooser = new JFileChooser("D:\\");
-                    fileChooser.showSaveDialog(null);
+                    fileChooser.showOpenDialog(null);
                     File input = fileChooser.getSelectedFile();
-                    run(input);
+                    if (Objects.nonNull(input))
+                        run(input);
                 } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
@@ -110,25 +113,26 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JFileChooser fileChooser = new JFileChooser("D:\\");
-                fileChooser.showSaveDialog(null);
+                fileChooser.showOpenDialog(null);
                 File input = fileChooser.getSelectedFile();
                 String preText = "";
-                if (input.canExecute()) {
-                    try {
-                        Scanner scanner = new Scanner(input);
-                        while (scanner.hasNextLine()) {
-                            preText += scanner.nextLine();
-                            preText += "\n";
+                if (Objects.nonNull(input))
+                    if (input.canExecute()) {
+                        try {
+                            Scanner scanner = new Scanner(input);
+                            while (scanner.hasNextLine()) {
+                                preText += scanner.nextLine();
+                                preText += "\n";
+                            }
+                            textAreaInput = new JTextArea(preText);
+                            textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
+                            isSomethingLoaded = true;
+                            selectedFile = input;
+                            pText.add(textAreaInput);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
                         }
-                        textAreaInput = new JTextArea(preText);
-                        textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
-                        isSomethingLoaded = true;
-                        selectedFile = input;
-                        pText.add(textAreaInput);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
                     }
-                }
             }
         });
 
@@ -199,8 +203,20 @@ public class Graphics {
                 textAreaOutput.setText(circuit.getOutput());
                 try {
                     String path = input.getPath().substring(0, input.getPath().lastIndexOf("\\"));
-                    File outputFile = new File(path + "\\output.txt");
-                    FileWriter fileWriter = new FileWriter(outputFile);
+                    File output;
+                    output = new File(path + "\\output.txt");
+                    JFileChooser fileChooser = new JFileChooser("D:\\");
+                    fileChooser.setFileFilter(new FileNameExtensionFilter("txt file", "txt"));
+                    fileChooser.setAcceptAllFileFilterUsed(false);
+                    fileChooser.setSelectedFile(output);
+                    fileChooser.showSaveDialog(null);
+                    output = fileChooser.getSelectedFile();
+                    if (Objects.isNull(output)) {
+                        output = new File(path + "\\output.txt");
+                    }
+                    if (!output.getName().trim().endsWith(".txt"))
+                        output = new File(output.getAbsolutePath() + ".txt");
+                    FileWriter fileWriter = new FileWriter(output);
                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
                     bufferedWriter.write(circuit.getOutput());
                     bufferedWriter.close();
@@ -208,6 +224,8 @@ public class Graphics {
                 } catch (IOException e) {
                     JOptionPane.showMessageDialog(frame, "Can't write the output file!", "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
+
+
             }
         } else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);

@@ -1,13 +1,16 @@
-public class IndependentVoltageSource extends Element{
-    double offset,amplitude,frequency,phase;
-    IndependentVoltageSource(String name,Node positive,Node negative,double offset,double amplitude,double frequency,double phase){
-        this.name=name;
-        positiveNode=positive;
-        negativeNode=negative;
-        this.offset=offset;
-        this.amplitude=amplitude;
-        this.frequency=frequency;
-        this.phase=phase;
+import java.util.ArrayList;
+
+public class IndependentVoltageSource extends Element {
+    double offset, amplitude, frequency, phase;
+
+    IndependentVoltageSource(String name, Node positive, Node negative, double offset, double amplitude, double frequency, double phase) {
+        this.name = name;
+        positiveNode = positive;
+        negativeNode = negative;
+        this.offset = offset;
+        this.amplitude = amplitude;
+        this.frequency = frequency;
+        this.phase = phase;
         data = String.valueOf(offset) + "," + String.valueOf(amplitude) + "," + String.valueOf(frequency) + "," + String.valueOf(phase);
         if (amplitude == 0)
             setLabel(Double.toString(offset));
@@ -54,5 +57,17 @@ public class IndependentVoltageSource extends Element{
     public double getVoltage() {
         double theta = 2 * Math.PI * frequency * Circuit.getCircuit().getTime() + phase;
         return offset + amplitude * Math.sin(theta);
+    }
+
+    public void setVoltagesArray(ArrayList<Double> voltages) {
+        voltagesArray = voltages;
+    }
+
+    public void setCurrentsArray(ArrayList<Double> currents) {
+        currentsArray = currents;
+    }
+
+    public void setPowersArray(ArrayList<Double> powers) {
+        powersArray = powers;
     }
 }

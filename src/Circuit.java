@@ -132,11 +132,17 @@ public class Circuit {
                     Element temp = elements.remove(elementNames.get(i));
                     IndependentCurrentSource d = new IndependentCurrentSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setCurrentSource(true);
+                    d.setCurrentsArray(temp.getCurrentsArray());
+                    d.setVoltagesArray(temp.getVoltagesArray());
+                    d.setPowersArray(temp.getPowersArray());
                     elements.put(elementNames.get(i), d);
                 } else {
                     Element temp = elements.remove(elementNames.get(i));
                     IndependentVoltageSource d = new IndependentVoltageSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setVoltageSource(true);
+                    d.setCurrentsArray(temp.getCurrentsArray());
+                    d.setVoltagesArray(temp.getVoltagesArray());
+                    d.setPowersArray(temp.getPowersArray());
                     elements.put(elementNames.get(i), d);
                 }
             }
@@ -169,9 +175,12 @@ public class Circuit {
         double i1, i2;
         for (time = 0; time <= maximumTime; time += dt) {
             reconstructUnions();
+
             for (int i = 0; i < unions.size(); i++) {
+                setVoltagesInUnion(i);
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
                 setVoltagesInUnion(i);
+
                 i1 = obtainCurrent(unions.get(i));
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + 2 * dv);
                 setVoltagesInUnion(i);
@@ -179,6 +188,7 @@ public class Circuit {
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
                 setVoltagesInUnion(i);
             }
+
             for (int p = 0; p < elementNames.size(); p++) {
                 elements.get(elementNames.get(p)).updateTime();
             }
@@ -190,7 +200,11 @@ public class Circuit {
         for (int i = 0; i < elementNames.size(); i++) {
             if (elementNames.get(i).charAt(0) == 'D') {
                 Element temp = elements.remove(elementNames.get(i));
-                elements.put(elementNames.get(i), new Diode(temp.name, temp.positiveNode, temp.negativeNode));
+                Diode d = new Diode(temp.name, temp.positiveNode, temp.negativeNode);
+                d.setCurrentsArray(temp.getCurrentsArray());
+                d.setVoltagesArray(temp.getVoltagesArray());
+                d.setPowersArray(temp.getPowersArray());
+                elements.put(elementNames.get(i), d);
             }
         }
     }

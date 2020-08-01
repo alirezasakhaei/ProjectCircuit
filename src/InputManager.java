@@ -204,6 +204,10 @@ public class InputManager {
         elementAdder.addNode(negative);
         int positiveDependent = scanner.nextInt();
         int negativeDependent = scanner.nextInt();
+        if (positiveDependent < 0 || negativeDependent < 0)
+            return false;
+        elementAdder.addNode(positiveDependent);
+        elementAdder.addNode(negativeDependent);
         double gain = scanner.nextDouble();
         switch (IV) {
             case 'I':

@@ -312,6 +312,10 @@ public class Graphics {
         labelPower.setBounds(250, 390, 100, 50);
         dialogElement.add(labelPower);
 
+        JTextField textField = new JTextField();
+        textField.setBounds(5, 5, 100, 30);
+        dialogElement.add(textField);
+
         buttonChoose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -336,24 +340,35 @@ public class Graphics {
         buttonDraw.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (chosens[0] == 0) {
-                    JOptionPane.showMessageDialog(dialogElement, "No element Selected");
-                }
-                if (chosens[0] == 1) {
-                    if (checkBoxVoltage.isSelected())
-                        drawVoltage(chosenElements[0]);
-                    if (checkBoxCurrent.isSelected())
-                        drawCurrent(chosenElements[0]);
-                    if (checkBoxPower.isSelected())
-                        drawPower(chosenElements[0]);
-                }
-                if (chosens[0] == 2) {
-                    if (checkBoxVoltage.isSelected())
-                        drawVoltage(chosenElements[0], chosenElements[1]);
-                    if (checkBoxCurrent.isSelected())
-                        drawCurrent(chosenElements[0], chosenElements[1]);
-                    if (checkBoxPower.isSelected())
-                        drawPower(chosenElements[0], chosenElements[1]);
+                try {
+                    if (textField.getText().equals(null) || !InputManager.isNumberValid(textField.getText()))
+                        Graph.setMaxTime(circuit.getMaximumTime());
+                    else {
+                        Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()),circuit.getMaximumTime()));
+                    }
+
+                    if (chosens[0] == 0) {
+                        JOptionPane.showMessageDialog(dialogElement, "No element Selected");
+                    }
+                    if (chosens[0] == 1) {
+                        if (checkBoxVoltage.isSelected())
+                            drawVoltage(chosenElements[0]);
+                        if (checkBoxCurrent.isSelected())
+                            drawCurrent(chosenElements[0]);
+                        if (checkBoxPower.isSelected())
+                            drawPower(chosenElements[0]);
+                    }
+                    if (chosens[0] == 2) {
+                        if (checkBoxVoltage.isSelected())
+                            drawVoltage(chosenElements[0], chosenElements[1]);
+                        if (checkBoxCurrent.isSelected())
+                            drawCurrent(chosenElements[0], chosenElements[1]);
+                        if (checkBoxPower.isSelected())
+                            drawPower(chosenElements[0], chosenElements[1]);
+                    }
+
+                }catch (Exception e){
+                    JOptionPane.showMessageDialog(dialogElement, "Wrong input for time");
                 }
             }
         });
@@ -384,7 +399,7 @@ public class Graphics {
         labelTime.setBounds(500, 550, 50, 50);
         dialogVoltage.add(labelTime);
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
@@ -405,7 +420,7 @@ public class Graphics {
         dialogVoltage.add(labelMaxNegativeHalf);
 
 
-        Graph graphVoltage = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getVoltageMax(), element.getVoltagesArray());
+        Graph graphVoltage = new Graph(circuit.getDt(), element.getVoltageMax(), element.getVoltagesArray());
         graphVoltage.setBounds(50, 50, 500, 500);
         graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
@@ -435,7 +450,7 @@ public class Graphics {
         double maxAmount;
         maxAmount = Math.max(element.getVoltageMax(), element1.getVoltageMax());
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
@@ -456,7 +471,7 @@ public class Graphics {
         dialogVoltage.add(labelMaxNegativeHalf);
 
 
-        Graph graphVoltage = new Graph(circuit.getMaximumTime(), circuit.getDt(), maxAmount, element.getVoltagesArray(), element1.getVoltagesArray());
+        Graph graphVoltage = new Graph(circuit.getDt(), maxAmount, element.getVoltagesArray(), element1.getVoltagesArray());
         graphVoltage.setBounds(50, 50, 500, 500);
         graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
@@ -486,7 +501,7 @@ public class Graphics {
         double maxAmount;
         maxAmount = Math.max(element.getCurrentMax(), element1.getCurrentMax());
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogCurrent.add(labelMaxTime);
 
@@ -506,7 +521,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogCurrent.add(labelMaxNegativeHalf);
 
-        Graph graphCurrent = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray(), element1.getCurrentsArray());
+        Graph graphCurrent = new Graph(circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray(), element1.getCurrentsArray());
         graphCurrent.setBounds(50, 50, 500, 500);
         graphCurrent.setBackground(Color.gray);
         dialogCurrent.add(graphCurrent);
@@ -528,7 +543,7 @@ public class Graphics {
         labelTime.setBounds(500, 550, 50, 50);
         dialogCurrent.add(labelTime);
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogCurrent.add(labelMaxTime);
 
@@ -548,7 +563,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogCurrent.add(labelMaxNegativeHalf);
 
-        Graph graphCurrent = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray());
+        Graph graphCurrent = new Graph(circuit.getDt(), element.getCurrentMax(), element.getCurrentsArray());
         graphCurrent.setBounds(50, 50, 500, 500);
         graphCurrent.setBackground(Color.gray);
         dialogCurrent.add(graphCurrent);
@@ -570,7 +585,7 @@ public class Graphics {
         labelTime.setBounds(500, 550, 50, 50);
         dialogPower.add(labelTime);
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogPower.add(labelMaxTime);
 
@@ -590,7 +605,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogPower.add(labelMaxNegativeHalf);
 
-        Graph graphPower = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getPowerMax(), element.getPowersArray());
+        Graph graphPower = new Graph(circuit.getDt(), element.getPowerMax(), element.getPowersArray());
         graphPower.setBounds(50, 50, 500, 500);
         graphPower.setBackground(Color.gray);
         dialogPower.add(graphPower);
@@ -617,7 +632,7 @@ public class Graphics {
         labelTime.setBounds(500, 550, 50, 50);
         dialogPower.add(labelTime);
 
-        JLabel labelMaxTime = new JLabel(Double.toString(circuit.getMaximumTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogPower.add(labelMaxTime);
 
@@ -640,7 +655,7 @@ public class Graphics {
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogPower.add(labelMaxNegativeHalf);
 
-        Graph graphPower = new Graph(circuit.getMaximumTime(), circuit.getDt(), element.getPowerMax(), element.getPowersArray(), element1.getPowersArray());
+        Graph graphPower = new Graph(circuit.getDt(), element.getPowerMax(), element.getPowersArray(), element1.getPowersArray());
         graphPower.setBounds(50, 50, 500, 500);
         graphPower.setBackground(Color.gray);
         dialogPower.add(graphPower);

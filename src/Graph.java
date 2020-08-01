@@ -4,15 +4,15 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Graph extends JPanel {
-    double maxTime, dt, maxAmount;
+    static double maxTime;
+    double dt, maxAmount;
     double[] fixedArray,fixedArray1;
     int[] finalArray,finalArray1;
     boolean isTwoElement;
     ArrayList<Double> protoArray,protoArray1;
-    Graph (double maxTime,double dt, double maxAmount, ArrayList<Double> protoArray, ArrayList<Double> protoArray1){
+    Graph (double dt, double maxAmount, ArrayList<Double> protoArray, ArrayList<Double> protoArray1){
         setSize(500,501);
         this.maxAmount = maxAmount;
-        this.maxTime = maxTime;
         this.dt = dt;
         this.protoArray = protoArray;
         this.protoArray1 = protoArray1;
@@ -24,10 +24,17 @@ public class Graph extends JPanel {
         setFinalArray1();
     }
 
-    Graph (double maxTime,double dt, double maxAmount, ArrayList<Double> protoArray){
+    public static double getMaxTime() {
+        return maxTime;
+    }
+
+    public static void setMaxTime(double maxTimeIn) {
+        maxTime = maxTimeIn;
+    }
+
+    Graph (double dt, double maxAmount, ArrayList<Double> protoArray){
         setSize(500,501);
         this.maxAmount = maxAmount;
-        this.maxTime = maxTime;
         this.dt = dt;
         this.protoArray = protoArray;
         isTwoElement = false;

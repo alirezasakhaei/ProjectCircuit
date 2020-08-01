@@ -19,14 +19,13 @@ public class Graphics {
     private File selectedFile;
     private JFrame frame;
 
-    public void starter() {
+    public void start() {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
 
         frame = new JFrame("Circuit Simulator");
         frame.setBounds(0, 0, 600, 600);
         GroupLayout frameLayout = new GroupLayout(frame.getContentPane());
         frame.setLayout(frameLayout);
-
 
         JPanel pText, pRun, pDraw, pLoad, pReset, pOut;
         JButton buttonRun, buttonDraw, buttonLoad, buttonReset;
@@ -153,6 +152,7 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (isCircuitSolved) {
+                    //dialog();
                     dialogChooseElement();
                 } else {
                     JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
@@ -196,171 +196,6 @@ public class Graphics {
 
     }
 
-    public void start() {
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
-
-        frame = new JFrame("Circuit Simulator");
-        frame.setBounds(0, 0, 600, 600);
-        frame.setLayout(null);
-
-
-        JPanel pText, pRun, pDraw, pLoad, pReset, pOut;
-        JButton buttonRun, buttonDraw, buttonLoad, buttonReset;
-
-        pOut = new JPanel();
-        pOut.setBounds(0, 300, 300, 300);
-        pOut.setBorder(border);
-        pOut.setLayout(new BorderLayout());
-        pOut.setBackground(Color.white);
-        frame.add(pOut);
-
-        pText = new JPanel();
-        pText.setBounds(0, 0, 300, 300);
-        pText.setBorder(border);
-        pText.setLayout(null);
-        pText.setBackground(Color.white);
-        frame.add(pText);
-
-        pRun = new JPanel();
-        pRun.setBounds(300, 0, 300, 150);
-        pRun.setBorder(border);
-        pRun.setLayout(null);
-        pRun.setBackground(Color.gray.darker().darker().darker().darker());
-        frame.add(pRun);
-
-        pDraw = new JPanel();
-        pDraw.setBounds(300, 150, 300, 150);
-        pDraw.setBorder(border);
-        pDraw.setLayout(null);
-        pDraw.setBackground(Color.gray.darker());
-        frame.add(pDraw);
-
-        pLoad = new JPanel();
-        pLoad.setBounds(300, 300, 300, 150);
-        pLoad.setBorder(border);
-        pLoad.setLayout(null);
-        pLoad.setBackground(Color.gray.darker());
-        frame.add(pLoad);
-
-        pReset = new JPanel();
-        pReset.setBounds(300, 450, 300, 150);
-        pReset.setBorder(border);
-        pReset.setLayout(null);
-        pReset.setBackground(Color.gray.darker().darker().darker().darker());
-        frame.add(pReset);
-
-        buttonRun = new JButton("RUN");
-        buttonRun.setBounds(100, 50, 100, 50);
-        buttonRun.setBackground(Color.white);
-        pRun.add(buttonRun);
-
-        buttonRun.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (!isSomethingLoaded) {
-                    JFileChooser fileChooser = new JFileChooser("D:\\");
-                    fileChooser.showOpenDialog(null);
-                    File input = fileChooser.getSelectedFile();
-                    if (Objects.nonNull(input))
-                        run(input);
-                } else {
-                    try {
-                        FileWriter fileWriter = new FileWriter(selectedFile);
-                        String string = textAreaInput.getText();
-                        Scanner scanner = new Scanner(string);
-                        while (scanner.hasNextLine()) {
-                            fileWriter.write(scanner.nextLine());
-                            fileWriter.write("\n");
-                        }
-                        fileWriter.close();
-                        run(selectedFile);
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-
-        buttonLoad = new JButton("Load");
-        buttonLoad.setBounds(100, 50, 100, 50);
-        buttonLoad.setBackground(Color.white);
-        pLoad.add(buttonLoad);
-
-        buttonLoad.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JFileChooser fileChooser = new JFileChooser("D:\\");
-                fileChooser.showOpenDialog(null);
-                File input = fileChooser.getSelectedFile();
-                String preText = "";
-                if (Objects.nonNull(input))
-                    if (input.canExecute()) {
-                        try {
-                            Scanner scanner = new Scanner(input);
-                            while (scanner.hasNextLine()) {
-                                preText += scanner.nextLine();
-                                preText += "\n";
-                            }
-                            textAreaInput = new JTextArea(preText);
-                            textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
-                            isSomethingLoaded = true;
-                            selectedFile = input;
-                            pText.add(textAreaInput);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-            }
-        });
-
-        buttonDraw = new JButton("Draw");
-        buttonDraw.setBounds(100, 50, 100, 50);
-        buttonDraw.setBackground(Color.white);
-        pDraw.add(buttonDraw);
-
-        buttonDraw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (isCircuitSolved) {
-                    dialogChooseElement();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
-                }
-            }
-        });
-
-        buttonReset = new JButton("Reset");
-        buttonReset.setBounds(100, 50, 100, 50);
-        buttonReset.setBackground(Color.white);
-        pReset.add(buttonReset);
-
-        buttonReset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                isSomethingLoaded = false;
-                isCircuitSolved = false;
-                textAreaInput.setVisible(false);
-                textAreaInput = null;
-                selectedFile = null;
-            }
-        });
-
-        textAreaOutput = new JTextArea();
-        textAreaOutput.setEditable(false);
-        //textAreaOutput.setAutoscrolls(true);
-
-
-        JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
-        scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollableTextArea.setBounds(5, 5, pOut.getWidth() - 5, pOut.getHeight() - 5);
-        pOut.add(scrollableTextArea);
-
-        pOut.add(scrollableTextArea);
-        //moz
-
-        frame.setVisible(true);
-    }
 
     private void run(File input) {
         if (input.canExecute()) {
@@ -409,6 +244,167 @@ public class Graphics {
             }
         } else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+    }
+
+
+    void dialog() {
+        JDialog dialogElement = new JDialog();
+        dialogElement.setBounds(0, 0, 500, 500);
+        GroupLayout layout = new GroupLayout(dialogElement.getContentPane());
+        dialogElement.setLayout(layout);
+        Container container = dialogElement.getContentPane();
+        container.setBackground(Color.gray.darker());
+
+        int elementsNumber = circuit.getElements().size();
+        String[] elements = new String[elementsNumber];
+        int i = 0;
+        for (Map.Entry element : circuit.getElements().entrySet()) {
+            elements[i] = ((Element) element.getValue()).name;
+            i++;
+        }
+
+        JComboBox comboBox = new JComboBox(elements);
+
+
+        JTextField textField = new JTextField();
+
+
+        JLabel labelTime = new JLabel("Draw until:");
+        labelTime.setFont(new Font("Arial", Font.BOLD, 15));
+        labelTime.setForeground(Color.white);
+
+        JLabel labelChoose = new JLabel("Choose the element!");
+        labelChoose.setFont(new Font("Arial", Font.BOLD, 20));
+        labelChoose.setForeground(Color.white);
+
+        JButton buttonChoose = new JButton("Select");
+        buttonChoose.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonChoose.setBackground(Color.white);
+
+        JButton buttonReset = new JButton("Reset");
+        buttonReset.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonReset.setBackground(Color.white);
+
+        JButton buttonDraw = new JButton("Draw");
+        buttonDraw.setFont(new Font("Arial", Font.BOLD, 15));
+        buttonDraw.setBackground(Color.white);
+
+
+        int[] chosens = new int[1];
+        chosens[0] = 0;
+        Element[] chosenElements = new Element[2];
+        chosenElements[0] = null;
+        chosenElements[1] = null;
+
+        JCheckBox checkBoxVoltage, checkBoxCurrent, checkBoxPower;
+        checkBoxVoltage = new JCheckBox();
+
+        checkBoxCurrent = new JCheckBox();
+
+        checkBoxPower = new JCheckBox();
+        checkBoxVoltage.setOpaque(false);
+        checkBoxCurrent.setOpaque(false);
+        checkBoxPower.setOpaque(false);
+
+        JLabel labelVoltage, labelCurrent, labelPower;
+
+        labelVoltage = new JLabel("Voltage");
+        labelVoltage.setForeground(Color.white);
+
+
+        labelCurrent = new JLabel("Current");
+        labelCurrent.setForeground(Color.white);
+
+
+        labelPower = new JLabel("Power");
+        labelPower.setForeground(Color.white);
+
+
+        buttonChoose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (chosens[0] == 2)
+                    JOptionPane.showMessageDialog(dialogElement, "You can't select more than two elements");
+                else if (chosens[0] == 1) {
+                    if (chosenElements[0].name.equals((String) comboBox.getSelectedItem()))
+                        JOptionPane.showMessageDialog(dialogElement, "This element is already selected!");
+                    else {
+                        chosens[0]++;
+                        chosenElements[1] = circuit.getElements().get((String) comboBox.getSelectedItem());
+                        JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
+                    }
+                } else if (chosens[0] == 0) {
+                    chosens[0]++;
+                    chosenElements[0] = circuit.getElements().get((String) comboBox.getSelectedItem());
+                    JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
+                }
+            }
+        });
+
+        buttonDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    if (textField.getText().equals(null) || !InputManager.isNumberValid(textField.getText()))
+                        Graph.setMaxTime(circuit.getMaximumTime());
+                    else {
+                        Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()), circuit.getMaximumTime()));
+                    }
+
+                    if (chosens[0] == 0) {
+                        JOptionPane.showMessageDialog(dialogElement, "No element Selected");
+                    }
+                    if (chosens[0] == 1) {
+                        if (checkBoxVoltage.isSelected())
+                            drawVoltage(chosenElements[0]);
+                        if (checkBoxCurrent.isSelected())
+                            drawCurrent(chosenElements[0]);
+                        if (checkBoxPower.isSelected())
+                            drawPower(chosenElements[0]);
+                    }
+                    if (chosens[0] == 2) {
+                        if (checkBoxVoltage.isSelected())
+                            drawVoltage(chosenElements[0], chosenElements[1]);
+                        if (checkBoxCurrent.isSelected())
+                            drawCurrent(chosenElements[0], chosenElements[1]);
+                        if (checkBoxPower.isSelected())
+                            drawPower(chosenElements[0], chosenElements[1]);
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(dialogElement, "Wrong input for time");
+                }
+            }
+        });
+
+        buttonReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chosens[0] = 0;
+                chosenElements[0] = null;
+                chosenElements[1] = null;
+            }
+        });
+
+
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(labelChoose).addComponent(comboBox)
+                .addGroup(layout.createSequentialGroup().addComponent(labelTime).addComponent(textField))
+                .addGroup(layout.createSequentialGroup().addComponent(buttonChoose).addComponent(buttonReset).addComponent(buttonDraw))
+                .addGroup(layout.createSequentialGroup().addComponent(checkBoxVoltage).addComponent(labelVoltage))
+                .addGroup(layout.createSequentialGroup().addComponent(checkBoxCurrent).addComponent(labelCurrent))
+                .addGroup(layout.createSequentialGroup().addComponent(checkBoxPower).addComponent(labelPower)));
+
+        layout.setVerticalGroup(layout.createSequentialGroup().addComponent(labelChoose).addComponent(comboBox)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(labelTime).addComponent(textField))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(buttonChoose).addComponent(buttonReset).addComponent(buttonDraw))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(checkBoxVoltage).addComponent(labelVoltage))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(checkBoxCurrent).addComponent(labelCurrent))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(checkBoxPower).addComponent(labelPower))
+        );
+
+
+        dialogElement.setVisible(true);
 
     }
 
@@ -485,6 +481,10 @@ public class Graphics {
         checkBoxPower.setBounds(200, 400, 25, 25);
         dialogElement.add(checkBoxPower);
 
+        checkBoxVoltage.setOpaque(false);
+        checkBoxCurrent.setOpaque(false);
+        checkBoxPower.setOpaque(false);
+
         JLabel labelVoltage, labelCurrent, labelPower;
 
         labelVoltage = new JLabel("Voltage");
@@ -501,7 +501,6 @@ public class Graphics {
         labelPower.setForeground(Color.white);
         labelPower.setBounds(250, 390, 100, 50);
         dialogElement.add(labelPower);
-
 
 
         buttonChoose.addActionListener(new ActionListener() {
@@ -532,7 +531,7 @@ public class Graphics {
                     if (textField.getText().equals(null) || !InputManager.isNumberValid(textField.getText()))
                         Graph.setMaxTime(circuit.getMaximumTime());
                     else {
-                        Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()),circuit.getMaximumTime()));
+                        Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()), circuit.getMaximumTime()));
                     }
 
                     if (chosens[0] == 0) {
@@ -555,7 +554,7 @@ public class Graphics {
                             drawPower(chosenElements[0], chosenElements[1]);
                     }
 
-                }catch (Exception e){
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(dialogElement, "Wrong input for time");
                 }
             }

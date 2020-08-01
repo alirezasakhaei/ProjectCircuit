@@ -316,7 +316,7 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (chosens[0] == 2)
-                    JOptionPane.showMessageDialog(dialogElement, "You can choose maximum 2 elements");
+                    JOptionPane.showMessageDialog(dialogElement, "You can't select more than two elements");
                 else if (chosens[0] == 1) {
                     if (chosenElements[0].name.equals((String) comboBox.getSelectedItem()))
                         JOptionPane.showMessageDialog(dialogElement, "This element is already selected!");
@@ -328,7 +328,7 @@ public class Graphics {
                 } else if (chosens[0] == 0) {
                     chosens[0]++;
                     chosenElements[0] = circuit.getElements().get((String) comboBox.getSelectedItem());
-                    JOptionPane.showMessageDialog(dialogElement, "element moz" + (String) comboBox.getSelectedItem() + " is selected!" + chosens[0]);
+                    JOptionPane.showMessageDialog(dialogElement, "element " + (String) comboBox.getSelectedItem() + " is selected!");
                 }
             }
         });
@@ -337,7 +337,6 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (chosens[0] == 0) {
-                    System.out.println("botch" + chosens[0]);
                     JOptionPane.showMessageDialog(dialogElement, "No element Selected");
                 }
                 if (chosens[0] == 1) {

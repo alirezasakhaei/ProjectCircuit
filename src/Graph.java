@@ -42,6 +42,7 @@ public class Graph extends JPanel {
             fixedArray[i] = protoArray.get(i*stepDt);
         }
     }
+
     private void setFinalArray(){
         finalArray = new int[500];
         for (int i=0;i<500;i++){
@@ -79,13 +80,13 @@ public class Graph extends JPanel {
 
 
         for (int i =0;i<499;i++){
-            g2d.setStroke(new BasicStroke(5));
+            g2d.setStroke(new BasicStroke(3));
             g2d.drawLine(i,250 - finalArray[i],i+1,250 - finalArray[i+1]);
         }
         if (isTwoElement){
             g2d.setColor(Color.RED);
             for (int i =0;i<499;i++){
-                g2d.setStroke(new BasicStroke(5));
+                g2d.setStroke(new BasicStroke(3));
                 g2d.drawLine(i,250 - finalArray1[i],i+1,250 - finalArray1[i+1]);
             }
         }

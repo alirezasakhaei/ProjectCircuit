@@ -183,6 +183,9 @@ public class Graphics {
                         }
                         fileWriter.close();
                         run(selectedFile);
+                        buttonDrawCircuit.setEnabled(true);
+                        buttonDrawGraph.setEnabled(true);
+                        buttonSave.setEnabled(true);
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }

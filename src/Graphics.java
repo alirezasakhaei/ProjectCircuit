@@ -70,15 +70,18 @@ public class Graphics {
         pSave.setLayout(new BorderLayout());
         pSave.setBackground(Color.gray.darker().darker().darker().darker());
 
+        Color red = new Color(230, 90, 90);
+
+
         buttonSolve = new JButton("Solve");
         buttonSolve.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonSolve.setForeground(Color.WHITE);
+        buttonSolve.setForeground(red);
         pRun.add(buttonSolve);
 
 
         buttonDrawCircuit = new JButton("Draw Circuit");
         buttonDrawCircuit.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonDrawCircuit.setForeground(Color.RED);
+        buttonDrawCircuit.setForeground(red);
         buttonDrawCircuit.setEnabled(false);
 
         pDrawCircuit.add(buttonDrawCircuit);
@@ -96,8 +99,9 @@ public class Graphics {
 
         buttonSave = new JButton("Save");
         buttonSave.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonSave.setForeground(Color.RED);
         buttonSave.setEnabled(false);
+
+        buttonSave.setForeground(red);
 
         pSave.add(buttonSave);
 
@@ -136,7 +140,7 @@ public class Graphics {
 
         buttonDrawGraph = new JButton("Draw Graph");
         buttonDrawGraph.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonDrawGraph.setForeground(Color.RED);
+        buttonDrawGraph.setForeground(red);
         buttonDrawGraph.setEnabled(false);
 
         pDrawGraph.add(buttonDrawGraph);
@@ -187,8 +191,7 @@ public class Graphics {
 
         buttonLoad = new JButton("Load");
         buttonLoad.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonLoad.setForeground(Color.WHITE);
-        buttonLoad.setForeground(Color.WHITE);
+        buttonLoad.setForeground(red);
 
         pLoad.add(buttonLoad);
 
@@ -237,7 +240,7 @@ public class Graphics {
         buttonReset = new JButton("Reset");
         buttonReset.setBackground(Color.white);
         buttonReset.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonReset.setForeground(Color.WHITE);
+        buttonReset.setForeground(red);
         pReset.add(buttonReset);
 
         buttonReset.addActionListener(new ActionListener() {

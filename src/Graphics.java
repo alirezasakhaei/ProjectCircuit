@@ -71,15 +71,14 @@ public class Graphics {
         pSave.setBackground(Color.gray.darker().darker().darker().darker());
 
         buttonSolve = new JButton("Solve");
-        buttonSolve.setBackground(Color.white);
         buttonSolve.setBackground(Color.gray.darker().darker().darker().darker());
         buttonSolve.setForeground(Color.WHITE);
         pRun.add(buttonSolve);
 
 
         buttonDrawCircuit = new JButton("Draw Circuit");
-        buttonDrawCircuit.setForeground(Color.WHITE);
-        buttonDrawCircuit.setForeground(Color.gray);
+        buttonDrawCircuit.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonDrawCircuit.setForeground(Color.RED);
         buttonDrawCircuit.setEnabled(false);
 
         pDrawCircuit.add(buttonDrawCircuit);
@@ -96,8 +95,8 @@ public class Graphics {
 
 
         buttonSave = new JButton("Save");
-        buttonSave.setForeground(Color.WHITE);
-        buttonSave.setForeground(Color.gray);
+        buttonSave.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonSave.setForeground(Color.RED);
         buttonSave.setEnabled(false);
 
         pSave.add(buttonSave);
@@ -136,8 +135,8 @@ public class Graphics {
         });
 
         buttonDrawGraph = new JButton("Draw Graph");
-        buttonDrawGraph.setBackground(Color.gray.darker());
-        buttonDrawGraph.setForeground(Color.WHITE);
+        buttonDrawGraph.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonDrawGraph.setForeground(Color.RED);
         buttonDrawGraph.setEnabled(false);
 
         pDrawGraph.add(buttonDrawGraph);
@@ -187,8 +186,8 @@ public class Graphics {
         });
 
         buttonLoad = new JButton("Load");
-        buttonLoad.setBackground(Color.white);
-        buttonLoad.setBackground(Color.gray.darker());
+        buttonLoad.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonLoad.setForeground(Color.WHITE);
         buttonLoad.setForeground(Color.WHITE);
 
         pLoad.add(buttonLoad);
@@ -244,14 +243,16 @@ public class Graphics {
         buttonReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                isSomethingLoaded = false;
-                isCircuitSolved = false;
-                textAreaInput.setVisible(false);
-                textAreaInput = null;
-                selectedFile = null;
-                buttonSave.setEnabled(false);
-                buttonDrawCircuit.setEnabled(false);
-                buttonDrawGraph.setEnabled(false);
+                if(isCircuitSolved) {
+                    isSomethingLoaded = false;
+                    isCircuitSolved = false;
+                    textAreaInput.setVisible(false);
+                    textAreaInput = null;
+                    selectedFile = null;
+                    buttonSave.setEnabled(false);
+                    buttonDrawCircuit.setEnabled(false);
+                    buttonDrawGraph.setEnabled(false);
+                }
             }
         });
 
@@ -579,7 +580,7 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    if (textField.getText().equals(null) || !InputManager.isNumberValid(textField.getText()))
+                    if (textField.getText().equals("") || !InputManager.isNumberValid(textField.getText()))
                         Graph.setMaxTime(circuit.getMaximumTime());
                     else {
                         Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()), circuit.getMaximumTime()));

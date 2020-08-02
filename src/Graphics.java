@@ -27,8 +27,8 @@ public class Graphics {
         GroupLayout frameLayout = new GroupLayout(frame.getContentPane());
         frame.setLayout(frameLayout);
 
-        JPanel pText, pRun, pDraw, pLoad, pReset, pOut;
-        JButton buttonRun, buttonDraw, buttonLoad, buttonReset;
+        JPanel pText, pRun, pDrawGraph, pLoad, pReset, pOut, pSave, pDrawCircuit;
+        JButton buttonSolve, buttonDrawGraph, buttonLoad, buttonReset, buttonSave, buttonDrawCircuit;
 
         pOut = new JPanel();
         pOut.setBorder(border);
@@ -45,10 +45,10 @@ public class Graphics {
         pRun.setLayout(new BorderLayout());
         pRun.setBackground(Color.gray.darker().darker().darker().darker());
 
-        pDraw = new JPanel();
-        pDraw.setBorder(border);
-        pDraw.setLayout(new BorderLayout());
-        pDraw.setBackground(Color.gray.darker());
+        pDrawGraph = new JPanel();
+        pDrawGraph.setBorder(border);
+        pDrawGraph.setLayout(new BorderLayout());
+        pDrawGraph.setBackground(Color.gray.darker());
 
         pLoad = new JPanel();
         pLoad.setBorder(border);
@@ -60,21 +60,114 @@ public class Graphics {
         pReset.setLayout(new BorderLayout());
         pReset.setBackground(Color.gray.darker().darker().darker().darker());
 
-        buttonRun = new JButton("RUN");
-        buttonRun.setBackground(Color.white);
-        buttonRun.setBackground(Color.gray.darker().darker().darker().darker());
-        buttonRun.setForeground(Color.WHITE);
-        pRun.add(buttonRun);
+        pDrawCircuit = new JPanel();
+        pDrawCircuit.setBorder(border);
+        pDrawCircuit.setLayout(new BorderLayout());
+        pDrawCircuit.setBackground(Color.gray.darker().darker().darker().darker());
 
-        buttonRun.addActionListener(new ActionListener() {
+        pSave = new JPanel();
+        pSave.setBorder(border);
+        pSave.setLayout(new BorderLayout());
+        pSave.setBackground(Color.gray.darker().darker().darker().darker());
+
+        buttonSolve = new JButton("Solve");
+        buttonSolve.setBackground(Color.white);
+        buttonSolve.setBackground(Color.gray.darker().darker().darker().darker());
+        buttonSolve.setForeground(Color.WHITE);
+        pRun.add(buttonSolve);
+
+
+        buttonDrawCircuit = new JButton("Draw Circuit");
+        buttonDrawCircuit.setForeground(Color.WHITE);
+        buttonDrawCircuit.setForeground(Color.gray);
+        buttonDrawCircuit.setEnabled(false);
+
+        pDrawCircuit.add(buttonDrawCircuit);
+
+        buttonDrawCircuit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isCircuitSolved)
+                    drawCircuit();
+                else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+
+            }
+        });
+
+
+        buttonSave = new JButton("Save");
+        buttonSave.setForeground(Color.WHITE);
+        buttonSave.setForeground(Color.gray);
+        buttonSave.setEnabled(false);
+
+        pSave.add(buttonSave);
+
+
+        buttonSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isCircuitSolved) {
+                    try {
+                        String path = "D:\\output.txt";
+                        File output;
+                        output = new File(path);
+                        JFileChooser fileChooser = new JFileChooser("D:\\");
+                        fileChooser.setFileFilter(new FileNameExtensionFilter("txt file", "txt"));
+                        fileChooser.setAcceptAllFileFilterUsed(false);
+                        fileChooser.setSelectedFile(output);
+                        fileChooser.showSaveDialog(null);
+                        output = fileChooser.getSelectedFile();
+                        if (Objects.isNull(output)) {
+                            output = new File(path);
+                        }
+                        if (!output.getName().trim().endsWith(".txt"))
+                            output = new File(output.getAbsolutePath() + ".txt");
+                        FileWriter fileWriter = new FileWriter(output);
+                        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                        bufferedWriter.write(circuit.getOutput());
+                        bufferedWriter.close();
+                        fileWriter.close();
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(frame, "Can't write the output file!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+
+            }
+        });
+
+        buttonDrawGraph = new JButton("Draw Graph");
+        buttonDrawGraph.setBackground(Color.gray.darker());
+        buttonDrawGraph.setForeground(Color.WHITE);
+        buttonDrawGraph.setEnabled(false);
+
+        pDrawGraph.add(buttonDrawGraph);
+
+        buttonDrawGraph.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (isCircuitSolved) {
+                    //dialog();
+                    dialogChooseElement();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+                }
+            }
+        });
+
+
+        buttonSolve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (!isSomethingLoaded) {
                     JFileChooser fileChooser = new JFileChooser("D:\\");
                     fileChooser.showOpenDialog(null);
                     File input = fileChooser.getSelectedFile();
-                    if (Objects.nonNull(input))
+                    if (Objects.nonNull(input)) {
                         run(input);
+                        buttonDrawCircuit.setEnabled(true);
+                        buttonDrawGraph.setEnabled(true);
+                        buttonSave.setEnabled(true);
+                    }
                 } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
@@ -141,24 +234,6 @@ public class Graphics {
             }
         });
 
-        buttonDraw = new JButton("Draw");
-        buttonDraw.setBackground(Color.white);
-        buttonDraw.setBackground(Color.gray.darker());
-        buttonDraw.setForeground(Color.WHITE);
-
-        pDraw.add(buttonDraw);
-
-        buttonDraw.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if (isCircuitSolved) {
-                    //dialog();
-                    dialogChooseElement();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
-                }
-            }
-        });
 
         buttonReset = new JButton("Reset");
         buttonReset.setBackground(Color.white);
@@ -174,6 +249,9 @@ public class Graphics {
                 textAreaInput.setVisible(false);
                 textAreaInput = null;
                 selectedFile = null;
+                buttonSave.setEnabled(false);
+                buttonDrawCircuit.setEnabled(false);
+                buttonDrawGraph.setEnabled(false);
             }
         });
 
@@ -189,13 +267,12 @@ public class Graphics {
 
 
         frameLayout.setHorizontalGroup(frameLayout.createSequentialGroup().addGroup(frameLayout.createParallelGroup().addComponent(pText).addComponent(pOut))
-                .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDraw).addComponent(pLoad).addComponent(pReset)));
+                .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDrawCircuit).addComponent(pDrawGraph).addComponent(pLoad).addComponent(pSave).addComponent(pReset)));
         frameLayout.setVerticalGroup(frameLayout.createParallelGroup().addGroup(frameLayout.createSequentialGroup().addComponent(pText).addComponent(pOut))
-                .addGroup(frameLayout.createSequentialGroup().addComponent(pRun).addComponent(pDraw).addComponent(pLoad).addComponent(pReset)));
+                .addGroup(frameLayout.createSequentialGroup().addComponent(pRun).addComponent(pDrawCircuit).addComponent(pDrawGraph).addComponent(pLoad).addComponent(pSave).addComponent(pReset)));
         frame.setVisible(true);
 
     }
-
 
     private void run(File input) {
         if (input.canExecute()) {
@@ -213,40 +290,14 @@ public class Graphics {
             } else {
                 circuit.initializeGraph();
                 circuit.solveCircuit();
-                drawCircuit();
+                //    drawCircuit();
                 isCircuitSolved = true;
                 textAreaOutput.setText(circuit.getOutput());
-                try {
-                    String path = input.getPath().substring(0, input.getPath().lastIndexOf("\\"));
-                    File output;
-                    output = new File(path + "\\output.txt");
-                    JFileChooser fileChooser = new JFileChooser("D:\\");
-                    fileChooser.setFileFilter(new FileNameExtensionFilter("txt file", "txt"));
-                    fileChooser.setAcceptAllFileFilterUsed(false);
-                    fileChooser.setSelectedFile(output);
-                    fileChooser.showSaveDialog(null);
-                    output = fileChooser.getSelectedFile();
-                    if (Objects.isNull(output)) {
-                        output = new File(path + "\\output.txt");
-                    }
-                    if (!output.getName().trim().endsWith(".txt"))
-                        output = new File(output.getAbsolutePath() + ".txt");
-                    FileWriter fileWriter = new FileWriter(output);
-                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                    bufferedWriter.write(circuit.getOutput());
-                    bufferedWriter.close();
-                    fileWriter.close();
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(frame, "Can't write the output file!", "ERROR", JOptionPane.ERROR_MESSAGE);
-                }
-
-
             }
         } else
             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
 
     }
-
 
     void dialog() {
         JDialog dialogElement = new JDialog();
@@ -881,6 +932,5 @@ public class Graphics {
 
         dialog.setVisible(true);
     }
-
 
 }

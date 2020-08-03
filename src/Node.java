@@ -50,9 +50,7 @@ public class Node {
     }
 
     public boolean equals(Node node) {
-        if (name == node.name)
-            return true;
-        return false;
+        return name == node.name;
     }
 
     public Node(int name) {

@@ -72,7 +72,6 @@ public class ErrorFinder {
                             }
                         } else if (result == 1 || result == 4) {
                             if (Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()) > circuit.getDi()) {
-                                System.out.println(Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()));
                                 return false;
                             }
                         }
@@ -94,7 +93,13 @@ public class ErrorFinder {
                     elementTwo = voltageSourceTwo.getValue();
                     if (elementTwo.isVoltageSource()) {
                         if (Element.isParallel(elementOne, elementTwo)) {
-                            if (Math.abs(elementOne.getVoltage() - elementTwo.getVoltage()) > circuit.getDv()) {
+                            if (elementOne.positiveNode.equals(elementTwo.positiveNode)) {
+                                if (Math.abs(elementOne.getVoltage() - elementTwo.getVoltage()) > circuit.getDv()) {
+                                    return false;
+                                }
+                                elementOne.setParallelToVoltageSource(false);
+                                elementTwo.setParallelToVoltageSource(true);
+                            } else if (Math.abs(elementOne.getVoltage() + elementTwo.getVoltage()) > circuit.getDv()) {
                                 return false;
                             }
                         }

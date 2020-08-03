@@ -93,8 +93,7 @@ public class Graphics {
                 if (isCircuitSolved) {
                     drawCircuit();
                     drawCircuitPro();
-                }
-                else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+                } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
 
             }
         });
@@ -164,16 +163,14 @@ public class Graphics {
         buttonSolve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                int error = -10;
                 if (!isSomethingLoaded) {
                     JFileChooser fileChooser = new JFileChooser("D:\\");
                     fileChooser.showOpenDialog(null);
                     File input = fileChooser.getSelectedFile();
-                    if (Objects.nonNull(input)) {
-                        run(input);
-                        buttonDrawCircuit.setEnabled(true);
-                        buttonDrawGraph.setEnabled(true);
-                        buttonSave.setEnabled(true);
-                    }
+                    if (Objects.isNull(input))
+                        return;
+                    error = run(input);
                 } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
@@ -184,13 +181,33 @@ public class Graphics {
                             fileWriter.write("\n");
                         }
                         fileWriter.close();
-                        run(selectedFile);
-                        buttonDrawCircuit.setEnabled(true);
-                        buttonDrawGraph.setEnabled(true);
-                        buttonSave.setEnabled(true);
+                        error = run(selectedFile);
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
+                }
+                if (error != -10) {
+                    switch (error) {
+                        case -1:
+                        case -2:
+                        case -3:
+                        case -4:
+                        case -5:
+                            JOptionPane.showMessageDialog(frame, "Error " + error + " is found!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case -6:
+                            JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        case 0:
+                            buttonDrawCircuit.setEnabled(true);
+                            buttonDrawGraph.setEnabled(true);
+                            buttonSave.setEnabled(true);
+                            break;
+                        default:
+                            JOptionPane.showMessageDialog(frame, "There is a problem found in line " + error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                    textAreaOutput.setText(circuit.getOutput());
+
                 }
             }
         });
@@ -252,7 +269,6 @@ public class Graphics {
         buttonReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (isCircuitSolved) {
                     isSomethingLoaded = false;
                     isCircuitSolved = false;
                     textAreaInput.setVisible(false);
@@ -261,7 +277,7 @@ public class Graphics {
                     buttonSave.setEnabled(false);
                     buttonDrawCircuit.setEnabled(false);
                     buttonDrawGraph.setEnabled(false);
-                }
+
             }
         });
 
@@ -284,29 +300,29 @@ public class Graphics {
 
     }
 
-    private void run(File input) {
+    private int run(File input) {
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
             circuit = inputManager.analyzeTheInput();
             if (inputManager.getErrorLine() != -1) {
-                JOptionPane.showMessageDialog(frame, "There is a problem found in line " + inputManager.getErrorLine(), "ERROR", JOptionPane.ERROR_MESSAGE);
-                return;
+                return inputManager.getErrorLine();
             }
             Circuit.setCircuit(circuit);
             ErrorFinder errorFinder = new ErrorFinder(circuit);
             int error = errorFinder.findErrors();
             if (error != 0) {
-                JOptionPane.showMessageDialog(frame, "Error " + error + " is found!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                return error;
             } else {
                 circuit.initializeGraph();
-                circuit.solveCircuit();
-                //    drawCircuit();
-                isCircuitSolved = true;
-                textAreaOutput.setText(circuit.getOutput());
+                error = circuit.solveCircuit();
+                if (error == 0) {
+                    isCircuitSolved = true;
+                    return 0;
+                } else return error;
             }
-        } else
-            JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
-
+        } else {
+            return -6;
+        }
     }
 
     private void dialogChooseElement() {
@@ -439,11 +455,11 @@ public class Graphics {
                         JOptionPane.showMessageDialog(dialogElement, "No element Selected");
                     }
                     if (checkBoxVoltage.isSelected())
-                        drawGraph(chosenElements,chosens[0],'V');
+                        drawGraph(chosenElements, chosens[0], 'V');
                     if (checkBoxCurrent.isSelected())
-                        drawGraph(chosenElements,chosens[0],'A');
+                        drawGraph(chosenElements, chosens[0], 'A');
                     if (checkBoxPower.isSelected())
-                        drawGraph(chosenElements,chosens[0],'W');
+                        drawGraph(chosenElements, chosens[0], 'W');
 
 
                 } catch (Exception e) {
@@ -464,43 +480,43 @@ public class Graphics {
         dialogElement.setVisible(true);
     }
 
-    private void drawGraph(Element[] chosenElements,int elementsNumber,char graphType) {
+    private void drawGraph(Element[] chosenElements, int elementsNumber, char graphType) {
         JDialog dialogVoltage = new JDialog();
         dialogVoltage.setBounds(0, 0, 600, 600);
         dialogVoltage.setLayout(null);
 
-        final Color[] colors = {Color.red, Color.green, Color.yellow, Color.pink, Color.ORANGE, Color.magenta, Color.cyan, Color.darkGray, Color.lightGray,Color.gray};
+        final Color[] colors = {Color.red, Color.green, Color.yellow, Color.pink, Color.ORANGE, Color.magenta, Color.cyan, Color.darkGray, Color.lightGray, Color.gray};
         double maxAmount = 0;
 
 
         JLabel title = new JLabel();
         switch (graphType) {
-            case 'V' :
+            case 'V':
                 title.setText("Voltage");
-                for (int i=0;i<elementsNumber;i++)
+                for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getVoltageMax() > maxAmount)
                         maxAmount = chosenElements[i].getVoltageMax();
                 break;
-            case 'A' :
+            case 'A':
                 title.setText("Current");
-                for (int i=0;i<elementsNumber;i++)
+                for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getCurrentMax() > maxAmount)
                         maxAmount = chosenElements[i].getCurrentMax();
                 break;
-            case 'W' :
+            case 'W':
                 title.setText("Power");
-                for (int i=0;i<elementsNumber;i++)
+                for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getPowerMax() > maxAmount)
                         maxAmount = chosenElements[i].getPowerMax();
                 break;
         }
-        title.setBounds(270,10,60,20);
+        title.setBounds(270, 10, 60, 20);
         dialogVoltage.add(title);
 
         JLabel[] titles = new JLabel[elementsNumber];
-        for (int i=0;i<elementsNumber;i++){
+        for (int i = 0; i < elementsNumber; i++) {
             titles[i] = new JLabel(chosenElements[i].name);
-            titles[i].setBounds(50*(i+1),30,50,30);
+            titles[i].setBounds(50 * (i + 1), 30, 50, 30);
             titles[i].setForeground(colors[i]);
             dialogVoltage.add(titles[i]);
         }
@@ -508,7 +524,6 @@ public class Graphics {
         JLabel labelTime = new JLabel("Time");
         labelTime.setBounds(500, 550, 50, 50);
         dialogVoltage.add(labelTime);
-
 
 
         JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
@@ -532,7 +547,7 @@ public class Graphics {
         dialogVoltage.add(labelMaxNegativeHalf);
 
 
-        Graph graphVoltage = new Graph(circuit.getDt(), maxAmount, chosenElements,elementsNumber,graphType);
+        Graph graphVoltage = new Graph(circuit.getDt(), maxAmount, chosenElements, elementsNumber, graphType);
         graphVoltage.setBounds(50, 50, 500, 500);
         graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
@@ -572,7 +587,7 @@ public class Graphics {
         dialog.setVisible(true);
     }
 
-    private void drawCircuitPro(){
+    private void drawCircuitPro() {
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
         for (Map.Entry node : circuit.getNodes().entrySet()) {
@@ -583,9 +598,9 @@ public class Graphics {
 
         JDialog dialog = new JDialog();
         if (nodes.size() <= 10)
-            dialog.setBounds(0,0,nodes.size()*100 + 50,650);
+            dialog.setBounds(0, 0, nodes.size() * 100 + 50, 650);
         else
-            dialog.setBounds(0,0,1200,650);
+            dialog.setBounds(0, 0, 1200, 650);
         dialog.setVisible(true);
 
     }

@@ -69,11 +69,8 @@ public abstract class Element extends Circuit {
     abstract double getCurrent();
 
     public static boolean isParallel(Element elementOne, Element elementTwo) {
-        if (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
-            return true;
-        if (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode))
-            return true;
-        return false;
+        return (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
+                || (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode));
     }
 
     public static boolean isSeries(Element elementOne, Element elementTwo) {
@@ -97,18 +94,11 @@ public abstract class Element extends Circuit {
             isNeighbor = true;
             commonNode = elementOne.negativeNode;
         }
-        if (!isNeighbor)
-            return false;
-        if (commonNode.getNegatives().size() + commonNode.getPositives().size() > 2) {
-            return false;
-        } else
-            return true;
+        return isNeighbor && commonNode.getNegatives().size() + commonNode.getPositives().size() == 2;
     }
 
     public static boolean isTheSameKind(Element elementOne, Element elementTwo) {
-        if (elementOne.getClass().getName() == elementTwo.getClass().getName())
-            return true;
-        return false;
+        return elementOne.getClass().getName() == elementTwo.getClass().getName();
     }
 
     public boolean isVoltageSource() {

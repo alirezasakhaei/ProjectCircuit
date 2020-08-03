@@ -54,6 +54,7 @@ public class IndependentVoltageSource extends Element {
         return current;
     }
 
+    @Override
     public double getVoltage() {
         double theta = 2 * Math.PI * frequency * Circuit.getCircuit().getTime() + phase;
         return offset + amplitude * Math.sin(theta);

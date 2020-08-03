@@ -582,13 +582,11 @@ public class Graphics {
         }
 
         JDialog dialog = new JDialog();
-        if (nodes.size() <= 12)
+        if (nodes.size() <= 10)
             dialog.setBounds(0,0,nodes.size()*100 + 50,650);
         else
-            dialog.setBounds(0,0,1200,700);
+            dialog.setBounds(0,0,1200,650);
         dialog.setVisible(true);
 
-
     }
-
 }

@@ -206,7 +206,7 @@ public class Circuit {
 
         for (time = 0; time <= maximumTime; time += dt) {
             reconstructUnions();
-            if (time / dt > 30) {
+            if (time / maximumTime > 0.002) {
                 if (!errorFinder.isCurrentSourceSeries()) {
                     return -2;
                 }

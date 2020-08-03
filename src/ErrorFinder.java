@@ -65,16 +65,19 @@ public class ErrorFinder {
                 for (Map.Entry<String, Element> currentSourceTwo : circuit.getElements().entrySet()) {
                     elementTwo = currentSourceTwo.getValue();
                     if (elementTwo.isCurrentSource()) {
-                        if (Element.isSeries(elementOne, elementTwo)) {
-                            if (elementOne.positiveNode.equals(elementTwo.negativeNode)) {
-                                if (Math.abs(elementOne.getCurrent() - elementTwo.getCurrent()) > circuit.getDi()) {
-                                    return false;
-                                }
-                            } else if (Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()) > circuit.getDi()) {
+                        int result = Element.isSeries(elementOne, elementTwo);
+                        if (result == 2 || result == 3) {
+                            if (Math.abs(elementOne.getCurrent() - elementTwo.getCurrent()) > circuit.getDi()) {
                                 return false;
                             }
-
+                        } else if (result == 1 || result == 4) {
+                            if (Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()) > circuit.getDi()) {
+                                System.out.println(Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()));
+                                return false;
+                            }
                         }
+
+
                     }
                 }
             }

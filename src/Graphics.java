@@ -601,6 +601,13 @@ public class Graphics {
             dialog.setBounds(0, 0, nodes.size() * 100 + 50, 650);
         else
             dialog.setBounds(0, 0, 1200, 650);
+
+        CircuitGraphPro circuitGraphPro = new CircuitGraphPro(circuit.getNodes().size() - 1, circuit, nodes, dialog);
+        circuitGraphPro.setLayout(null);
+        circuitGraphPro.setBounds(0, 50, dialog.getWidth(), 600);
+        dialog.add(circuitGraphPro);
+
+
         dialog.setVisible(true);
 
     }

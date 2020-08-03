@@ -12,9 +12,26 @@ public class Node {
     private int name;
     private double previousVoltage;
     private ArrayList<Double> voltagesArray;
-    private int earthConnections = 0;
+    private int earthConnections = 0, earthConnectionsPro = 0;
     private Point location;
-    int x,y;
+    int x, y;
+
+    public int getEarthConnectionsPro() {
+        return earthConnectionsPro;
+    }
+
+    public void setEarthConnectionsPro() {
+        for (int i = 0; i < positives.size(); i++) {
+            if (Circuit.getCircuit().getElements().get(positives.get(i)).negativeNode.name == 0) {
+                earthConnectionsPro++;
+            }
+        }
+        for (int i = 0; i < negatives.size(); i++) {
+            if (Circuit.getCircuit().getElements().get(negatives.get(i)).positiveNode.name == 0) {
+                earthConnectionsPro++;
+            }
+        }
+    }
 
     public Point getLocation() {
         return location;

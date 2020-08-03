@@ -39,11 +39,12 @@ public class ElementShapePro extends JPanel {
             g.drawLine(x/2,y,x/2,3*y/4);
             switch (type){
                 case 'R' :
-                    g.drawLine(5,25,0,35);
-                    g.drawLine(0,35,10,45);
-                    g.drawLine(10,45,0,55);
-                    g.drawLine(0,55,10,65);
-                    g.drawLine(10,65,5,75);
+                    System.out.println(x);
+                    System.out.println(y);
+                    g.drawLine(x/2,2*y/8,0,3*y/8);
+                    g.drawLine(0,3*y/8,x,4*y/8);
+                    g.drawLine(x,4*y/8,0,5*y/8);
+                    g.drawLine(0,5*y/8,x/2,6*y/8);
                     break;
                 case 'C' :
                     g.drawLine(5,40,5,0);
@@ -136,11 +137,12 @@ public class ElementShapePro extends JPanel {
             g.drawLine(5,75,5,100);
             switch (type){
                 case 'R' :
-                    g.drawLine(5,25,0,35);
-                    g.drawLine(0,35,10,45);
-                    g.drawLine(10,45,0,55);
-                    g.drawLine(0,55,10,65);
-                    g.drawLine(10,65,5,75);
+                    x = verticalElementWidth;
+                    y = verticalElementHeight;
+                    g.drawLine(x/2,2*y/8,0,3*y/8);
+                    g.drawLine(0,3*y/8,x,4*y/8);
+                    g.drawLine(x,4*y/8,0,5*y/8);
+                    g.drawLine(0,5*y/8,x/2,6*y/8);
                     break;
                 case 'C' :
                     g.drawLine(5,40,5,0);

@@ -36,6 +36,7 @@ public class CircuitGraphPro extends JPanel {
 
         drawEarthConnecteds();
     }
+
     private void setDiffs(){
         boolean flag = true;
         for (int i = 1 ; i < (dotsNumber) ; i++){
@@ -94,7 +95,11 @@ public class CircuitGraphPro extends JPanel {
             nodes.get(i).x = 50 + (i-1)*(nodesDistance);
         }
     }
+    @Override
+    public void paint(Graphics g) {
+        g.drawLine(0,0,100,100);
 
+    }
     private void drawEarthConnecteds() {
         Node node;
         ElementShapePro elementShapePro;
@@ -158,9 +163,5 @@ public class CircuitGraphPro extends JPanel {
 
     }
 
-    @Override
-    public void paint(Graphics g) {
-        g.drawLine(0,0,100,100);
 
-    }
 }

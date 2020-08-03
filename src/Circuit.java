@@ -200,22 +200,33 @@ public class Circuit {
         }
     }
 
-    void solveCircuit() {
-        double i1, i2;
+    int solveCircuit() {
+        double i1, i2, i1All, i2All;
+        ErrorFinder errorFinder = new ErrorFinder(circuit);
 
         for (time = 0; time <= maximumTime; time += dt) {
             reconstructUnions();
-
+            if (time / maximumTime > 0.002) {
+                if (!errorFinder.isCurrentSourceSeries()) {
+                    return -2;
+                }
+                if (!errorFinder.isVoltageSourcesParallel())
+                    return -3;
+            }
             for (int i = 0; i < unions.size(); i++) {
                 setVoltagesInUnion(i);
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
                 setVoltagesInUnion(i);
-
                 i1 = obtainCurrent(unions.get(i));
+                i1All = obtainAllCurrents();
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + 2 * dv);
                 setVoltagesInUnion(i);
                 i2 = obtainCurrent(unions.get(i));
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
+                i2All = obtainAllCurrents();
+                if (Math.abs(i1) != Math.abs(i2))
+                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
+                else
+                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1All) - Math.abs(i2All)) / di / 2);
                 setVoltagesInUnion(i);
             }
 
@@ -238,6 +249,17 @@ public class Circuit {
                 elements.put(elementNames.get(i), d);
             }
         }
+
+        return 0;
+    }
+
+
+    private double obtainAllCurrents() {
+        double current = 0;
+        for (int i = 0; i < unions.size(); i++) {
+            current += Math.abs(obtainCurrent(unions.get(i)));
+        }
+        return current;
     }
 
 
@@ -336,3 +358,5 @@ public class Circuit {
         return output.toString();
     }
 }
+
+

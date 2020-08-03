@@ -69,46 +69,81 @@ public abstract class Element extends Circuit {
     abstract double getCurrent();
 
     public static boolean isParallel(Element elementOne, Element elementTwo) {
-        if (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
-            return true;
-        if (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode))
-            return true;
-        return false;
+        return (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
+                || (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode));
     }
 
-    public static boolean isSeries(Element elementOne, Element elementTwo) {
-        if (isParallel(elementOne, elementTwo))
-            return false;
-        boolean isNeighbor = false;
-        Node commonNode = null;
+    public static int isSeries(Element elementOne, Element elementTwo) {
+        //positives are series : 1
+        //elementOne positive and elementTwo negative are series : 2
+        //elementOne negative and elementTwo positive are series : 3
+        //negatives are series : 4
+        if (elementOne != elementTwo) {
+            int result = isSeriesss(elementOne, elementTwo, true);
+            if (result == 1)
+                return 1;
+            else if (result == -1)
+                return 2;
+            else {
+                result = isSeriesss(elementOne, elementTwo, false);
+                if (result == 1)
+                    return 3;
+                else if (result == -1)
+                    return 4;
+            }
+            return 0;
+        } else return 0;
+    }
+
+
+    private static int isSeriesss(Element elementOne, Element elementTwo, boolean positive) {
+        boolean isNeighbor = false, canContinue;
+        int isPositiveOfDestination = 0;
+        Node commonNode;
+        if (positive)
+            commonNode = elementOne.positiveNode;
+        else commonNode = elementOne.negativeNode;
         if (elementOne.positiveNode.equals(elementTwo.positiveNode)) {
             isNeighbor = true;
             commonNode = elementOne.positiveNode;
-        }
-        if (elementOne.positiveNode.equals(elementTwo.negativeNode)) {
+            isPositiveOfDestination = 1;
+        } else if (elementOne.positiveNode.equals(elementTwo.negativeNode)) {
             isNeighbor = true;
             commonNode = elementOne.positiveNode;
-        }
-        if (elementOne.negativeNode.equals(elementTwo.positiveNode)) {
+            isPositiveOfDestination = -1;
+        } else if (elementOne.negativeNode.equals(elementTwo.positiveNode)) {
             isNeighbor = true;
             commonNode = elementOne.negativeNode;
-        }
-        if (elementOne.negativeNode.equals(elementTwo.negativeNode)) {
+            isPositiveOfDestination = 1;
+        } else if (elementOne.negativeNode.equals(elementTwo.negativeNode)) {
             isNeighbor = true;
             commonNode = elementOne.negativeNode;
+            isPositiveOfDestination = -1;
         }
-        if (!isNeighbor)
-            return false;
-        if (commonNode.getNegatives().size() + commonNode.getPositives().size() > 2) {
-            return false;
-        } else
-            return true;
-    }
+        canContinue = commonNode.getNegatives().size() + commonNode.getPositives().size() == 2;
+        if (canContinue)
+            if (isNeighbor) {
+                return isPositiveOfDestination;
+            } else {
+                if (positive) {
+                    if (commonNode.getPositives().size() == 1)
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(0)), elementTwo, true);
+                    else if (commonNode.getPositives().get(0).equals(elementOne.name))
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(1)), elementTwo, false);
+                    else
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(0)), elementTwo, false);
+                } else {
+                    if (commonNode.getNegatives().size() == 1)
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(0)), elementTwo, false);
+                    else if (commonNode.getNegatives().get(0).equals(elementOne.name))
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(1)), elementTwo, true);
+                    else
+                        return isSeriesss(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(0)), elementTwo, true);
+                }
+            }
+        else return 0;
 
-    public static boolean isTheSameKind(Element elementOne, Element elementTwo) {
-        if (elementOne.getClass().getName() == elementTwo.getClass().getName())
-            return true;
-        return false;
+
     }
 
     public boolean isVoltageSource() {
@@ -126,6 +161,7 @@ public abstract class Element extends Circuit {
     public void setCurrentSource(boolean currentSource) {
         isCurrentSource = currentSource;
     }
+
 
     @Override
     public String toString() {

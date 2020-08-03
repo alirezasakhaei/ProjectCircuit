@@ -13,7 +13,7 @@ public class IndependentVoltageSource extends Element {
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.phase = phase;
-        data = String.valueOf(offset) + "," + String.valueOf(amplitude) + "," + String.valueOf(frequency) + "," + String.valueOf(phase);
+        data = offset + "," + amplitude + "," + frequency + "," + phase;
         stackOverFlowed = 0;
         if (amplitude == 0)
             setLabel(Double.toString(offset));
@@ -41,6 +41,7 @@ public class IndependentVoltageSource extends Element {
         boolean positiveIsGood = true;
         if (stackOverFlowed != 1) {
             try {
+
                 for (int i = 0; i < positiveNode.getPositives().size(); i++) {
                     if (!positiveNode.getPositives().get(i).equals(this.name)) {
                         if (Circuit.getCircuit().getElements().get(positiveNode.getPositives().get(i)).isVoltageSource()) {

@@ -149,30 +149,109 @@ public class Circuit {
 
     }
 
+    boolean checkForVoltageLoop() {
+        ArrayList<Element> voltageSources = new ArrayList<>();
+        for (String elementName : elementNames) {
+            if (elements.get(elementName).isVoltageSource())
+                voltageSources.add(elements.get(elementName));
+        }
+        int i, previousSize;
+        do {
+            previousSize = voltageSources.size();
+            i = 0;
+
+            while (i < voltageSources.size() - 1) {
+                for (int j = i + 1; j < voltageSources.size(); j++) {
+                    if ((!(voltageSources.get(i).positiveNode == voltageSources.get(j).positiveNode || voltageSources.get(i).positiveNode == voltageSources.get(j).negativeNode))
+                            && (!(voltageSources.get(i).negativeNode == voltageSources.get(j).positiveNode || voltageSources.get(i).negativeNode == voltageSources.get(j).negativeNode))) {
+
+                        voltageSources.remove(voltageSources.get(i));
+                    } else i++;
+                }
+            }
+        } while (i < previousSize - 1);
+        if (voltageSources.size() < 2)
+            return true;
+        double voltage = 0;
+        Node currentNode = voltageSources.get(0).positiveNode;
+        i = 0;
+        previousSize = voltageSources.size();
+        while (voltageSources.size() > 0) {
+
+            if (previousSize == voltageSources.size()) {
+                i++;
+                if (i == voltageSources.size()) {
+                    if (Math.abs(voltage) >= dv)
+                        return false;
+                    else {
+                        i = 0;
+                        currentNode = voltageSources.get(0).positiveNode;
+                    }
+                }
+            } else {
+                i = 0;
+                previousSize = voltageSources.size();
+            }
+            if (currentNode.equals(voltageSources.get(i).positiveNode)) {
+                voltage += voltageSources.get(i).getVoltage();
+                currentNode = voltageSources.get(i).negativeNode;
+                voltageSources.remove(i);
+            } else if (currentNode.equals(voltageSources.get(i).negativeNode)) {
+                voltage -= voltageSources.get(i).getVoltage();
+                currentNode = voltageSources.get(i).positiveNode;
+                voltageSources.remove(i);
+            }
+        }
+        return Math.abs(voltage) < dv;
+
+    }
+
+    boolean checkForCurrentNode() {
+        boolean allElementsAreCurrentSource;
+        double current = 0;
+        for (Integer integer : nodeNameQueue) {
+            allElementsAreCurrentSource = true;
+            for (int j = 0; j < nodes.get(integer).getPositives().size(); j++) {
+                if (elements.get(nodes.get(integer).getPositives().get(j)).isCurrentSource()) {
+                    current -= elements.get(nodes.get(integer).getPositives().get(j)).getCurrent();
+                } else allElementsAreCurrentSource = false;
+
+            }
+            for (int j = 0; j < nodes.get(integer).getPositives().size(); j++) {
+                if (elements.get(nodes.get(integer).getPositives().get(j)).isCurrentSource()) {
+                    current += elements.get(nodes.get(integer).getPositives().get(j)).getCurrent();
+                } else allElementsAreCurrentSource = false;
+            }
+            if (allElementsAreCurrentSource && Math.abs(current) >= di)
+                return false;
+        }
+
+        return true;
+    }
 
     void reconstructUnions() {
         for (int i = 0; i < nodeNameQueue.size(); i++) {
             nodes.get(nodeNameQueue.get(i)).setAdded(false);
             nodes.get(nodeNameQueue.get(i)).setUnion(i);
         }
-        for (int i = 0; i < elementNames.size(); i++) {
-            if (elementNames.get(i).charAt(0) == 'D') {
-                if (elements.get(elementNames.get(i)).positiveNode.getVoltage() < elements.get(elementNames.get(i)).negativeNode.getVoltage() || (elements.get(elementNames.get(i)).getVoltage() == 0 && elements.get(elementNames.get(i)).getCurrent() <= 0)) {
-                    Element temp = elements.remove(elementNames.get(i));
-                    IndependentCurrentSource d = new IndependentCurrentSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
+        for (String elementName : elementNames) {
+            if (elementName.charAt(0) == 'D') {
+                if (elements.get(elementName).positiveNode.getVoltage() < elements.get(elementName).negativeNode.getVoltage() || (elements.get(elementName).getVoltage() == 0 && elements.get(elementName).getCurrent() <= 0)) {
+                    Element temp = elements.remove(elementName);
+                    IndependentCurrentSource d = new IndependentCurrentSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setCurrentSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
                     d.setPowersArray(temp.getPowersArray());
-                    elements.put(elementNames.get(i), d);
+                    elements.put(elementName, d);
                 } else {
-                    Element temp = elements.remove(elementNames.get(i));
-                    IndependentVoltageSource d = new IndependentVoltageSource(elementNames.get(i), temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
+                    Element temp = elements.remove(elementName);
+                    IndependentVoltageSource d = new IndependentVoltageSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setVoltageSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
                     d.setPowersArray(temp.getPowersArray());
-                    elements.put(elementNames.get(i), d);
+                    elements.put(elementName, d);
                 }
             }
         }
@@ -212,6 +291,10 @@ public class Circuit {
                 }
                 if (!errorFinder.isVoltageSourcesParallel())
                     return -3;
+                if (!checkForVoltageLoop())
+                    return -3;
+                if (!checkForCurrentNode())
+                    return -2;
             }
             for (int i = 0; i < unions.size(); i++) {
                 setVoltagesInUnion(i);
@@ -230,23 +313,23 @@ public class Circuit {
                 setVoltagesInUnion(i);
             }
 
-            for (int p = 0; p < elementNames.size(); p++) {
-                elements.get(elementNames.get(p)).updateTime();
+            for (String elementName : elementNames) {
+                elements.get(elementName).updateTime();
             }
-            for (int p = 0; p < nodeNameQueue.size(); p++) {
-                nodes.get(nodeNameQueue.get(p)).updatePreviousVoltage();
+            for (Integer integer : nodeNameQueue) {
+                nodes.get(integer).updatePreviousVoltage();
             }
             timeArray.add(time);
         }
 
-        for (int i = 0; i < elementNames.size(); i++) {
-            if (elementNames.get(i).charAt(0) == 'D') {
-                Element temp = elements.remove(elementNames.get(i));
+        for (String elementName : elementNames) {
+            if (elementName.charAt(0) == 'D') {
+                Element temp = elements.remove(elementName);
                 Diode d = new Diode(temp.name, temp.positiveNode, temp.negativeNode);
                 d.setCurrentsArray(temp.getCurrentsArray());
                 d.setVoltagesArray(temp.getVoltagesArray());
                 d.setPowersArray(temp.getPowersArray());
-                elements.put(elementNames.get(i), d);
+                elements.put(elementName, d);
             }
         }
 
@@ -256,8 +339,8 @@ public class Circuit {
 
     private double obtainAllCurrents() {
         double current = 0;
-        for (int i = 0; i < unions.size(); i++) {
-            current += Math.abs(obtainCurrent(unions.get(i)));
+        for (ArrayList<Node> union : unions) {
+            current += Math.abs(obtainCurrent(union));
         }
         return current;
     }
@@ -265,15 +348,15 @@ public class Circuit {
 
     private double obtainCurrent(ArrayList<Node> union) {
         double current = 0;
-        for (int j = 0; j < union.size(); j++) {
-            for (int i = 0; i < union.get(j).getPositives().size(); i++) {
-                if (elements.get(union.get(j).getPositives().get(i)).negativeNode.getUnion() != union.get(j).getUnion()) {
-                    current -= elements.get(union.get(j).getPositives().get(i)).getCurrent();
+        for (Node node : union) {
+            for (int i = 0; i < node.getPositives().size(); i++) {
+                if (elements.get(node.getPositives().get(i)).negativeNode.getUnion() != node.getUnion()) {
+                    current -= elements.get(node.getPositives().get(i)).getCurrent();
                 }
             }
-            for (int i = 0; i < union.get(j).getNegatives().size(); i++) {
-                if (elements.get(union.get(j).getNegatives().get(i)).positiveNode.getUnion() != union.get(j).getUnion()) {
-                    current += elements.get(union.get(j).getNegatives().get(i)).getCurrent();
+            for (int i = 0; i < node.getNegatives().size(); i++) {
+                if (elements.get(node.getNegatives().get(i)).positiveNode.getUnion() != node.getUnion()) {
+                    current += elements.get(node.getNegatives().get(i)).getCurrent();
                 }
             }
         }
@@ -284,14 +367,14 @@ public class Circuit {
     private void initializeUnions() {
         ArrayList<Integer> seenUnions = new ArrayList<>();
         unions.clear();
-        for (int i = 0; i < nodeNameQueue.size(); i++) {
-            if (!seenUnions.contains(nodes.get(nodeNameQueue.get(i)).getUnion())) {
+        for (Integer integer : nodeNameQueue) {
+            if (!seenUnions.contains(nodes.get(integer).getUnion())) {
                 ArrayList<Node> temp = new ArrayList<>();
-                temp.add(nodes.get(nodeNameQueue.get(i)));
+                temp.add(nodes.get(integer));
                 unions.add(temp);
-                seenUnions.add(nodes.get(nodeNameQueue.get(i)).getUnion());
+                seenUnions.add(nodes.get(integer).getUnion());
             } else {
-                unions.get(seenUnions.indexOf(nodes.get(nodeNameQueue.get(i)).getUnion())).add(nodes.get(nodeNameQueue.get(i)));
+                unions.get(seenUnions.indexOf(nodes.get(integer).getUnion())).add(nodes.get(integer));
             }
         }
     }
@@ -299,8 +382,8 @@ public class Circuit {
 
     protected void checkLoopValidation(ArrayList<String> elementsUsed, ArrayList<Integer> nodesPassed, int currentNode) {
         if (nodesPassed.size() > 1 && currentNode == 0) {
-            for (int i = 0; i < nodesPassed.size(); i++) {
-                nodes.get(nodesPassed.get(i)).setAdded(true);
+            for (Integer integer : nodesPassed) {
+                nodes.get(integer).setAdded(true);
             }
             return;
         }
@@ -343,15 +426,15 @@ public class Circuit {
             output.append("\n");
         }
         output.append("\n");
-        for (int i = 0; i < elementNames.size(); i++) {
-            output.append(elementNames.get(i));
-            for (int j = 0; j < elements.get(elementNames.get(i)).getVoltagesArray().size(); j++) {
+        for (String elementName : elementNames) {
+            output.append(elementName);
+            for (int j = 0; j < elements.get(elementName).getVoltagesArray().size(); j++) {
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getVoltagesArray().get(j));
+                output.append(elements.get(elementName).getVoltagesArray().get(j));
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getCurrentsArray().get(j));
+                output.append(elements.get(elementName).getCurrentsArray().get(j));
                 output.append(" ");
-                output.append(elements.get(elementNames.get(i)).getPowersArray().get(j));
+                output.append(elements.get(elementName).getPowersArray().get(j));
             }
             output.append("\n");
         }

@@ -17,9 +17,10 @@ public class CircuitGraphPro extends JPanel {
     int verticalParrallelDistance;
     int horizentalElementWidth;
     int horizentalElementHeight;
-    int vertictalElementWidth;
     int verticalElementWidth;
+    int verticalElementHeight;
     int diffs = 0;
+    ArrayList<JLabel> labels,names;
 
     public CircuitGraphPro(int dotsNumber, Circuit circuit, ArrayList<Node> nodes,JDialog dialog) {
         this.dotsNumber = dotsNumber;
@@ -28,6 +29,7 @@ public class CircuitGraphPro extends JPanel {
         this.dialog = dialog;
         setDiffs();
         setLengthes();
+        setLocations();
     }
     private void setDiffs(){
         boolean flag = true;
@@ -63,13 +65,43 @@ public class CircuitGraphPro extends JPanel {
                     maxHorPar = Node.elementsBetween(nodes.get(i),nodes.get(j));
             }
         }
+        verticalParrallelDistance = nodesDistance/maxVerPar;
+        horizentalParrallelDistance = boundLength/maxHorPar;
 
+        verticalElementHeight = boundLength;
+        horizentalElementWidth = nodesDistance;
 
+        horizentalElementHeight = Math.min(horizentalParrallelDistance -  5,20);
+        verticalElementWidth = Math.min(verticalParrallelDistance -  5,20);
 
+        ElementShapePro.setHorizentalElementHeight(horizentalElementHeight);
+        ElementShapePro.setHorizentalElementWidth(horizentalElementWidth);
+        ElementShapePro.setVerticalElementHeight(verticalElementHeight);
+        ElementShapePro.setVerticalElementWidth(verticalElementWidth);
+    }
+
+    private void setLocations(){
+        for (int i = 1;i<nodes.size();i++){
+            nodes.get(i).y = 50 + boundLength;
+            nodes.get(i).x = 50 + (i-1)*(nodesDistance);
+        }
     }
 
     private void drawEarthConnecteds() {
+        Node node;
+        ElementShapePro elementShapePro;
+        int elementNumber = 1;
+        Element element;
+        JLabel label,name;
+        int earthConnection;
+        labels = new ArrayList<>();
+        names = new ArrayList<>();
+        for (int i = 0; i < nodes.size(); i++){
 
+
+
+
+        }
     }
 
     private void drawHorizontals(){

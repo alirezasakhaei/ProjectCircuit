@@ -14,6 +14,7 @@ public class Node {
     private ArrayList<Double> voltagesArray;
     private int earthConnections = 0;
     private Point location;
+    int x,y;
 
     public Point getLocation() {
         return location;

@@ -97,7 +97,7 @@ public class CircuitGraphPro extends JPanel {
     }
     @Override
     public void paint(Graphics g) {
-        g.drawLine(0,0,100,100);
+        g.drawLine(45,600,45 + nodesDistance*(nodes.size() - 2),600);
 
     }
     private void drawEarthConnecteds() {

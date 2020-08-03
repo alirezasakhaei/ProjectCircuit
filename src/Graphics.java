@@ -90,8 +90,10 @@ public class Graphics {
         buttonDrawCircuit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if (isCircuitSolved)
+                if (isCircuitSolved) {
                     drawCircuit();
+                    drawCircuitPro();
+                }
                 else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
 
             }
@@ -568,6 +570,25 @@ public class Graphics {
 
 
         dialog.setVisible(true);
+    }
+
+    private void drawCircuitPro(){
+        ArrayList<Node> nodes = new ArrayList<>(0);
+        nodes.add(0, circuit.getNodes().get(0));
+        for (Map.Entry node : circuit.getNodes().entrySet()) {
+            if (((Node) node.getValue()).getName() != 0) {
+                nodes.add((Node) node.getValue());
+            }
+        }
+
+        JDialog dialog = new JDialog();
+        if (nodes.size() <= 12)
+            dialog.setBounds(0,0,nodes.size()*100 + 50,650);
+        else
+            dialog.setBounds(0,0,1200,700);
+        dialog.setVisible(true);
+
+
     }
 
 }

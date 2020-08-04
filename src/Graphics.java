@@ -266,15 +266,15 @@ public class Graphics {
         buttonReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                    isSomethingLoaded = false;
-                    isCircuitSolved = false;
-                    textAreaInput.setVisible(false);
-                    textAreaInput = null;
-                    selectedFile = null;
+                isSomethingLoaded = false;
+                isCircuitSolved = false;
+                textAreaInput.setVisible(false);
+                textAreaInput = null;
+                selectedFile = null;
                 textAreaOutput.setText("");
                 buttonSave.setEnabled(false);
-                    buttonDrawCircuit.setEnabled(false);
-                    buttonDrawGraph.setEnabled(false);
+                buttonDrawCircuit.setEnabled(false);
+                buttonDrawGraph.setEnabled(false);
 
             }
         });

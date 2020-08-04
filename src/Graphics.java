@@ -88,9 +88,26 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (isCircuitSolved) {
-                    drawCircuitBad();
-                    drawCircuit();
-
+                    boolean stupid = true;
+                    Element element;
+                    for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()){
+                        element = (Element) elementLoop;
+                        int a = element.negativeNode.getName();
+                        int b = element.positiveNode.getName();
+                        if (!(a == 0 || b == 0)){
+                            if ((Math.abs(b - a) != 6)){
+                                if ((Math.abs(b - a) != 1)){
+                                    stupid = false;
+                                }
+                                if (Math.min(a,b)%6 == 0)
+                                    stupid = false;
+                            }
+                        }
+                    }
+                    if (stupid)
+                        drawCircuitBad();
+                    else
+                        drawCircuit();
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
 
             }

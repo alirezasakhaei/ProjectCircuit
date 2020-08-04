@@ -585,10 +585,6 @@ public class Graphics {
         dialog.setBounds(0, 0, 700, 700);
         dialog.setLayout(null);
 
-        JLabel label = new JLabel("Simulated Circuit");
-        label.setBounds(300, 10, 100, 40);
-        dialog.add(label);
-
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
         for (Map.Entry node : circuit.getNodes().entrySet()) {
@@ -597,14 +593,66 @@ public class Graphics {
             }
         }
 
+        ArrayList<JLabel> labels = new ArrayList<>(0);
+        ArrayList<JLabel> namesElement = new ArrayList<>(0);
+        ArrayList<JLabel> namesNode = new ArrayList<>(0);
 
-        CircuitGraphBad circuitGraphBad = new CircuitGraphBad(circuit.getNodes().size() - 1, circuit, nodes, dialog);
+
+
+
+        CircuitGraphBad circuitGraphBad = new CircuitGraphBad(circuit.getNodes().size() - 1, circuit, nodes, dialog, labels, namesElement,namesNode);
         circuitGraphBad.setLayout(null);
         circuitGraphBad.setBorder(border);
         circuitGraphBad.setSize(600,600);
         circuitGraphBad.setBounds(50, 50, 650, 650);
 
         dialog.add(circuitGraphBad);
+
+
+        JButton buttonNodeName = new JButton("Nodes Name");
+        buttonNodeName.setFont(new Font("Arial",Font.BOLD,10));
+        buttonNodeName.setBackground(Color.BLACK);
+        buttonNodeName.setForeground(Color.white);
+        buttonNodeName.setBounds(100,0,100,50);
+        dialog.add(buttonNodeName);
+        buttonNodeName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                for (int i=0;i<namesNode.size();i++){
+                    namesNode.get(i).setVisible(!namesNode.get(i).isVisible());
+                }
+            }
+        });
+
+        JButton buttonElementName = new JButton("Elements\nName");
+        buttonElementName.setFont(new Font("Arial",Font.BOLD,10));
+        buttonElementName.setBackground(Color.BLACK);
+        buttonElementName.setForeground(Color.white);
+        buttonElementName.setBounds(300,0,100,50);
+        dialog.add(buttonElementName);
+        buttonElementName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                for (int i=0;i<namesElement.size();i++){
+                    namesElement.get(i).setVisible(!namesElement.get(i).isVisible());
+                }
+            }
+        });
+
+        JButton buttonElementLabel = new JButton("Elements\nLabel");
+        buttonElementLabel.setFont(new Font("Arial",Font.BOLD,10));
+        buttonElementLabel.setBackground(Color.BLACK);
+        buttonElementLabel.setForeground(Color.white);
+        buttonElementLabel.setBounds(500,0,100,50);
+        dialog.add(buttonElementLabel);
+        buttonElementLabel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                for (int i=0;i<labels.size();i++){
+                    labels.get(i).setVisible(!labels.get(i).isVisible());
+                }
+            }
+        });
 
 
         dialog.setVisible(true);

@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InputManager {
-    protected File input;
-    protected Circuit circuit;
-    protected ElementAdder elementAdder;
+    protected final File input;
+    protected final Circuit circuit;
+    protected final ElementAdder elementAdder;
     protected String string = null;
     protected boolean flagTran = false, isInputValid = true, isEveryNumberValid = true;
     private int errorLine;
@@ -247,10 +247,6 @@ public class InputManager {
         return true;
     }
 
-    public boolean isTran() {
-        return flagTran;
-    }
-
     //practical method
 
     public boolean isEveryNumberValid() {
@@ -279,8 +275,8 @@ public class InputManager {
             return false;
         if (!(lastChar >= '0' && lastChar <= '9')) {
             boolean validFlag = false;
-            for (int i = 0; i < valids.length; i++) {
-                if (lastChar == valids[i])
+            for (char valid : valids) {
+                if (lastChar == valid)
                     validFlag = true;
             }
             return validFlag;
@@ -291,8 +287,7 @@ public class InputManager {
     public static double unitCalculator(String dAmount) {
         int length = dAmount.length();
         char measure = dAmount.charAt(length - 1);
-        int ascii = (int) measure;
-        if (ascii >= '0' && ascii <= '9') {
+        if ((int) measure >= '0' && (int) measure <= '9') {
             return Double.parseDouble(dAmount);
         } else {
             double number = Double.parseDouble(dAmount.substring(0, dAmount.length() - 1));

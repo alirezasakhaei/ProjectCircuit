@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ErrorFinder {
-    Circuit circuit;
+    final Circuit circuit;
 
     public ErrorFinder(Circuit circuit) {
         this.circuit = circuit;
@@ -11,10 +11,6 @@ public class ErrorFinder {
     public int findErrors() {
         if (!isDSet())
             return -1;
-        //if (!isVoltageSourcesParallel())
-        //    return -2;
-        //if (!isCurrentSourceSeries())
-        //    return -3;
         if (!isGroundAdded())
             return -4;
         if (!isLoopValid())
@@ -24,9 +20,7 @@ public class ErrorFinder {
     }
 
     private boolean isGroundAdded() {
-        if (!circuit.getNodes().containsKey(0))
-            return false;
-        return true;
+        return circuit.getNodes().containsKey(0);
     }
 
     private boolean isDSet() {
@@ -34,9 +28,7 @@ public class ErrorFinder {
             return false;
         if (circuit.getDv() == 0)
             return false;
-        if (circuit.getDt() == 0)
-            return false;
-        return true;
+        return circuit.getDt() != 0;
     }
 
     private boolean isLoopValid() {
@@ -65,14 +57,33 @@ public class ErrorFinder {
                 for (Map.Entry<String, Element> currentSourceTwo : circuit.getElements().entrySet()) {
                     elementTwo = currentSourceTwo.getValue();
                     if (elementTwo.isCurrentSource()) {
+                        if (elementTwo.equals(elementTwo))
+                            continue;
                         int result = Element.isSeries(elementOne, elementTwo);
+                        if (result == 5)
+                            continue;
+                        double current1 = elementOne.getCurrent(), current2 = elementTwo.getCurrent();
+                        for (int i = 0; i < Circuit.getCircuit().getElementNames().size(); i++) {
+                            if (Element.isParallel(Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)), elementOne)) {
+                                if (!Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).isCurrentSource())
+                                    continue;
+                                else if (Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).positiveNode.equals(elementOne.positiveNode)) {
+                                    current1 += Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).getCurrent();
+                                }
+                            }
+                            if (Element.isParallel(Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)), elementTwo)) {
+                                if (Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).isCurrentSource() &&
+                                        Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).positiveNode.equals(elementTwo.positiveNode)) {
+                                    current2 += Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).getCurrent();
+                                }
+                            }
+                        }
                         if (result == 2 || result == 3) {
-                            if (Math.abs(elementOne.getCurrent() - elementTwo.getCurrent()) > circuit.getDi()) {
+                            if (Math.abs(current1 - current2) > circuit.getDi()) {
                                 return false;
                             }
                         } else if (result == 1 || result == 4) {
-                            if (Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()) > circuit.getDi()) {
-                                System.out.println(Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()));
+                            if (Math.abs(current1 + current2) > circuit.getDi()) {
                                 return false;
                             }
                         }
@@ -94,7 +105,13 @@ public class ErrorFinder {
                     elementTwo = voltageSourceTwo.getValue();
                     if (elementTwo.isVoltageSource()) {
                         if (Element.isParallel(elementOne, elementTwo)) {
-                            if (Math.abs(elementOne.getVoltage() - elementTwo.getVoltage()) > circuit.getDv()) {
+                            if (elementOne.positiveNode.equals(elementTwo.positiveNode)) {
+                                if (Math.abs(elementOne.getVoltage() - elementTwo.getVoltage()) > circuit.getDv()) {
+                                    return false;
+                                }
+                                elementOne.setParallelToVoltageSource(false);
+                                elementTwo.setParallelToVoltageSource(true);
+                            } else if (Math.abs(elementOne.getVoltage() + elementTwo.getVoltage()) > circuit.getDv()) {
                                 return false;
                             }
                         }

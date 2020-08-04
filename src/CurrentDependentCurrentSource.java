@@ -1,6 +1,6 @@
 public class CurrentDependentCurrentSource extends Element {
-    double gain;
-    String dependentElement;
+    final double gain;
+    final String dependentElement;
 
     CurrentDependentCurrentSource(String name, Node positiveNode, Node negativeNode, String dependentElement, double gain) {
         this.name = name;
@@ -8,7 +8,7 @@ public class CurrentDependentCurrentSource extends Element {
         this.negativeNode = negativeNode;
         this.dependentElement = dependentElement;
         this.gain = gain;
-        data = String.valueOf(gain) + "," + String.valueOf(dependentElement);
+        data = gain + "," + dependentElement;
         setLabel(gain + "(" + dependentElement + ")");
 
     }

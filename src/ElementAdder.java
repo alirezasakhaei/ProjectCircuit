@@ -1,7 +1,5 @@
-import javafx.scene.image.Image;
-
 public class ElementAdder {
-    Circuit circuit;
+    final Circuit circuit;
 
     public ElementAdder(Circuit circuit) {
         this.circuit = circuit;

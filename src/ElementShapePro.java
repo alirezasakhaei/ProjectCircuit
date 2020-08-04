@@ -1,31 +1,22 @@
-import javafx.beans.property.adapter.JavaBeanProperty;
-
 import javax.swing.*;
 import java.awt.Graphics;
 
 public class ElementShapePro extends JPanel {
-    Element element;
-    char type;
-    boolean isHorizental;
-    boolean isUpWardRightWard;
+    final Element element;
+    final char type;
+    final boolean isHorizental;
+    final boolean isUpWardRightWard;
     private static int horizentalElementWidth;
     private static int horizentalElementHeight;
     private static int verticalElementWidth;
     private static int verticalElementHeight;
-    private int x,y;
+    private int x, y;
 
-    ElementShapePro (Element element){
+    ElementShapePro(Element element) {
         this.element = element;
-        if (element.positiveNode.getName() == 0 || element.negativeNode.getName() == 0){
-            isHorizental = false;
-        }else {
-            isHorizental = true;
-        }
+        isHorizental = element.positiveNode.getName() != 0 && element.negativeNode.getName() != 0;
         type = element.name.charAt(0);
-        if (element.positiveNode.getName() > element.negativeNode.getName())
-            isUpWardRightWard = true;
-        else
-            isUpWardRightWard = false;
+        isUpWardRightWard = element.positiveNode.getName() > element.negativeNode.getName();
     }
 
 

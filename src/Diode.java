@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Diode extends Element {
-    private boolean isOn;
 
     Diode(String name, Node positiveNode, Node negativeNode) {
         this.name = name;

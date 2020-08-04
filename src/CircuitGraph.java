@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class CircuitGraph extends JPanel {
-    int nodesNumber;
-    Circuit circuit;
-    ArrayList<Node> nodes;
-    JDialog dialog;
+    final int nodesNumber;
+    final Circuit circuit;
+    final ArrayList<Node> nodes;
+    final JDialog dialog;
 
-    public CircuitGraph(int nodesNumber, Circuit circuit, ArrayList<Node> nodes,JDialog dialog) {
+    public CircuitGraph(int nodesNumber, Circuit circuit, ArrayList<Node> nodes, JDialog dialog) {
         this.nodesNumber = nodesNumber;
         this.circuit = circuit;
         this.nodes = nodes;
@@ -53,7 +53,7 @@ public class CircuitGraph extends JPanel {
     private void drawEarthConnecteds(){
         Node node;
         ElementShape elementShape;
-        int elementNumber = 1;
+        int elementNumber;
         Element element;
         JLabel label,name;
         for (int i=1;i<nodes.size();i++){
@@ -116,9 +116,7 @@ public class CircuitGraph extends JPanel {
                 parralles = 0;
                 for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()){
                     element = (Element) elementLoop.getValue();
-                    isBetween = false;
-                    if (element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName())
-                        isBetween = true;
+                    isBetween = element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName();
                     if (element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName())
                         isBetween = true;
                     if (isBetween){

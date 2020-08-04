@@ -1,5 +1,5 @@
 public class Resistor extends Element{
-    private double resistance;
+    private final double resistance;
 
     public Resistor(String name,Node positiveNode,Node negativeNode,double resistance){
         this.name=name;
@@ -9,10 +9,6 @@ public class Resistor extends Element{
         data = String.valueOf(resistance);
         setLabel(Double.toString(resistance));
     }
-    double getResistance(){
-        return resistance;
-    }
-
     @Override
     void setLabel(String label) {
         this.label = label;

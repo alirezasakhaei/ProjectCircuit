@@ -1,6 +1,3 @@
-import javafx.scene.layout.CornerRadii;
-import javafx.stage.FileChooser;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -159,7 +156,6 @@ public class Graphics {
             }
         });
 
-
         buttonSolve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -199,6 +195,7 @@ public class Graphics {
                             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             break;
                         case 0:
+                            textAreaOutput.setText(circuit.getOutput());
                             buttonDrawCircuit.setEnabled(true);
                             buttonDrawGraph.setEnabled(true);
                             buttonSave.setEnabled(true);
@@ -206,8 +203,6 @@ public class Graphics {
                         default:
                             JOptionPane.showMessageDialog(frame, "There is a problem found in line " + error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
-                    textAreaOutput.setText(circuit.getOutput());
-
                 }
             }
         });
@@ -247,9 +242,6 @@ public class Graphics {
                             textAreaInput.setText(preText);
                             textAreaInput.setEditable(true);
 
-                            //textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
-
-
                             isSomethingLoaded = true;
                             selectedFile = input;
                         } catch (FileNotFoundException e) {
@@ -258,7 +250,6 @@ public class Graphics {
                     }
             }
         });
-
 
         buttonReset = new JButton("Reset");
         buttonReset.setBackground(Color.white);
@@ -269,14 +260,15 @@ public class Graphics {
         buttonReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                    isSomethingLoaded = false;
-                    isCircuitSolved = false;
-                    textAreaInput.setVisible(false);
-                    textAreaInput = null;
-                    selectedFile = null;
-                    buttonSave.setEnabled(false);
-                    buttonDrawCircuit.setEnabled(false);
-                    buttonDrawGraph.setEnabled(false);
+                isSomethingLoaded = false;
+                isCircuitSolved = false;
+                textAreaInput.setVisible(false);
+                textAreaInput = null;
+                selectedFile = null;
+                textAreaOutput.setText("");
+                buttonSave.setEnabled(false);
+                buttonDrawCircuit.setEnabled(false);
+                buttonDrawGraph.setEnabled(false);
 
             }
         });
@@ -290,7 +282,6 @@ public class Graphics {
         scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         pOut.add(scrollableTextArea);
-
 
         frameLayout.setHorizontalGroup(frameLayout.createSequentialGroup().addGroup(frameLayout.createParallelGroup().addComponent(pText).addComponent(pOut))
                 .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDrawCircuit).addComponent(pDrawGraph).addComponent(pLoad).addComponent(pSave).addComponent(pReset)));
@@ -526,7 +517,7 @@ public class Graphics {
         dialogVoltage.add(labelTime);
 
 
-        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Graph.getMaxTime() + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
@@ -534,7 +525,7 @@ public class Graphics {
         labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogVoltage.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + Double.toString(maxAmount) + graphType);
+        JLabel labelMaxNegative = new JLabel("-" + maxAmount + graphType);
         labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogVoltage.add(labelMaxNegative);
 
@@ -542,7 +533,7 @@ public class Graphics {
         labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(maxAmount / 2) + graphType);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + maxAmount / 2 + graphType);
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 

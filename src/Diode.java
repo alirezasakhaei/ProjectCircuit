@@ -67,19 +67,18 @@ public class Diode extends Element {
         } else return 0;
     }
 
-    //  @Override
-    //  public double getVoltage(){
-    //      if(isOn){
-    //          return 0;
-    //      }
-    //      else {
-    //          if(positiveNode.getVoltage()-negativeNode.getVoltage()>0) {
-    //              isOn = true;
-    //              return 0;
-    //          }
-    //          return positiveNode.getVoltage() - negativeNode.getVoltage();
-    //      }
-    //  }
+    @Override
+    public double getVoltage() {
+        if (isOn) {
+            return 0;
+        } else {
+            if (positiveNode.getVoltage() - negativeNode.getVoltage() > 0) {
+                isOn = true;
+                return 0;
+            }
+            return positiveNode.getVoltage() - negativeNode.getVoltage();
+        }
+    }
 
     public void setVoltagesArray(ArrayList<Double> voltages) {
         voltagesArray = voltages;

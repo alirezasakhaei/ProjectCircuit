@@ -302,11 +302,11 @@ public class Circuit {
                     return -2;
             }
             for (int i = 0; i < unions.size(); i++) {
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
+                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() - dv);
                 setVoltagesInUnion(i);
                 i1 = obtainCurrent(unions.get(i));
                 i1All = obtainAllCurrents();
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() + 2 * dv);
+                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv);
                 setVoltagesInUnion(i);
                 i2 = obtainCurrent(unions.get(i));
                 i2All = obtainAllCurrents();

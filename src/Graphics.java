@@ -555,6 +555,11 @@ public class Graphics {
         dialog.setBounds(0, 0, 700, 700);
         dialog.setLayout(null);
 
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new FlowLayout());
+        topPanel.setBounds(0, 0, 700, 50);
+        dialog.add(topPanel);
+
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
         for (Map.Entry node : circuit.getNodes().entrySet()) {
@@ -590,12 +595,11 @@ public class Graphics {
         buttonNodeName.setFont(new Font("Arial",Font.BOLD,10));
         buttonNodeName.setBackground(Color.BLACK);
         buttonNodeName.setForeground(Color.white);
-        buttonNodeName.setBounds(100,0,100,50);
-        dialog.add(buttonNodeName);
+        topPanel.add(buttonNodeName);
         buttonNodeName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i = 0; i< namesNode.size(); i++){
+                for (int i = 0; i < namesNode.size(); i++) {
                     namesNode.get(i).setVisible(!namesNode.get(i).isVisible());
                 }
             }
@@ -605,12 +609,11 @@ public class Graphics {
         buttonElementName.setFont(new Font("Arial",Font.BOLD,10));
         buttonElementName.setBackground(Color.BLACK);
         buttonElementName.setForeground(Color.white);
-        buttonElementName.setBounds(300,0,100,50);
-        dialog.add(buttonElementName);
+        topPanel.add(buttonElementName);
         buttonElementName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i=0;i<namesElement.size();i++){
+                for (int i = 0; i < namesElement.size(); i++) {
                     namesElement.get(i).setVisible(!namesElement.get(i).isVisible());
                 }
             }
@@ -620,12 +623,11 @@ public class Graphics {
         buttonElementLabel.setFont(new Font("Arial",Font.BOLD,10));
         buttonElementLabel.setBackground(Color.BLACK);
         buttonElementLabel.setForeground(Color.white);
-        buttonElementLabel.setBounds(500,0,100,50);
-        dialog.add(buttonElementLabel);
+        topPanel.add(buttonElementLabel);
         buttonElementLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i=0;i<labels.size();i++){
+                for (int i = 0; i < labels.size(); i++) {
                     labels.get(i).setVisible(!labels.get(i).isVisible());
                 }
             }

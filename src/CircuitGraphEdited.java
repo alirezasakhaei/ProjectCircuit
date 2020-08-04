@@ -33,6 +33,13 @@ public class CircuitGraphEdited extends JPanel {
                 locations.add(i, location);
             }
         }
+        JLabel label;
+
+        for (int i = 1; i < nodes.size(); i++) {
+            label = new JLabel(String.valueOf(nodes.get(i).getName()));
+            label.setBounds(45 + (i - 1) * 100, 415 - locations.get(i)*50, 50, 50);
+            dialog.add(label);
+        }
 
         drawEarthConnecteds();
         drawHorizontals();

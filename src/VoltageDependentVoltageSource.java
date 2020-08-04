@@ -1,6 +1,7 @@
 public class VoltageDependentVoltageSource extends Element {
-    double gain;
-    Node positiveDependence, negativeDependence;
+    final double gain;
+    final Node positiveDependence;
+    final Node negativeDependence;
     int stackOverFlowed;
 
     VoltageDependentVoltageSource(String name, Node positiveNode, Node negativeNode, Node positiveDependence, Node negativeDependence, double gain) {

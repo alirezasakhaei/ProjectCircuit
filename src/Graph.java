@@ -4,11 +4,12 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Graph extends JPanel {
-    int elementsNumber;
+    final int elementsNumber;
     static double maxTime;
-    double dt, maxAmount;
-    int[][] finalArrays;
-    final Color[] colors = {Color.red, Color.green, Color.yellow, Color.pink, Color.ORANGE, Color.magenta, Color.cyan, Color.darkGray, Color.lightGray,Color.gray};
+    final double dt;
+    final double maxAmount;
+    final int[][] finalArrays;
+    final Color[] colors = {Color.red, Color.green, Color.yellow, Color.pink, Color.ORANGE, Color.magenta, Color.cyan, Color.darkGray, Color.lightGray, Color.gray};
     ArrayList<Double> protoArray, protoArray1;
 
     Graph(double dt, double maxAmount, Element[] chosenElements, int elementsNumber, char graphType) {

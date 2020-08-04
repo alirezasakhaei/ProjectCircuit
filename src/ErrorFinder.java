@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class ErrorFinder {
-    Circuit circuit;
+    final Circuit circuit;
 
     public ErrorFinder(Circuit circuit) {
         this.circuit = circuit;
@@ -24,9 +24,7 @@ public class ErrorFinder {
     }
 
     private boolean isGroundAdded() {
-        if (!circuit.getNodes().containsKey(0))
-            return false;
-        return true;
+        return circuit.getNodes().containsKey(0);
     }
 
     private boolean isDSet() {
@@ -34,9 +32,7 @@ public class ErrorFinder {
             return false;
         if (circuit.getDv() == 0)
             return false;
-        if (circuit.getDt() == 0)
-            return false;
-        return true;
+        return circuit.getDt() != 0;
     }
 
     private boolean isLoopValid() {

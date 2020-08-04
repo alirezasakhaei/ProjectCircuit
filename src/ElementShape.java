@@ -2,27 +2,21 @@ import javax.swing.*;
 import java.awt.Graphics;
 
 public class ElementShape extends JPanel {
-    Element element;
-    char type;
-    boolean isHorizental;
-    boolean isUpWardRightWard;
-    ElementShape (Element element){
+    final Element element;
+    final char type;
+    final boolean isHorizental;
+    final boolean isUpWardRightWard;
+
+    ElementShape(Element element) {
         this.element = element;
-        if (element.positiveNode.getName() == 0 || element.negativeNode.getName() == 0){
-            isHorizental = false;
-        }else {
-            isHorizental = true;
-        }
+        isHorizental = element.positiveNode.getName() != 0 && element.negativeNode.getName() != 0;
         type = element.name.charAt(0);
-        if (element.positiveNode.getName() > element.negativeNode.getName())
-            isUpWardRightWard = true;
-        else
-            isUpWardRightWard = false;
+        isUpWardRightWard = element.positiveNode.getName() > element.negativeNode.getName();
     }
 
     @Override
     public void paint(Graphics g) {
-        if (isHorizental && isUpWardRightWard){
+        if (isHorizental && isUpWardRightWard) {
             setSize(100,10);
             g.drawLine(25,5,0,5);
             g.drawLine(75,5,100,5);

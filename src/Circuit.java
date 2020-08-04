@@ -14,13 +14,13 @@ public class Circuit {
         return circuit;
     }
 
-    private HashMap<Integer, Node> nodes;
-    private HashMap<String, Element> elements;
-    private ArrayList<Integer> nodeNameQueue;
-    private ArrayList<String> elementNames;
-    private ArrayList<ArrayList<Node>> unions;
+    private final HashMap<Integer, Node> nodes;
+    private final HashMap<String, Element> elements;
+    private final ArrayList<Integer> nodeNameQueue;
+    private final ArrayList<String> elementNames;
+    private final ArrayList<ArrayList<Node>> unions;
     private double dt = 0, dv = 0, di = 0, time, maximumTime;
-    ArrayList<Double> timeArray;
+    final ArrayList<Double> timeArray;
 
     public Circuit() {
         nodes = new HashMap<>();

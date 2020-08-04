@@ -1,6 +1,3 @@
-import javafx.scene.layout.CornerRadii;
-import javafx.stage.FileChooser;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -526,7 +523,7 @@ public class Graphics {
         dialogVoltage.add(labelTime);
 
 
-        JLabel labelMaxTime = new JLabel(Double.toString(Graph.getMaxTime()) + "s");
+        JLabel labelMaxTime = new JLabel(Graph.getMaxTime() + "s");
         labelMaxTime.setBounds(550, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
@@ -534,7 +531,7 @@ public class Graphics {
         labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogVoltage.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + Double.toString(maxAmount) + graphType);
+        JLabel labelMaxNegative = new JLabel("-" + maxAmount + graphType);
         labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogVoltage.add(labelMaxNegative);
 
@@ -542,7 +539,7 @@ public class Graphics {
         labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + Double.toString(maxAmount / 2) + graphType);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + maxAmount / 2 + graphType);
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 

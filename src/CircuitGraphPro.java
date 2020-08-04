@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CircuitGraphPro extends JPanel {
-    int dotsNumber;
-    Circuit circuit;
-    ArrayList<Node> nodes;
-    JDialog dialog;
-    HashMap<Integer,Integer> diffsMap = new HashMap<>();
+    final int dotsNumber;
+    final Circuit circuit;
+    final ArrayList<Node> nodes;
+    final JDialog dialog;
+    final HashMap<Integer, Integer> diffsMap = new HashMap<>();
     int boundLength;
     int nodesDistance;
     int maxHorPar = 0;
@@ -21,8 +21,8 @@ public class CircuitGraphPro extends JPanel {
     int verticalElementWidth;
     int verticalElementHeight;
     int diffs = 0;
-    ArrayList<JLabel> labels,names;
-    Rectangle rectangle;
+    ArrayList<JLabel> labels, names;
+    final Rectangle rectangle;
 
     public CircuitGraphPro(int dotsNumber, Circuit circuit, ArrayList<Node> nodes,JDialog dialog) {
         this.dotsNumber = dotsNumber;
@@ -103,7 +103,7 @@ public class CircuitGraphPro extends JPanel {
     private void drawEarthConnecteds() {
         Node node;
         ElementShapePro elementShapePro;
-        int elementNumber = 1;
+        int elementNumber;
         Element element;
         JLabel label,name;
         labels = new ArrayList<>();

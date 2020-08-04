@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class IndependentCurrentSource extends Element {
-    double offset, amplitude, frequency, phase;
+    final double offset, amplitude, frequency, phase;
 
     IndependentCurrentSource(String name, Node positive, Node negative, double offset, double amplitude, double frequency, double phase) {
         this.name = name;
@@ -11,7 +11,7 @@ public class IndependentCurrentSource extends Element {
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.phase = phase;
-        data = String.valueOf(offset) + "," + String.valueOf(amplitude) + "," + String.valueOf(frequency) + "," + String.valueOf(phase);
+        data = offset + "," + amplitude + "," + frequency + "," + phase;
         if (amplitude == 0)
             setLabel(Double.toString(offset));
         else

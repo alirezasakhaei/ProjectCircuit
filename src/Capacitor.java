@@ -1,5 +1,5 @@
 public class Capacitor extends Element {
-    private double capacity;
+    private final double capacity;
 
     public Capacitor(String name,Node positiveNode,Node negativeNode,double capacity){
         this.name=name;
@@ -8,9 +8,6 @@ public class Capacitor extends Element {
         this.capacity=capacity;
         data = String.valueOf(capacity);
         setLabel(Double.toString(capacity));
-    }
-    double getCapacity(){
-        return capacity;
     }
 
     @Override

@@ -1,7 +1,7 @@
 import java.util.Map;
 
 public class CircuitPrinter {
-    Circuit circuit;
+    final Circuit circuit;
 
     public CircuitPrinter(Circuit circuit) {
         this.circuit = circuit;

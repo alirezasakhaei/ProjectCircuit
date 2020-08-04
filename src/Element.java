@@ -1,16 +1,18 @@
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     String data = null;
-    ArrayList<Double> currentsArray = new ArrayList<Double>();
+    ArrayList<Double> currentsArray = new ArrayList<>();
     String label;
-    void setLabel(String label){};
-    protected ArrayList<Double> voltagesArray = new ArrayList<Double>();
-    protected ArrayList<Double> powersArray = new ArrayList<Double>();
+
+    void setLabel(String label) {
+    }
+
+    protected ArrayList<Double> voltagesArray = new ArrayList<>();
+    protected ArrayList<Double> powersArray = new ArrayList<>();
     protected String name;
     private boolean isVoltageSource = false;
     private boolean isCurrentSource = false;
@@ -40,30 +42,30 @@ public abstract class Element extends Circuit {
         voltagesArray.add(getVoltage());
         powersArray.add(getVoltage() * getCurrent());
     }
-    public double getCurrentMax(){
+    public double getCurrentMax() {
         double max = 0;
-        for (int i =0; i<currentsArray.size();i++){
-            if (Math.abs(currentsArray.get(i)) >= max)
-                max = Math.abs(currentsArray.get(i));
+        for (Double aDouble : currentsArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
         }
         return max;
     }
 
-    public double getPowerMax(){
+    public double getPowerMax() {
         double max = 0;
-        for (int i =0; i<powersArray.size();i++){
-            if (Math.abs(powersArray.get(i)) >= max)
-                max = Math.abs(powersArray.get(i));
+        for (Double aDouble : powersArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
         }
         return max;
     }
 
 
-    public double getVoltageMax(){
+    public double getVoltageMax() {
         double max = 0;
-        for (int i =0; i<voltagesArray.size();i++){
-            if (Math.abs(voltagesArray.get(i)) >= max)
-                max = Math.abs(voltagesArray.get(i));
+        for (Double aDouble : voltagesArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
         }
         return max;
     }
@@ -91,32 +93,32 @@ public abstract class Element extends Circuit {
         passedPositive = roadsNegative.get(0).contains(elementTwo.positiveNode.getName());
 
 
-        for (int i = 0; i < roadsPositive.size(); i++) {
+        for (ArrayList<Integer> list : roadsPositive) {
             if (passedNegative) {
-                if (!roadsPositive.get(i).contains(elementTwo.negativeNode.getName())) {
+                if (!list.contains(elementTwo.negativeNode.getName())) {
                     return 0;
                 }
-            } else if (roadsPositive.get(i).contains(elementTwo.negativeNode.getName())) {
+            } else if (list.contains(elementTwo.negativeNode.getName())) {
                 return 0;
             }
-            roadsPositive.get(i).remove(Integer.valueOf(elementTwo.negativeNode.getName()));
-            roadsPositive.get(i).remove(Integer.valueOf(elementTwo.positiveNode.getName()));
+            list.remove(Integer.valueOf(elementTwo.negativeNode.getName()));
+            list.remove(Integer.valueOf(elementTwo.positiveNode.getName()));
         }
 
-        for (int i = 0; i < roadsNegative.size(); i++) {
+        for (ArrayList<Integer> arrayList : roadsNegative) {
             if (passedPositive) {
-                if (!roadsNegative.get(i).contains(elementTwo.positiveNode.getName())) {
+                if (!arrayList.contains(elementTwo.positiveNode.getName())) {
                     return 0;
                 }
-            } else if (roadsNegative.get(i).contains(elementTwo.positiveNode.getName())) {
+            } else if (arrayList.contains(elementTwo.positiveNode.getName())) {
                 return 0;
             }
-            roadsNegative.get(i).remove(Integer.valueOf(elementTwo.negativeNode.getName()));
-            roadsNegative.get(i).remove(Integer.valueOf(elementTwo.positiveNode.getName()));
+            arrayList.remove(Integer.valueOf(elementTwo.negativeNode.getName()));
+            arrayList.remove(Integer.valueOf(elementTwo.positiveNode.getName()));
         }
-        for (int i = 0; i < roadsPositive.size(); i++) {
-            for (int j = 0; j < roadsNegative.size(); j++) {
-                if (roadsPositive.get(i).removeAll(roadsNegative.get(j)) || roadsNegative.get(j).removeAll(roadsPositive.get(i))) {
+        for (ArrayList<Integer> integerArrayList : roadsPositive) {
+            for (ArrayList<Integer> integers : roadsNegative) {
+                if (integerArrayList.removeAll(integers) || integers.removeAll(integerArrayList)) {
                     return 0;
                 }
             }
@@ -153,7 +155,7 @@ public abstract class Element extends Circuit {
     }
 
 
-    private static int isSeriesHelper(Element elementOne, Element elementTwo, boolean positive) {
+   /* private static int isSeriesHelper(Element elementOne, Element elementTwo, boolean positive) {
         boolean isNeighbor = false, canContinue;
         int isPositiveOfDestination = 0;
         Node commonNode;
@@ -203,6 +205,8 @@ public abstract class Element extends Circuit {
 
     }
 
+
+    */
 
     private static ArrayList<ArrayList<Integer>> seriesHelper(int currentNode, int destinationNode, int forbiddenNode, ArrayList<Integer> nodesPassed) {
         nodesPassed.add(currentNode);

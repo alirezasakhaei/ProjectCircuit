@@ -6,12 +6,12 @@ public class Node {
     private int union;
     private int branchsNumer;
     private boolean added;
-    private ArrayList<Integer> neighbors;
-    private ArrayList<String> positives;
-    private ArrayList<String> negatives;
-    private int name;
+    private final ArrayList<Integer> neighbors;
+    private final ArrayList<String> positives;
+    private final ArrayList<String> negatives;
+    private final int name;
     private double previousVoltage;
-    private ArrayList<Double> voltagesArray;
+    private final ArrayList<Double> voltagesArray;
     private int earthConnections = 0, earthConnectionsPro = 0;
     private Point location;
     int x, y;
@@ -21,13 +21,13 @@ public class Node {
     }
 
     public void setEarthConnectionsPro() {
-        for (int i = 0; i < positives.size(); i++) {
-            if (Circuit.getCircuit().getElements().get(positives.get(i)).negativeNode.name == 0) {
+        for (String positive : positives) {
+            if (Circuit.getCircuit().getElements().get(positive).negativeNode.name == 0) {
                 earthConnectionsPro++;
             }
         }
-        for (int i = 0; i < negatives.size(); i++) {
-            if (Circuit.getCircuit().getElements().get(negatives.get(i)).positiveNode.name == 0) {
+        for (String negative : negatives) {
+            if (Circuit.getCircuit().getElements().get(negative).positiveNode.name == 0) {
                 earthConnectionsPro++;
             }
         }
@@ -46,13 +46,13 @@ public class Node {
     }
 
     public void setEarthConnections() {
-        for (int i = 0; i < positives.size(); i++) {
-            if (Circuit.getCircuit().getElements().get(positives.get(i)).negativeNode.name == 0) {
+        for (String positive : positives) {
+            if (Circuit.getCircuit().getElements().get(positive).negativeNode.name == 0) {
                 earthConnections++;
             }
         }
-        for (int i = 0; i < negatives.size(); i++) {
-            if (Circuit.getCircuit().getElements().get(negatives.get(i)).positiveNode.name == 0) {
+        for (String negative : negatives) {
+            if (Circuit.getCircuit().getElements().get(negative).positiveNode.name == 0) {
                 earthConnections++;
             }
         }
@@ -60,10 +60,6 @@ public class Node {
 
     public ArrayList<Double> getVoltagesArray() {
         return voltagesArray;
-    }
-
-    public int getBranchsNumer() {
-        return branchsNumer;
     }
 
     public boolean equals(Node node) {

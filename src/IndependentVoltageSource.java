@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 
 public class IndependentVoltageSource extends Element {
-    double offset, amplitude, frequency, phase;
+    final double offset;
+    final double amplitude;
+    final double frequency;
+    final double phase;
     int stackOverFlowed;
 
 

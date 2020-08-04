@@ -1,7 +1,7 @@
 public class CurrentDependentVoltageSource extends Element {
 
-    double gain;
-    String elementDependent;
+    final double gain;
+    final String elementDependent;
     int stackOverFlowed;
 
 

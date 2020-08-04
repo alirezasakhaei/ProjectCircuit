@@ -336,56 +336,59 @@ public class Graphics {
 
     private void dialogChooseElement() {
         JDialog dialogElement = new JDialog();
-        dialogElement.setLayout(null);
         dialogElement.setBounds(0, 0, 500, 500);
+        dialogElement.setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+
         Container container = dialogElement.getContentPane();
         container.setBackground(Color.gray.darker().darker().darker().darker());
 
-        int elementsNumber = circuit.getElements().size();
-        String[] elements = new String[elementsNumber];
-        int i = 0;
-        for (Map.Entry element : circuit.getElements().entrySet()) {
-            elements[i] = ((Element) element.getValue()).name;
-            i++;
-        }
+        //int elementsNumber = circuit.getElements().size();
+        //String[] elements = new String[elementsNumber];
+        //int i = 0;
+        //for (Map.Entry element : circuit.getElements().entrySet()) {
+        //    elements[i] = ((Element) element.getValue()).name;
+        //    i++;
+        //}
 
-        JComboBox comboBox = new JComboBox(elements);
-        comboBox.setBounds(200, 120, 100, 20);
-        dialogElement.add(comboBox);
+        // JComboBox comboBox = new JComboBox(elements);
+        // comboBox.setBounds(200, 120, 100, 20);
+        // dialogElement.add(comboBox);
 
         JTextField textField = new JTextField();
-        textField.setBounds(240, 150, 100, 30);
-        dialogElement.add(textField);
+        //textField.setMaximumSize(new Dimension(100,30));
+        // textField.setBounds(240, 150, 100, 30);
+        // dialogElement.add(textField);
 
         JLabel labelTime = new JLabel("Draw until:");
         labelTime.setFont(new Font("Arial", Font.BOLD, 15));
-        labelTime.setBounds(140, 150, 100, 20);
+        //  labelTime.setBounds(140, 150, 100, 20);
         labelTime.setForeground(Color.white);
-        dialogElement.add(labelTime);
+        //  dialogElement.add(labelTime);
 
-        JLabel labelChoose = new JLabel("Choose the element!");
+        JLabel labelChoose = new JLabel("Choose the elements!");
         labelChoose.setFont(new Font("Arial", Font.BOLD, 20));
-        labelChoose.setBounds(150, 30, 200, 20);
+        // labelChoose.setBounds(150, 30, 200, 20);
         labelChoose.setForeground(Color.white);
-        dialogElement.add(labelChoose);
+        //  dialogElement.add(labelChoose);
 
-        JButton buttonChoose = new JButton("Select");
-        buttonChoose.setFont(new Font("Arial", Font.BOLD, 15));
-        buttonChoose.setBounds(100, 200, 80, 80);
-        buttonChoose.setBackground(Color.white);
-        dialogElement.add(buttonChoose);
+        //JButton buttonChoose = new JButton("Select");
+        //buttonChoose.setFont(new Font("Arial", Font.BOLD, 15));
+        //buttonChoose.setBounds(100, 200, 80, 80);
+        //buttonChoose.setBackground(Color.white);
+        //dialogElement.add(buttonChoose);
 
-        JButton buttonReset = new JButton("Reset");
-        buttonReset.setFont(new Font("Arial", Font.BOLD, 15));
-        buttonReset.setBounds(200, 200, 80, 80);
-        buttonReset.setBackground(Color.white);
-        dialogElement.add(buttonReset);
+        //JButton buttonReset = new JButton("Reset");
+        //buttonReset.setFont(new Font("Arial", Font.BOLD, 15));
+        //buttonReset.setBounds(200, 200, 80, 80);
+        //buttonReset.setBackground(Color.white);
+        //dialogElement.add(buttonReset);
 
         JButton buttonDraw = new JButton("Draw");
         buttonDraw.setFont(new Font("Arial", Font.BOLD, 15));
-        buttonDraw.setBounds(300, 200, 80, 80);
+        //buttonDraw.setBounds(300, 200, 80, 80);
         buttonDraw.setBackground(Color.white);
-        dialogElement.add(buttonDraw);
+        // dialogElement.add(buttonDraw);
 
 
         int[] chosens = new int[1];
@@ -394,18 +397,27 @@ public class Graphics {
         for (int j = 0; j < 10; j++)
             chosenElements[j] = null;
 
+        JCheckBox[] checkBoxesElements = new JCheckBox[circuit.getElements().size()];
+        JLabel[] labelsElements = new JLabel[circuit.getElements().size()];
+        for (int j = 0; j < checkBoxesElements.length; j++) {
+            checkBoxesElements[j] = new JCheckBox();
+            labelsElements[j] = new JLabel(circuit.getElementNames().get(j));
+            checkBoxesElements[j].setOpaque(false);
+        }
+
+
         JCheckBox checkBoxVoltage, checkBoxCurrent, checkBoxPower;
         checkBoxVoltage = new JCheckBox();
-        checkBoxVoltage.setBounds(200, 300, 25, 25);
-        dialogElement.add(checkBoxVoltage);
+        //checkBoxVoltage.setBounds(200, 300, 25, 25);
+        //dialogElement.add(checkBoxVoltage);
 
         checkBoxCurrent = new JCheckBox();
-        checkBoxCurrent.setBounds(200, 350, 25, 25);
-        dialogElement.add(checkBoxCurrent);
+        // checkBoxCurrent.setBounds(200, 350, 25, 25);
+        // dialogElement.add(checkBoxCurrent);
 
         checkBoxPower = new JCheckBox();
-        checkBoxPower.setBounds(200, 400, 25, 25);
-        dialogElement.add(checkBoxPower);
+        //checkBoxPower.setBounds(200, 400, 25, 25);
+        //dialogElement.add(checkBoxPower);
 
         checkBoxVoltage.setOpaque(false);
         checkBoxCurrent.setOpaque(false);
@@ -415,53 +427,57 @@ public class Graphics {
 
         labelVoltage = new JLabel("Voltage");
         labelVoltage.setForeground(Color.white);
-        labelVoltage.setBounds(250, 290, 100, 50);
-        dialogElement.add(labelVoltage);
+        // labelVoltage.setBounds(250, 290, 100, 50);
+        // dialogElement.add(labelVoltage);
 
         labelCurrent = new JLabel("Current");
         labelCurrent.setForeground(Color.white);
-        labelCurrent.setBounds(250, 340, 100, 50);
-        dialogElement.add(labelCurrent);
+        //labelCurrent.setBounds(250, 340, 100, 50);
+        //dialogElement.add(labelCurrent);
 
         labelPower = new JLabel("Power");
         labelPower.setForeground(Color.white);
-        labelPower.setBounds(250, 390, 100, 50);
-        dialogElement.add(labelPower);
+        //labelPower.setBounds(250, 390, 100, 50);
+        //dialogElement.add(labelPower);
 
-        buttonChoose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                boolean isSelected = false;
-                if (chosens[0] == 10)
-                    JOptionPane.showMessageDialog(dialogElement, "You can't select more than 10 elements!");
-                else {
-                    for (int j = 0; j < chosens[0]; j++) {
-                        if (chosenElements[j].name.equals(comboBox.getSelectedItem()))
-                            isSelected = true;
-                    }
-                    if (isSelected) {
-                        JOptionPane.showMessageDialog(dialogElement, "This element is already selected!");
-                    } else {
-                        JOptionPane.showMessageDialog(dialogElement, "Element " + comboBox.getSelectedItem() + " is selected!");
-                        chosenElements[chosens[0]] = Circuit.getCircuit().getElements().get(comboBox.getSelectedItem());
-                        chosens[0]++;
-                    }
-                }
-            }
-        });
+        //buttonChoose.addActionListener(new ActionListener() {
+        //    @Override
+        //    public void actionPerformed(ActionEvent actionEvent) {
+        //
+        //    }
+        //});
 
         buttonDraw.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
+                    chosens[0] = 0;
+                    for (int j = 0; j < checkBoxesElements.length; j++) {
+                        if (checkBoxesElements[j].isSelected()) {
+                            chosenElements[chosens[0]] = Circuit.getCircuit().getElements().get(circuit.getElementNames().get(j));
+                            chosens[0]++;
+                        }
+                    }
+                    for (int j = chosens[0]; j < 10; j++) {
+                        chosenElements[j] = null;
+                    }
+
+                    if (chosens[0] > 10) {
+                        JOptionPane.showMessageDialog(dialogElement, "You can't select more than 10 elements!");
+                        return;
+                    }
+
+
                     if (textField.getText().equals(""))
                         Graph.setMaxTime(circuit.getMaximumTime());
                     else {
                         Graph.setMaxTime(Math.min(InputManager.unitCalculator(textField.getText()), circuit.getMaximumTime()));
                     }
 
+
                     if (chosens[0] == 0) {
                         JOptionPane.showMessageDialog(dialogElement, "No element Selected");
+                        return;
                     }
                     if (checkBoxVoltage.isSelected())
                         drawGraph(chosenElements, chosens[0], 'V');
@@ -477,14 +493,75 @@ public class Graphics {
             }
         });
 
-        buttonReset.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                chosens[0] = 0;
-                for (int j = 0; j < 10; j++)
-                    chosenElements[j] = null;
-            }
-        });
+        //   buttonReset.addActionListener(new ActionListener() {
+        //       @Override
+        //       public void actionPerformed(ActionEvent actionEvent) {
+        //           chosens[0] = 0;
+        //           for (int j = 0; j < 10; j++)
+        //               chosenElements[j] = null;
+        //       }
+        //   });
+
+
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.anchor = GridBagConstraints.PAGE_START;
+        dialogElement.add(labelChoose, constraints);
+        constraints.gridwidth = 1;
+
+
+        constraints.fill = GridBagConstraints.WEST;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        for (int i = 0; i < labelsElements.length; i++) {
+            constraints.gridx = 0;
+            constraints.gridy = i + 1;
+            dialogElement.add(checkBoxesElements[i], constraints);
+            constraints.gridx = 1;
+            dialogElement.add(labelsElements[i], constraints);
+        }
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        constraints.gridx = 2;
+        constraints.anchor = GridBagConstraints.LINE_END;
+
+        constraints.gridy = 1;
+        dialogElement.add(labelTime, constraints);
+        constraints.fill = GridBagConstraints.EAST;
+
+        constraints.gridy = 2;
+        dialogElement.add(checkBoxVoltage, constraints);
+        constraints.gridy = 3;
+        dialogElement.add(checkBoxCurrent, constraints);
+        constraints.gridy = 4;
+        dialogElement.add(checkBoxPower, constraints);
+        constraints.anchor = GridBagConstraints.LINE_START;
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.gridx = 3;
+        dialogElement.add(labelPower, constraints);
+        constraints.gridy = 3;
+        dialogElement.add(labelCurrent, constraints);
+        constraints.gridy = 2;
+        dialogElement.add(labelVoltage, constraints);
+        constraints.gridy = 1;
+        constraints.gridx = 3;
+
+        constraints.anchor = GridBagConstraints.LINE_END;
+        constraints.fill = GridBagConstraints.BOTH;
+
+        dialogElement.add(textField, constraints);
+        constraints.fill = GridBagConstraints.BOTH;
+        int max = Math.max(4, labelsElements.length);
+        if (max % 2 == 0)
+            max /= 2;
+        else max = (max - 1) / 2;
+        constraints.gridx = 5;
+        constraints.gridy = max;
+        dialogElement.add(buttonDraw, constraints);
+
 
         dialogElement.setVisible(true);
     }

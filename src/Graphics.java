@@ -91,7 +91,7 @@ public class Graphics {
                     boolean stupid = true;
                     Element element;
                     for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()){
-                        element = (Element) elementLoop;
+                        element = (Element) elementLoop.getValue();
                         int a = element.negativeNode.getName();
                         int b = element.positiveNode.getName();
                         if (!(a == 0 || b == 0)){

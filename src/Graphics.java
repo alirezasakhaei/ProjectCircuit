@@ -271,7 +271,8 @@ public class Graphics {
                     textAreaInput.setVisible(false);
                     textAreaInput = null;
                     selectedFile = null;
-                    buttonSave.setEnabled(false);
+                textAreaOutput.setText("");
+                buttonSave.setEnabled(false);
                     buttonDrawCircuit.setEnabled(false);
                     buttonDrawGraph.setEnabled(false);
 

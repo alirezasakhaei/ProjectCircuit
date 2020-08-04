@@ -48,6 +48,7 @@ public class Node {
     }
 
     public void setEarthConnections() {
+        earthConnections = 0;
         for (String positive : positives) {
             if (Circuit.getCircuit().getElements().get(positive).negativeNode.name == 0) {
                 earthConnections++;

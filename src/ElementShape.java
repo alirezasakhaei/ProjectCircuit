@@ -6,6 +6,12 @@ public class ElementShape extends JPanel {
     char type;
     boolean isHorizental;
     boolean isUpWardRightWard;
+    ElementShape(Element element,boolean isHorizental,boolean isUpWardRightWard){
+        this.element = element;
+        this.isHorizental = isHorizental;
+        this.isUpWardRightWard = isUpWardRightWard;
+        type = element.name.charAt(0);
+    }
     ElementShape (Element element){
         this.element = element;
         if (element.positiveNode.getName() == 0 || element.negativeNode.getName() == 0){

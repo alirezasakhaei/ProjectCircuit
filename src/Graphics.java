@@ -91,8 +91,8 @@ public class Graphics {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (isCircuitSolved) {
-                    drawCircuit();
-                    drawCircuitPro();
+              //      drawCircuit();
+                    drawCircuitBad();
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
 
             }
@@ -586,6 +586,42 @@ public class Graphics {
 
         dialog.setVisible(true);
     }
+
+    private void drawCircuitBad() {
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
+
+        JDialog dialog = new JDialog();
+        dialog.setBounds(0, 0, 700, 700);
+        dialog.setLayout(null);
+
+        JLabel label = new JLabel("Simulated Circuit");
+        label.setBounds(300, 10, 100, 40);
+        dialog.add(label);
+
+        ArrayList<Node> nodes = new ArrayList<>(0);
+        nodes.add(0, circuit.getNodes().get(0));
+        for (Map.Entry node : circuit.getNodes().entrySet()) {
+            if (((Node) node.getValue()).getName() != 0) {
+                nodes.add((Node) node.getValue());
+            }
+        }
+
+
+        CircuitGraphBad circuitGraphBad = new CircuitGraphBad(circuit.getNodes().size() - 1, circuit, nodes, dialog);
+        circuitGraphBad.setLayout(null);
+        circuitGraphBad.setBorder(border);
+        circuitGraphBad.setSize(600,600);
+        circuitGraphBad.setBounds(50, 50, 650, 650);
+
+        dialog.add(circuitGraphBad);
+
+
+        dialog.setVisible(true);
+    }
+
+
+
+
 
     private void drawCircuitPro() {
         ArrayList<Node> nodes = new ArrayList<>(0);

@@ -19,6 +19,7 @@ public class CircuitGraph extends JPanel {
         drawHorizontals();
     }
 
+
     @Override
     public void paint(Graphics g) {
 

@@ -31,7 +31,6 @@ public class Graph extends JPanel {
                         for (int k = 0; k < stepDt; k++) {
                             sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k);
                         }
-                        System.out.println(sum + " " + stepDt + " " + (sum / stepDt));
                         fixedArray[j] = sum / stepDt;
 
                     }

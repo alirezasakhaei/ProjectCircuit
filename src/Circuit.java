@@ -171,7 +171,6 @@ public class Circuit {
             }
 
         } while (i < previousSize - 1);
-        System.out.println(voltageSources.size());
         if (voltageSources.size() < 2)
             return true;
         double voltage = 0;
@@ -238,21 +237,24 @@ public class Circuit {
         }
         for (String elementName : elementNames) {
             if (elementName.charAt(0) == 'D') {
-                if (elements.get(elementName).positiveNode.getVoltage() < elements.get(elementName).negativeNode.getVoltage() || (elements.get(elementName).getVoltage() == 0 && elements.get(elementName).getCurrent() <= 0)) {
+                if (elements.get(elementName).positiveNode.getPreviousVoltage() < elements.get(elementName).negativeNode.getPreviousVoltage() &&
+                        (elements.get(elementName).getPreviousVoltage() < 0 || elements.get(elementName).getCurrent() <= 0)) {
                     Element temp = elements.remove(elementName);
                     IndependentCurrentSource d = new IndependentCurrentSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setCurrentSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
                     d.setPowersArray(temp.getPowersArray());
+                    System.out.println(time + ":off");
                     elements.put(elementName, d);
-                } else {
+                } else if (elements.get(elementName).getCurrent() < 0) {
                     Element temp = elements.remove(elementName);
                     IndependentVoltageSource d = new IndependentVoltageSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
                     d.setVoltageSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
                     d.setPowersArray(temp.getPowersArray());
+                    System.out.println(time + ":on");
                     elements.put(elementName, d);
                 }
             }
@@ -286,7 +288,7 @@ public class Circuit {
         ErrorFinder errorFinder = new ErrorFinder(circuit);
 
         for (time = 0; time <= maximumTime; time += dt) {
-            reconstructUnions();
+            // reconstructUnions();
             if (time / maximumTime > 0.001) {
                 if (!errorFinder.isCurrentSourceSeries()) {
                     return -2;

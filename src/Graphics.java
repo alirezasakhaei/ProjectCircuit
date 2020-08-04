@@ -102,7 +102,10 @@ public class Graphics {
                                 if (Math.min(a,b)%6 == 0)
                                     stupid = false;
                             }
-                        }
+                        } else if (a > 6)
+                            stupid = false;
+                        else if (b>6)
+                            stupid = false;
                     }
                     if (stupid)
                         drawCircuitBad();

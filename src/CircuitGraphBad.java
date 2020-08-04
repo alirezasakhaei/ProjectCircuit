@@ -290,10 +290,6 @@ public class CircuitGraphBad extends JPanel {
 
                             }
 
-                            elementShape.setBounds(100 + 100 * (i % 6 - 1), 495 - 100 * ((i - 1) / 6) + (elementsNumber - 1) * 30, 100, 10);
-                            name.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + (elementsNumber - 1) * 30 - 15, 100, 20);
-                            label.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + (elementsNumber - 1) * 30 + 5, 100, 20);
-
                             elementsNumber++;
 
                         }

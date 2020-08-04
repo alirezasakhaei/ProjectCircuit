@@ -343,53 +343,20 @@ public class Graphics {
         Container container = dialogElement.getContentPane();
         container.setBackground(Color.gray.darker().darker().darker().darker());
 
-        //int elementsNumber = circuit.getElements().size();
-        //String[] elements = new String[elementsNumber];
-        //int i = 0;
-        //for (Map.Entry element : circuit.getElements().entrySet()) {
-        //    elements[i] = ((Element) element.getValue()).name;
-        //    i++;
-        //}
-
-        // JComboBox comboBox = new JComboBox(elements);
-        // comboBox.setBounds(200, 120, 100, 20);
-        // dialogElement.add(comboBox);
 
         JTextField textField = new JTextField();
-        //textField.setMaximumSize(new Dimension(100,30));
-        // textField.setBounds(240, 150, 100, 30);
-        // dialogElement.add(textField);
 
         JLabel labelTime = new JLabel("Draw until:");
         labelTime.setFont(new Font("Arial", Font.BOLD, 15));
-        //  labelTime.setBounds(140, 150, 100, 20);
         labelTime.setForeground(Color.white);
-        //  dialogElement.add(labelTime);
 
         JLabel labelChoose = new JLabel("Choose the elements!");
         labelChoose.setFont(new Font("Arial", Font.BOLD, 20));
-        // labelChoose.setBounds(150, 30, 200, 20);
         labelChoose.setForeground(Color.white);
-        //  dialogElement.add(labelChoose);
-
-        //JButton buttonChoose = new JButton("Select");
-        //buttonChoose.setFont(new Font("Arial", Font.BOLD, 15));
-        //buttonChoose.setBounds(100, 200, 80, 80);
-        //buttonChoose.setBackground(Color.white);
-        //dialogElement.add(buttonChoose);
-
-        //JButton buttonReset = new JButton("Reset");
-        //buttonReset.setFont(new Font("Arial", Font.BOLD, 15));
-        //buttonReset.setBounds(200, 200, 80, 80);
-        //buttonReset.setBackground(Color.white);
-        //dialogElement.add(buttonReset);
 
         JButton buttonDraw = new JButton("Draw");
         buttonDraw.setFont(new Font("Arial", Font.BOLD, 15));
-        //buttonDraw.setBounds(300, 200, 80, 80);
         buttonDraw.setBackground(Color.white);
-        // dialogElement.add(buttonDraw);
-
 
         int[] chosens = new int[1];
         chosens[0] = 0;
@@ -403,21 +370,13 @@ public class Graphics {
             checkBoxesElements[j] = new JCheckBox();
             labelsElements[j] = new JLabel(circuit.getElementNames().get(j));
             checkBoxesElements[j].setOpaque(false);
+            labelsElements[j].setForeground(Color.WHITE);
         }
-
 
         JCheckBox checkBoxVoltage, checkBoxCurrent, checkBoxPower;
         checkBoxVoltage = new JCheckBox();
-        //checkBoxVoltage.setBounds(200, 300, 25, 25);
-        //dialogElement.add(checkBoxVoltage);
-
         checkBoxCurrent = new JCheckBox();
-        // checkBoxCurrent.setBounds(200, 350, 25, 25);
-        // dialogElement.add(checkBoxCurrent);
-
         checkBoxPower = new JCheckBox();
-        //checkBoxPower.setBounds(200, 400, 25, 25);
-        //dialogElement.add(checkBoxPower);
 
         checkBoxVoltage.setOpaque(false);
         checkBoxCurrent.setOpaque(false);
@@ -427,25 +386,12 @@ public class Graphics {
 
         labelVoltage = new JLabel("Voltage");
         labelVoltage.setForeground(Color.white);
-        // labelVoltage.setBounds(250, 290, 100, 50);
-        // dialogElement.add(labelVoltage);
 
         labelCurrent = new JLabel("Current");
         labelCurrent.setForeground(Color.white);
-        //labelCurrent.setBounds(250, 340, 100, 50);
-        //dialogElement.add(labelCurrent);
 
         labelPower = new JLabel("Power");
         labelPower.setForeground(Color.white);
-        //labelPower.setBounds(250, 390, 100, 50);
-        //dialogElement.add(labelPower);
-
-        //buttonChoose.addActionListener(new ActionListener() {
-        //    @Override
-        //    public void actionPerformed(ActionEvent actionEvent) {
-        //
-        //    }
-        //});
 
         buttonDraw.addActionListener(new ActionListener() {
             @Override
@@ -492,16 +438,6 @@ public class Graphics {
                 }
             }
         });
-
-        //   buttonReset.addActionListener(new ActionListener() {
-        //       @Override
-        //       public void actionPerformed(ActionEvent actionEvent) {
-        //           chosens[0] = 0;
-        //           for (int j = 0; j < 10; j++)
-        //               chosenElements[j] = null;
-        //       }
-        //   });
-
 
         constraints.gridx = 2;
         constraints.gridy = 0;

@@ -15,6 +15,7 @@ public class Node {
     private int earthConnections = 0, earthConnectionsPro = 0;
     private Point location;
     int x, y;
+    int xBad,yBad;
 
     public int getEarthConnectionsPro() {
         return earthConnectionsPro;

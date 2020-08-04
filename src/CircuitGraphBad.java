@@ -28,22 +28,29 @@ public class CircuitGraphBad extends JPanel {
         drawHorizontals();
         drawVerticals();
 
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 6; j++) {
+                if (Circuit.getCircuit().getNodes().containsKey(j + 1 + (30 - (i + 1) * 6))) {
+                    Circuit.getCircuit().getNodes().get(j + 1 + (30 - (i + 1) * 6)).xBad = 50 + 100 * j;
+                    Circuit.getCircuit().getNodes().get(j + 1 + (30 - (i + 1) * 6)).yBad = 50 + 100 * i;
+                }
+            }
+        }
+        nodesNames();
+
     }
 
     @Override
     public void paint(Graphics g) {
-        JLabel name;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if (Circuit.getCircuit().getNodes().containsKey(j + 1 + (30 - (i + 1) * 6))) {
                     g.fillOval(50 + 100 * j, 50 + 100 * i, 5, 5);
-                    name = new JLabel(String.valueOf(Circuit.getCircuit().getNodes().get(j + 1 + (30 - (i + 1) * 6)).getName()));
-                    name.setBounds(85 + 100 * j, 85 + 100 * i, 100, 20);
-                    dialog.add(name);
-                    namesNode.add(name);
                 }
             }
         }
+
+
         g.drawLine(50, 550, 550, 550);
 
         Graphics2D g2d = (Graphics2D) g;
@@ -226,7 +233,6 @@ public class CircuitGraphBad extends JPanel {
                 nodeOne = Circuit.getCircuit().getNodes().get(i);
                 nodeTwo = Circuit.getCircuit().getNodes().get(i + 1);
                 elementsBetween = Node.elementsBetween(nodeOne, nodeTwo);
-                System.out.println(i + " " + (i + 1) + " " + elementsBetween);
                 elementsNumber = 1;
                 if (elementsBetween > 0) {
                     for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
@@ -288,4 +294,21 @@ public class CircuitGraphBad extends JPanel {
         }
     }
 
+    private void nodesNames(){
+        JLabel name;
+        for (int i=1 ;i<31;i++) {
+            boolean contains = false;
+            if (Circuit.getCircuit().getNodes().containsKey(i)) {
+                name = new JLabel(String.valueOf(Circuit.getCircuit().getNodes().get(i).getName()));
+                name.setBounds(Circuit.getCircuit().getNodes().get(i).xBad + 45, Circuit.getCircuit().getNodes().get(i).yBad + 45, 100, 20);
+                dialog.add(name);
+                for (int j=0;j<namesNode.size();j++){
+                    if (namesNode.get(j).getText().equals(name.getText()))
+                        contains = true;
+                }
+                if (!contains)
+                    namesNode.add(name);
+            }
+        }
+    }
 }

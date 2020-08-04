@@ -10,13 +10,28 @@ public class CircuitGraph extends JPanel {
     final ArrayList<Node> nodes;
     final JDialog dialog;
 
-    public CircuitGraph(int nodesNumber, Circuit circuit, ArrayList<Node> nodes, JDialog dialog) {
+    ArrayList<JLabel> labels;
+    ArrayList<JLabel> namesElement;
+    ArrayList<JLabel> namesNode;
+
+    public CircuitGraph(int nodesNumber, Circuit circuit, ArrayList<Node> nodes, JDialog dialog,ArrayList<JLabel> labels, ArrayList<JLabel> namesElement, ArrayList<JLabel> namesNode) {
         this.nodesNumber = nodesNumber;
         this.circuit = circuit;
         this.nodes = nodes;
         this.dialog = dialog;
+        this.labels = labels;
+        this.namesElement = namesElement;
+        this.namesNode = namesNode;
         drawEarthConnecteds();
         drawHorizontals();
+        JLabel name;
+        for (int i=0;i<nodesNumber;i++){
+            nodes.get(i+1).setLocation(new Point(100 + 100*i,450));
+            name = new JLabel(String.valueOf(nodes.get(i+1).getName()));
+            name.setBounds(100*(i) + 140, 480, 100, 20);
+            dialog.add(name);
+            namesNode.add(name);
+        }
     }
 
 
@@ -26,7 +41,6 @@ public class CircuitGraph extends JPanel {
         g.drawLine(100,550,500,550);
         for (int i=0;i<nodesNumber;i++){
             g.fillOval(100 + 100*i,450,5,5);
-            nodes.get(i+1).setLocation(new Point(100 + 100*i,450));
         }
         Node node;
         for(int i=1;i<nodes.size();i++){
@@ -49,6 +63,14 @@ public class CircuitGraph extends JPanel {
                 }
             }
         }
+
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(8));
+        g2d.drawLine(0, 0, 600, 0);
+        g2d.drawLine(0, 0, 0, 600);
+        g2d.drawLine(600, 0, 600, 600);
+        g2d.drawLine(0, 600, 600, 600);
     }
     private void drawEarthConnecteds(){
         Node node;
@@ -70,11 +92,13 @@ public class CircuitGraph extends JPanel {
                     name.setBounds(130 + 30*(elementNumber-1) + 100*(i-1) ,495 + 80*(elementNumber%2),100,20);
                     name.setFont(new Font("Arial",Font.ITALIC,8));
                     dialog.add(name);
+                    namesElement.add(name);
 
                     label = new JLabel(element.label);
                     label.setBounds(130 + 30*(elementNumber-1) + 100*(i-1) ,505 + 80*(elementNumber%2),100,20);
                     label.setFont(new Font("Arial",Font.ITALIC,8));
                     dialog.add(label);
+                    labels.add(label);
 
                     elementNumber++;
                 }
@@ -90,11 +114,13 @@ public class CircuitGraph extends JPanel {
                     name.setBounds(130 + 30*(elementNumber-1) + 100*(i-1) ,495 + 80*(elementNumber%2),100,20);
                     name.setFont(new Font("Arial",Font.ITALIC,8));
                     dialog.add(name);
+                    namesElement.add(name);
 
                     label = new JLabel(element.label);
                     label.setBounds(130 + 30*(elementNumber-1) + 100*(i-1) ,505 + 80*(elementNumber%2),100,20);
                     label.setFont(new Font("Arial",Font.ITALIC,8));
                     dialog.add(label);
+                    labels.add(label);
 
 
                     elementNumber++;
@@ -128,11 +154,13 @@ public class CircuitGraph extends JPanel {
                         name.setBounds(50 + 100*i +70*(parralles%2) ,495 - 100*(j-i) + parralles*30 - 15 ,100,20);
                         name.setFont(new Font("Arial",Font.ITALIC,8));
                         dialog.add(name);
+                        namesElement.add(name);
 
                         label = new JLabel(element.label);
                         label.setBounds(50 + 100*i+70*(parralles%2) ,495 - 100*(j-i) + parralles*30 + 5 ,100,20);
                         label.setFont(new Font("Arial",Font.ITALIC,8));
                         dialog.add(label);
+                        labels.add(label);
 
                         parralles++;
 

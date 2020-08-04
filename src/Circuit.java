@@ -162,13 +162,16 @@ public class Circuit {
             while (i < voltageSources.size() - 1) {
                 for (int j = i + 1; j < voltageSources.size(); j++) {
                     if ((!(voltageSources.get(i).positiveNode == voltageSources.get(j).positiveNode || voltageSources.get(i).positiveNode == voltageSources.get(j).negativeNode))
-                            && (!(voltageSources.get(i).negativeNode == voltageSources.get(j).positiveNode || voltageSources.get(i).negativeNode == voltageSources.get(j).negativeNode))) {
+                            || (!(voltageSources.get(i).negativeNode == voltageSources.get(j).positiveNode || voltageSources.get(i).negativeNode == voltageSources.get(j).negativeNode))) {
 
                         voltageSources.remove(voltageSources.get(i));
-                    } else i++;
+                    }
                 }
+                i++;
             }
+
         } while (i < previousSize - 1);
+        System.out.println(voltageSources.size());
         if (voltageSources.size() < 2)
             return true;
         double voltage = 0;
@@ -290,13 +293,13 @@ public class Circuit {
                 }
                 if (!errorFinder.isVoltageSourcesParallel())
                     return -3;
-                if (!checkForVoltageLoop())
+                if (!checkForVoltageLoop()) {
                     return -3;
+                }
                 if (!checkForCurrentNode())
                     return -2;
             }
             for (int i = 0; i < unions.size(); i++) {
-                setVoltagesInUnion(i);
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getVoltage() - dv);
                 setVoltagesInUnion(i);
                 i1 = obtainCurrent(unions.get(i));

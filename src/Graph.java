@@ -1,6 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Graph extends JPanel {
@@ -27,17 +27,31 @@ public class Graph extends JPanel {
             switch (graphType) {
                 case 'V':
                     for (int j = 0; j < 500; j++) {
-                        fixedArray[j] = chosenElements[i].getVoltagesArray().get(j * stepDt);
+                        double sum = 0;
+                        for (int k = 0; k < stepDt; k++) {
+                            sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k);
+                        }
+                        System.out.println(sum + " " + stepDt + " " + (sum / stepDt));
+                        fixedArray[j] = sum / stepDt;
+
                     }
                     break;
                 case 'A':
                     for (int j = 0; j < 500; j++) {
-                        fixedArray[j] = chosenElements[i].getCurrentsArray().get(j * stepDt);
+                        double sum = 0;
+                        for (int k = 0; k < stepDt; k++) {
+                            sum += chosenElements[i].getCurrentsArray().get(j * stepDt + k);
+                        }
+                        fixedArray[j] = sum / stepDt;
                     }
                     break;
                 case 'W':
                     for (int j = 0; j < 500; j++) {
-                        fixedArray[j] = chosenElements[i].getPowersArray().get(j * stepDt);
+                        double sum = 0;
+                        for (int k = 0; k < stepDt; k++) {
+                            sum += chosenElements[i].getPowersArray().get(j * stepDt + k);
+                        }
+                        fixedArray[j] = sum / stepDt;
                     }
                     break;
             }

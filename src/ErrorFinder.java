@@ -11,10 +11,6 @@ public class ErrorFinder {
     public int findErrors() {
         if (!isDSet())
             return -1;
-        //if (!isVoltageSourcesParallel())
-        //    return -2;
-        //if (!isCurrentSourceSeries())
-        //    return -3;
         if (!isGroundAdded())
             return -4;
         if (!isLoopValid())

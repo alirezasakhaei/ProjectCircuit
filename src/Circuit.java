@@ -380,6 +380,7 @@ public class Circuit {
 
 
     protected void checkLoopValidation(ArrayList<String> elementsUsed, ArrayList<Integer> nodesPassed, int currentNode) {
+
         if (nodesPassed.size() > 1 && currentNode == 0) {
             for (Integer integer : nodesPassed) {
                 nodes.get(integer).setAdded(true);
@@ -391,7 +392,7 @@ public class Circuit {
             if (!elementsUsed.contains(nodes.get(currentNode).getPositives().get(i))) {
                 nodesPassed.add(elements.get(nodes.get(currentNode).getPositives().get(i)).negativeNode.getName());
                 elementsUsed.add(nodes.get(currentNode).getPositives().get(i));
-                checkLoopValidation(elementsUsed, nodesPassed, elements.get(nodes.get(currentNode).getPositives().get(i)).negativeNode.getName());
+                checkLoopValidation(new ArrayList<>(elementsUsed), new ArrayList<>(nodesPassed), elements.get(nodes.get(currentNode).getPositives().get(i)).negativeNode.getName());
                 nodesPassed.remove(nodesPassed.size() - 1);
                 elementsUsed.remove(elementsUsed.size() - 1);
             }
@@ -401,7 +402,7 @@ public class Circuit {
             if (!elementsUsed.contains(nodes.get(currentNode).getNegatives().get(i))) {
                 nodesPassed.add(elements.get(nodes.get(currentNode).getNegatives().get(i)).positiveNode.getName());
                 elementsUsed.add(nodes.get(currentNode).getNegatives().get(i));
-                checkLoopValidation(elementsUsed, nodesPassed, elements.get(nodes.get(currentNode).getNegatives().get(i)).positiveNode.getName());
+                checkLoopValidation(new ArrayList<>(elementsUsed), new ArrayList<>(nodesPassed), elements.get(nodes.get(currentNode).getNegatives().get(i)).positiveNode.getName());
                 nodesPassed.remove(nodesPassed.size() - 1);
                 elementsUsed.remove(elementsUsed.size() - 1);
             }

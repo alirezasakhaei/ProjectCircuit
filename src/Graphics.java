@@ -447,6 +447,7 @@ public class Graphics {
         constraints.anchor = GridBagConstraints.PAGE_START;
         dialogElement.add(labelChoose, constraints);
         constraints.gridwidth = 1;
+        constraints.anchor = GridBagConstraints.CENTER;
 
 
         constraints.fill = GridBagConstraints.WEST;

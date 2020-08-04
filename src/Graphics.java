@@ -107,11 +107,13 @@ public class Graphics {
                         else if (b>6)
                             stupid = false;
                     }
-                    if (stupid)
-                        drawCircuitBad();
-                    else
-                        drawCircuit();
+                   // if (stupid)
+                  //      drawCircuitBad();
+                  //  else
+                   //     drawCircuit();
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
+
+                drawCircuitEdited();
 
             }
         });
@@ -581,16 +583,39 @@ public class Graphics {
         dialogVoltage.setVisible(true);
     }
 
+    private void drawCircuitEdited(){
+        JDialog dialog = new JDialog();
+        dialog.setBounds(0, 0, 1100, 600);
+        dialog.setLayout(null);
+
+        ArrayList<Node> nodes = new ArrayList<>(0);
+        nodes.add(0, circuit.getNodes().get(0));
+        for (Map.Entry node : circuit.getNodes().entrySet()) {
+            if (((Node) node.getValue()).getName() != 0) {
+                nodes.add((Node) node.getValue());
+            }
+        }
+
+        CircuitGraphEdited circuitGraphEdited = new CircuitGraphEdited(circuit.getNodes().size() - 1, circuit, nodes, dialog);
+        circuitGraphEdited.setLayout(null);
+        circuitGraphEdited.setBounds(0, 0, 1100, 600);
+
+        dialog.add(circuitGraphEdited);
+
+        dialog.setResizable(false);
+        dialog.setVisible(true);
+
+    }
     private void drawCircuit() {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3, false);
 
         JDialog dialog = new JDialog();
-        dialog.setBounds(0, 0, 700, 700);
+        dialog.setBounds(0, 0, 1100, 600);
         dialog.setLayout(null);
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout());
-        topPanel.setBounds(0, 0, 700, 50);
+        topPanel.setBounds(0, 0, 1100, 50);
         dialog.add(topPanel);
         topPanel.setVisible(false);
 
@@ -612,7 +637,7 @@ public class Graphics {
         CircuitGraph circuitGraph = new CircuitGraph(circuit.getNodes().size() - 1, circuit, nodes, dialog,labels,namesElement,namesNode);
         circuitGraph.setLayout(null);
         circuitGraph.setBorder(border);
-        circuitGraph.setBounds(50, 50, 600, 600);
+        circuitGraph.setBounds(0, 0, 1100, 600);
 
         dialog.add(circuitGraph);
         /*

@@ -38,7 +38,7 @@ public class CircuitGraph extends JPanel {
     @Override
     public void paint(Graphics g) {
 
-        g.drawLine(100,550,500,550);
+        g.drawLine(50,595,1100,595);
         for (int i=0;i<nodesNumber;i++){
             g.fillOval(100 + 100*i,450,5,5);
         }
@@ -67,10 +67,10 @@ public class CircuitGraph extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(8));
-        g2d.drawLine(0, 0, 600, 0);
-        g2d.drawLine(0, 0, 0, 600);
-        g2d.drawLine(600, 0, 600, 600);
-        g2d.drawLine(0, 600, 600, 600);
+        g2d.drawLine(0, 0, 1200, 0);
+        g2d.drawLine(0, 0, 0, 610);
+        g2d.drawLine(1200, 0, 1200, 650);
+        g2d.drawLine(0, 610, 1200, 610);
     }
     private void drawEarthConnecteds(){
         Node node;

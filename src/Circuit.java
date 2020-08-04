@@ -95,7 +95,6 @@ public class Circuit {
 
     /////////////////// End of get-set codeBox
 
-
     void initializeGraph() {
         initializeUnions();
     }
@@ -412,31 +411,36 @@ public class Circuit {
 
     String getOutput() {
         StringBuilder output = new StringBuilder();
-        int[] nodeNames = new int[nodeNameQueue.size()];
-        for (int i = 0; i < nodeNames.length; i++) {
-            nodeNames[i] = nodeNameQueue.get(i);
-        }
-        Arrays.sort(nodeNames);
-        for (int i = 1; i < nodeNames.length; i++) {
-            output.append(nodeNames[i]);
-            for (int j = 0; j < nodes.get(nodeNames[i]).getVoltagesArray().size(); j++) {
-                output.append(" ");
-                output.append(nodes.get(nodeNames[i]).getVoltagesArray().get(j));
+        try {
+
+            int[] nodeNames = new int[nodeNameQueue.size()];
+            for (int i = 0; i < nodeNames.length; i++) {
+                nodeNames[i] = nodeNameQueue.get(i);
+            }
+            Arrays.sort(nodeNames);
+            for (int i = 1; i < nodeNames.length; i++) {
+                output.append(nodeNames[i]);
+                for (int j = 0; j < nodes.get(nodeNames[i]).getVoltagesArray().size(); j++) {
+                    output.append(" ");
+                    output.append(nodes.get(nodeNames[i]).getVoltagesArray().get(j));
+                }
+                output.append("\n");
             }
             output.append("\n");
-        }
-        output.append("\n");
-        for (String elementName : elementNames) {
-            output.append(elementName);
-            for (int j = 0; j < elements.get(elementName).getVoltagesArray().size(); j++) {
-                output.append(" ");
-                output.append(elements.get(elementName).getVoltagesArray().get(j));
-                output.append(" ");
-                output.append(elements.get(elementName).getCurrentsArray().get(j));
-                output.append(" ");
-                output.append(elements.get(elementName).getPowersArray().get(j));
+            for (String elementName : elementNames) {
+                output.append(elementName);
+                for (int j = 0; j < elements.get(elementName).getVoltagesArray().size(); j++) {
+                    output.append(" ");
+                    output.append(elements.get(elementName).getVoltagesArray().get(j));
+                    output.append(" ");
+                    output.append(elements.get(elementName).getCurrentsArray().get(j));
+                    output.append(" ");
+                    output.append(elements.get(elementName).getPowersArray().get(j));
+                }
+                output.append("\n");
             }
-            output.append("\n");
+        } catch (OutOfMemoryError e) {
+            return "Out of Memory!\ntry increasing dt or reducing maximum time.";
         }
         return output.toString();
     }

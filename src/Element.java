@@ -1,85 +1,15 @@
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     String data = null;
     ArrayList<Double> currentsArray = new ArrayList<>();
     String label;
 
-    void setLabel(String label) {
-    }
-
-    protected ArrayList<Double> voltagesArray = new ArrayList<>();
-    protected ArrayList<Double> powersArray = new ArrayList<>();
-    protected String name;
-    private boolean isVoltageSource = false;
-    private boolean isCurrentSource = false;
-
-    public ArrayList<Double> getCurrentsArray() {
-        return currentsArray;
-    }
-
-    public ArrayList<Double> getVoltagesArray() {
-        return voltagesArray;
-    }
-
-    public ArrayList<Double> getPowersArray() {
-        return powersArray;
-    }
-
-    public double getVoltage() {
-        return positiveNode.getVoltage() - negativeNode.getVoltage();
-    }
-
-    public double getPreviousVoltage() {
-        return positiveNode.getPreviousVoltage() - negativeNode.getPreviousVoltage();
-    }
-
-    public void updateTime() {
-        currentsArray.add(getCurrent());
-        voltagesArray.add(getVoltage());
-        powersArray.add(getVoltage() * getCurrent());
-    }
-    public double getCurrentMax() {
-        double max = 0;
-        for (Double aDouble : currentsArray) {
-            if (Math.abs(aDouble) >= max)
-                max = Math.abs(aDouble);
-        }
-        return max;
-    }
-
-    public double getPowerMax() {
-        double max = 0;
-        for (Double aDouble : powersArray) {
-            if (Math.abs(aDouble) >= max)
-                max = Math.abs(aDouble);
-        }
-        return max;
-    }
-
-
-    public double getVoltageMax() {
-        double max = 0;
-        for (Double aDouble : voltagesArray) {
-            if (Math.abs(aDouble) >= max)
-                max = Math.abs(aDouble);
-        }
-        return max;
-    }
-
-    abstract double getCurrent();
-
-    public static boolean isParallel(Element elementOne, Element elementTwo) {
-        return (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
-                || (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode));
-    }
-
     public static int isSeries(Element elementOne, Element elementTwo) {
         if (elementOne.equals(elementTwo))
-            return 0;
+            return 5;
         ArrayList<Integer> temp = new ArrayList<>();
         ArrayList<ArrayList<Integer>> roadsPositive = seriesHelper(elementOne.positiveNode.getName(), elementTwo.positiveNode.getName(), elementOne.negativeNode.getName(), temp);
         temp = new ArrayList<>();
@@ -126,10 +56,7 @@ public abstract class Element extends Circuit {
         if (passedNegative)
             return 2;
         else return 1;
-
 /*
-
-
         //positives are series : 1
         //elementOne positive and elementTwo negative are series : 2
         //elementOne negative and elementTwo positive are series : 3
@@ -154,6 +81,74 @@ public abstract class Element extends Circuit {
  */
     }
 
+    protected ArrayList<Double> voltagesArray = new ArrayList<>();
+    protected ArrayList<Double> powersArray = new ArrayList<>();
+    protected String name;
+    private boolean isVoltageSource = false;
+    private boolean isCurrentSource = false;
+
+    public ArrayList<Double> getCurrentsArray() {
+        return currentsArray;
+    }
+
+    public ArrayList<Double> getVoltagesArray() {
+        return voltagesArray;
+    }
+
+    public ArrayList<Double> getPowersArray() {
+        return powersArray;
+    }
+
+    public double getVoltage() {
+        return positiveNode.getVoltage() - negativeNode.getVoltage();
+    }
+
+    public double getPreviousVoltage() {
+        return positiveNode.getPreviousVoltage() - negativeNode.getPreviousVoltage();
+    }
+
+    public void updateTime() {
+        currentsArray.add(getCurrent());
+        voltagesArray.add(getVoltage());
+        powersArray.add(getVoltage() * getCurrent());
+    }
+
+    public double getCurrentMax() {
+        double max = 0;
+        for (Double aDouble : currentsArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
+        }
+        return max;
+    }
+
+    public double getPowerMax() {
+        double max = 0;
+        for (Double aDouble : powersArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
+        }
+        return max;
+    }
+
+    public double getVoltageMax() {
+        double max = 0;
+        for (Double aDouble : voltagesArray) {
+            if (Math.abs(aDouble) >= max)
+                max = Math.abs(aDouble);
+        }
+        return max;
+    }
+
+    abstract double getCurrent();
+
+    public static boolean isParallel(Element elementOne, Element elementTwo) {
+        return (elementOne.positiveNode.equals(elementTwo.positiveNode) && elementOne.negativeNode.equals(elementTwo.negativeNode))
+                || (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode));
+    }
+
+    void setLabel(String label) {
+    }
 
    /* private static int isSeriesHelper(Element elementOne, Element elementTwo, boolean positive) {
         boolean isNeighbor = false, canContinue;
@@ -201,11 +196,7 @@ public abstract class Element extends Circuit {
                 }
             }
         else return 0;
-
-
     }
-
-
     */
 
     private static ArrayList<ArrayList<Integer>> seriesHelper(int currentNode, int destinationNode, int forbiddenNode, ArrayList<Integer> nodesPassed) {
@@ -251,7 +242,6 @@ public abstract class Element extends Circuit {
     public void setCurrentSource(boolean currentSource) {
         isCurrentSource = currentSource;
     }
-
 
     public boolean equals(Element element) {
         return this.name.equals(element.name);

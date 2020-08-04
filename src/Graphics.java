@@ -156,7 +156,6 @@ public class Graphics {
             }
         });
 
-
         buttonSolve.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -196,6 +195,7 @@ public class Graphics {
                             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             break;
                         case 0:
+                            textAreaOutput.setText(circuit.getOutput());
                             buttonDrawCircuit.setEnabled(true);
                             buttonDrawGraph.setEnabled(true);
                             buttonSave.setEnabled(true);
@@ -203,8 +203,6 @@ public class Graphics {
                         default:
                             JOptionPane.showMessageDialog(frame, "There is a problem found in line " + error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
-                    textAreaOutput.setText(circuit.getOutput());
-
                 }
             }
         });
@@ -244,9 +242,6 @@ public class Graphics {
                             textAreaInput.setText(preText);
                             textAreaInput.setEditable(true);
 
-                            //textAreaInput.setBounds(5, 5, pText.getWidth() - 5, pText.getHeight() - 5);
-
-
                             isSomethingLoaded = true;
                             selectedFile = input;
                         } catch (FileNotFoundException e) {
@@ -255,7 +250,6 @@ public class Graphics {
                     }
             }
         });
-
 
         buttonReset = new JButton("Reset");
         buttonReset.setBackground(Color.white);
@@ -288,7 +282,6 @@ public class Graphics {
         scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         pOut.add(scrollableTextArea);
-
 
         frameLayout.setHorizontalGroup(frameLayout.createSequentialGroup().addGroup(frameLayout.createParallelGroup().addComponent(pText).addComponent(pOut))
                 .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDrawCircuit).addComponent(pDrawGraph).addComponent(pLoad).addComponent(pSave).addComponent(pReset)));

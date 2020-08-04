@@ -61,13 +61,33 @@ public class ErrorFinder {
                 for (Map.Entry<String, Element> currentSourceTwo : circuit.getElements().entrySet()) {
                     elementTwo = currentSourceTwo.getValue();
                     if (elementTwo.isCurrentSource()) {
+                        if (elementTwo.equals(elementTwo))
+                            continue;
                         int result = Element.isSeries(elementOne, elementTwo);
+                        if (result == 5)
+                            continue;
+                        double current1 = elementOne.getCurrent(), current2 = elementTwo.getCurrent();
+                        for (int i = 0; i < Circuit.getCircuit().getElementNames().size(); i++) {
+                            if (Element.isParallel(Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)), elementOne)) {
+                                if (!Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).isCurrentSource())
+                                    continue;
+                                else if (Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).positiveNode.equals(elementOne.positiveNode)) {
+                                    current1 += Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).getCurrent();
+                                }
+                            }
+                            if (Element.isParallel(Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)), elementTwo)) {
+                                if (Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).isCurrentSource() &&
+                                        Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).positiveNode.equals(elementTwo.positiveNode)) {
+                                    current2 += Circuit.getCircuit().getElements().get(Circuit.getCircuit().getElementNames().get(i)).getCurrent();
+                                }
+                            }
+                        }
                         if (result == 2 || result == 3) {
-                            if (Math.abs(elementOne.getCurrent() - elementTwo.getCurrent()) > circuit.getDi()) {
+                            if (Math.abs(current1 - current2) > circuit.getDi()) {
                                 return false;
                             }
                         } else if (result == 1 || result == 4) {
-                            if (Math.abs(elementOne.getCurrent() + elementTwo.getCurrent()) > circuit.getDi()) {
+                            if (Math.abs(current1 + current2) > circuit.getDi()) {
                                 return false;
                             }
                         }

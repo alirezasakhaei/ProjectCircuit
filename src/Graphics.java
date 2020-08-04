@@ -647,6 +647,7 @@ public class Graphics {
         topPanel.setBounds(0, 0, 700, 50);
         topPanel.setLayout(new FlowLayout());
         dialog.add(topPanel);
+        topPanel.setVisible(false);
 
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
@@ -717,10 +718,6 @@ public class Graphics {
 
         dialog.setVisible(true);
     }
-
-
-
-
 
     private void drawCircuitPro() {
         ArrayList<Node> nodes = new ArrayList<>(0);

@@ -113,7 +113,6 @@ public class Graphics {
             }
         });
 
-
         buttonSave = new JButton("Save");
         buttonSave.setBackground(Color.gray.darker().darker().darker().darker());
         buttonSave.setEnabled(false);

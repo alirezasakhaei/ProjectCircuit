@@ -576,23 +576,23 @@ public class Graphics {
         dialogVoltage.add(labelTime);
 
 
-        JLabel labelMaxTime = new JLabel(decimalFormat.format(Graph.getMaxTime()) + "s");
+        JLabel labelMaxTime = new JLabel(editString(decimalFormat.format(Graph.getMaxTime())) + "s");
         labelMaxTime.setBounds(1150, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
-        JLabel labelMaxPositive = new JLabel(maxString + graphType);
+        JLabel labelMaxPositive = new JLabel(editString(maxString) + graphType);
         labelMaxPositive.setBounds(2, 40, 100, 50);
         dialogVoltage.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + maxString + graphType);
+        JLabel labelMaxNegative = new JLabel("-" + editString(maxString) + graphType);
         labelMaxNegative.setBounds(2, 520, 100, 50);
         dialogVoltage.add(labelMaxNegative);
 
-        JLabel labelMaxPositiveHalf = new JLabel(halfString + graphType);
+        JLabel labelMaxPositiveHalf = new JLabel(editString(halfString) + graphType);
         labelMaxPositiveHalf.setBounds(2, 150, 100, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + halfString + graphType);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + editString(halfString) + graphType);
         labelMaxNegativeHalf.setBounds(2, 390, 100, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 
@@ -710,6 +710,13 @@ public class Graphics {
 
 
         dialog.setVisible(true);
+    }
+
+    private String editString(String string){
+        if (string.contains("E0")){
+            string = string.replaceAll("E0","");
+        }
+        return string;
     }
 
     private void drawCircuit() {

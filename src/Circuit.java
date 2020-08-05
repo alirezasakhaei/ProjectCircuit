@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -230,7 +231,6 @@ public class Circuit {
         ArrayList<Node> currentUnion;
         ErrorFinder errorFinder = new ErrorFinder(circuit);
 
-
         for (int i = 0; i < unions.size(); i++) {
             setVoltagesInUnion(i);
         }
@@ -356,17 +356,17 @@ public class Circuit {
     String getOutput() {
         StringBuilder output = new StringBuilder();
         try {
-
             int[] nodeNames = new int[nodeNameQueue.size()];
             for (int i = 0; i < nodeNames.length; i++) {
                 nodeNames[i] = nodeNameQueue.get(i);
             }
             Arrays.sort(nodeNames);
+            DecimalFormat decimalFormat = new DecimalFormat("0.###E0");
             for (int i = 1; i < nodeNames.length; i++) {
                 output.append(nodeNames[i]);
                 for (int j = 0; j < nodes.get(nodeNames[i]).getVoltagesArray().size(); j++) {
                     output.append(" ");
-                    output.append(nodes.get(nodeNames[i]).getVoltagesArray().get(j));
+                    output.append(decimalFormat.format(nodes.get(nodeNames[i]).getVoltagesArray().get(j)).replace("E0", ""));
                 }
                 output.append("\n");
             }
@@ -375,17 +375,16 @@ public class Circuit {
                 output.append(elementName);
                 for (int j = 0; j < elements.get(elementName).getVoltagesArray().size(); j++) {
                     output.append(" ");
-                    output.append(elements.get(elementName).getVoltagesArray().get(j));
+                    output.append(decimalFormat.format(elements.get(elementName).getVoltagesArray().get(j)).replace("E0", ""));
                     output.append(" ");
-                    output.append(elements.get(elementName).getCurrentsArray().get(j));
+                    output.append(decimalFormat.format(elements.get(elementName).getCurrentsArray().get(j)).replace("E0", ""));
                     output.append(" ");
-                    output.append(elements.get(elementName).getCurrentsArray().get(j) * elements.get(elementName).getVoltagesArray().get(j));
+                    output.append(decimalFormat.format(elements.get(elementName).getVoltagesArray().get(j) * elements.get(elementName).getCurrentsArray().get(j)).replace("E0", ""));
                 }
                 output.append("\n");
             }
             return output.toString();
         } catch (OutOfMemoryError e) {
-            output = null;
             return "Out of Memory!\ntry increasing dt or reducing maximum time.";
         }
     }

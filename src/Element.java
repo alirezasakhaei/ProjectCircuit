@@ -6,8 +6,6 @@ public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
     ArrayList<Double> currentsArray = new ArrayList<>();
     String label;
-    double voltageToSave = 0, currentToSave = 0, powerToSave = 0;
-    private int counter = 0;
 
     public static int isSeries(Element elementOne, Element elementTwo) {
         if (elementOne.equals(elementTwo))
@@ -84,7 +82,6 @@ public abstract class Element extends Circuit {
     }
 
     protected ArrayList<Double> voltagesArray = new ArrayList<>();
-    protected ArrayList<Double> powersArray = new ArrayList<>();
     protected String name;
     private boolean isVoltageSource = false;
     private boolean isCurrentSource = false;

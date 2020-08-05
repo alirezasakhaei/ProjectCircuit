@@ -72,6 +72,16 @@ public class Graphics {
         Color red = new Color(230, 90, 90);
 
 
+        textAreaOutput = new JTextArea();
+        textAreaOutput.setEditable(false);
+
+
+        JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
+        scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        pOut.add(scrollableTextArea);
+
+
         buttonSolve = new JButton("Solve");
         buttonSolve.setBackground(Color.gray.darker().darker().darker().darker());
         buttonSolve.setForeground(red);
@@ -229,6 +239,7 @@ public class Graphics {
                             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             break;
                         case 0:
+                            System.out.println(textAreaOutput.getText());
                             textAreaOutput.setText(circuit.getOutput());
                             buttonDrawCircuit.setEnabled(true);
                             buttonDrawGraph.setEnabled(true);
@@ -307,15 +318,7 @@ public class Graphics {
             }
         });
 
-        textAreaOutput = new JTextArea();
-        textAreaOutput.setEditable(false);
-        //textAreaOutput.setAutoscrolls(true);
 
-
-        JScrollPane scrollableTextArea = new JScrollPane(textAreaOutput);
-        scrollableTextArea.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollableTextArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        pOut.add(scrollableTextArea);
 
         frameLayout.setHorizontalGroup(frameLayout.createSequentialGroup().addGroup(frameLayout.createParallelGroup().addComponent(pText).addComponent(pOut))
                 .addGroup(frameLayout.createParallelGroup().addComponent(pRun).addComponent(pDrawCircuit).addComponent(pDrawGraph).addComponent(pLoad).addComponent(pSave).addComponent(pReset)));
@@ -903,5 +906,9 @@ public class Graphics {
 
         dialog.setVisible(true);
 
+    }
+
+    public JTextArea getTextAreaOutput() {
+        return textAreaOutput;
     }
 }

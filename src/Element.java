@@ -110,21 +110,24 @@ public abstract class Element extends Circuit {
     }
 
     public void updateTime() {
-        double temp = Circuit.getCircuit().getMaximumTime() / 500;
-        if (Circuit.getCircuit().getTime() / temp > counter) {
-            temp /= Circuit.getCircuit().getDt();
-            currentsArray.add(currentToSave / temp);
-            voltagesArray.add(voltageToSave / temp);
-            powersArray.add(powerToSave / temp);
-            counter++;
-            voltageToSave = 0;
-            currentToSave = 0;
-            powerToSave = 0;
-        } else {
-            voltageToSave += getVoltage();
-            currentToSave += getCurrent();
-            powerToSave += getVoltage() * getCurrent();
-        }
+        // double temp = Circuit.getCircuit().getMaximumTime() / 500;
+        // if (Circuit.getCircuit().getTime() / temp > counter) {
+        //     temp /= Circuit.getCircuit().getDt();
+        //     currentsArray.add(currentToSave / temp);
+        //     voltagesArray.add(voltageToSave / temp);
+        //     powersArray.add(powerToSave / temp);
+        //     counter++;
+        //     voltageToSave = 0;
+        //     currentToSave = 0;
+        //     powerToSave = 0;
+        // } else {
+        //     voltageToSave += getVoltage();
+        //     currentToSave += getCurrent();
+        //     powerToSave += getVoltage() * getCurrent();
+        // }
+        currentsArray.add(getCurrent());
+        voltagesArray.add(getVoltage());
+        powersArray.add(getCurrent() * getVoltage());
     }
 
     public double getCurrentMax() {

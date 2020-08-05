@@ -520,12 +520,14 @@ public class Graphics {
                 for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getVoltageMax() > maxAmount)
                         maxAmount = chosenElements[i].getVoltageMax();
+                    System.out.println(maxAmount);
                 break;
             case 'A':
                 title.setText("Current");
                 for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getCurrentMax() > maxAmount)
                         maxAmount = chosenElements[i].getCurrentMax();
+                System.out.println(maxAmount);
                 break;
             case 'W':
                 title.setText("Power");

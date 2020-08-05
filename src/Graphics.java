@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -553,6 +554,10 @@ public class Graphics {
                         maxAmount = chosenElements[i].getPowerMax();
                 break;
         }
+        DecimalFormat decimalFormat = new DecimalFormat("###.###");
+        String maxString = decimalFormat.format(maxAmount);
+        String halfString = decimalFormat.format(maxAmount/2);
+
         title.setBounds(270, 10, 60, 20);
         dialogVoltage.add(title);
 
@@ -573,19 +578,19 @@ public class Graphics {
         labelMaxTime.setBounds(1150, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
-        JLabel labelMaxPositive = new JLabel(Double.toString(maxAmount) + graphType);
+        JLabel labelMaxPositive = new JLabel(maxString + graphType);
         labelMaxPositive.setBounds(10, 40, 50, 50);
         dialogVoltage.add(labelMaxPositive);
 
-        JLabel labelMaxNegative = new JLabel("-" + maxAmount + graphType);
+        JLabel labelMaxNegative = new JLabel("-" + maxString + graphType);
         labelMaxNegative.setBounds(10, 520, 50, 50);
         dialogVoltage.add(labelMaxNegative);
 
-        JLabel labelMaxPositiveHalf = new JLabel(Double.toString(maxAmount / 2) + graphType);
+        JLabel labelMaxPositiveHalf = new JLabel(halfString + graphType);
         labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
-        JLabel labelMaxNegativeHalf = new JLabel("-" + maxAmount / 2 + graphType);
+        JLabel labelMaxNegativeHalf = new JLabel("-" + halfString + graphType);
         labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 

@@ -42,6 +42,7 @@ public class CircuitGraphBad extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        g.drawLine(50, 550, 550, 550);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if (Circuit.getCircuit().getNodes().containsKey(j + 1 + (30 - (i + 1) * 6))) {
@@ -53,7 +54,9 @@ public class CircuitGraphBad extends JPanel {
 
 
 
-        g.drawLine(50, 550, 550, 550);
+
+
+
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(8));

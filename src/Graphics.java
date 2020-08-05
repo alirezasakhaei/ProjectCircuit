@@ -506,7 +506,7 @@ public class Graphics {
 
     private void drawGraph(Element[] chosenElements, int elementsNumber, char graphType) {
         JDialog dialogVoltage = new JDialog();
-        dialogVoltage.setBounds(0, 0, 600, 600);
+        dialogVoltage.setBounds(0, 0, 1200, 600);
         dialogVoltage.setLayout(null);
 
         final Color[] colors = {Color.red, Color.green, Color.yellow, Color.pink, Color.ORANGE, Color.magenta, Color.cyan, Color.darkGray, Color.lightGray, Color.gray};
@@ -548,12 +548,12 @@ public class Graphics {
         }
 
         JLabel labelTime = new JLabel("Time");
-        labelTime.setBounds(500, 550, 50, 50);
+        labelTime.setBounds(1100, 500, 50, 50);
         dialogVoltage.add(labelTime);
 
 
         JLabel labelMaxTime = new JLabel(Graph.getMaxTime() + "s");
-        labelMaxTime.setBounds(550, 300, 50, 50);
+        labelMaxTime.setBounds(1150, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(Double.toString(maxAmount) + graphType);
@@ -574,7 +574,7 @@ public class Graphics {
 
 
         Graph graphVoltage = new Graph(circuit.getDt(), maxAmount, chosenElements, elementsNumber, graphType);
-        graphVoltage.setBounds(50, 50, 500, 500);
+        graphVoltage.setBounds(50, 50, 1100, 500);
         graphVoltage.setBackground(Color.gray);
         dialogVoltage.add(graphVoltage);
 

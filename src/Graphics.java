@@ -129,6 +129,8 @@ public class Graphics {
                     else
                         drawCircuitEdited();
 
+                    drawCircuitBad();
+
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
             }
         });

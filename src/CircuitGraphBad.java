@@ -42,12 +42,21 @@ public class CircuitGraphBad extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        g.drawLine(50, 550, 550, 550);
+        g.drawLine(25, 550, 550, 575);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if (Circuit.getCircuit().getNodes().containsKey(j + 1 + (30 - (i + 1) * 6))) {
                     g.fillOval(50 + 100 * j, 50 + 100 * i, 5, 5);
                 }
+            }
+        }
+
+        for (int i=1;i<7;i++){
+            if (Circuit.getCircuit().getNodes().containsKey(i)){
+                if (Circuit.getCircuit().getNodes().get(i).getEarthConnections() > 1)
+                    g.drawLine(100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 50, 450, 100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 20, 450);
+                if (Circuit.getCircuit().getNodes().get(i).getEarthConnections() > 2)
+                    g.drawLine(100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 50, 450, 100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 80, 450);
             }
         }
 
@@ -160,22 +169,24 @@ public class CircuitGraphBad extends JPanel {
                     namesElement.add(name);
                     labels.add(label);
 
+                    int addedY = 70;
 
                     switch (elementNumber) {
                         case 1:
+                            addedY = 0;
                             elementShape.setBounds(95 + 100 * (node.getName() - 1), 500, 10, 100);
-                            name.setBounds(95 + 100 * (node.getName() - 1), 505 + 80 * (elementNumber % 2), 100, 20);
-                            label.setBounds(95 + 100 * (node.getName() - 1), 515 + 80 * (elementNumber % 2), 100, 20);
+                            name.setBounds(95 + 100 * (node.getName() - 1), 505 + addedY, 100, 20);
+                            label.setBounds(95 + 100 * (node.getName() - 1), 515 + addedY, 100, 20);
                             break;
                         case 2:
                             elementShape.setBounds(95 + 25 + 100 * (node.getName() - 1), 500, 10, 100);
-                            name.setBounds(95 + 25 + 100 * (node.getName() - 1), 505 + 80 * (elementNumber % 2), 100, 20);
-                            label.setBounds(95 + 25 + 100 * (node.getName() - 1), 515 + 80 * (elementNumber % 2), 100, 20);
+                            name.setBounds(95 + 25 + 100 * (node.getName() - 1), 505 + addedY, 100, 20);
+                            label.setBounds(95 + 25 + 100 * (node.getName() - 1), 515 + addedY, 100, 20);
                             break;
                         case 3:
                             elementShape.setBounds(95 - 25 + 100 * (node.getName() - 1), 500, 10, 100);
-                            name.setBounds(95 - 25 + 100 * (node.getName() - 1), 505 + 80 * (elementNumber % 2), 100, 20);
-                            label.setBounds(95 - 25 + 100 * (node.getName() - 1), 515 + 80 * (elementNumber % 2), 100, 20);
+                            name.setBounds(95 - 25 + 100 * (node.getName() - 1), 505 + addedY, 100, 20);
+                            label.setBounds(95 - 25 + 100 * (node.getName() - 1), 515 + addedY, 100, 20);
                             break;
                     }
 

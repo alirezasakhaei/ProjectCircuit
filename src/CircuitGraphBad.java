@@ -42,7 +42,6 @@ public class CircuitGraphBad extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        g.drawLine(25, 550, 550, 575);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 6; j++) {
                 if (Circuit.getCircuit().getNodes().containsKey(j + 1 + (30 - (i + 1) * 6))) {
@@ -59,15 +58,55 @@ public class CircuitGraphBad extends JPanel {
                     g.drawLine(100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 50, 450, 100 * (Circuit.getCircuit().getNodes().get(i).getName()) - 80, 450);
             }
         }
+        for (int i=1;i<31;i++){
+            int between;
+            Node nodeOne,nodeTwo;
+            if (Circuit.getCircuit().getNodes().containsKey(i)){
+                nodeOne = Circuit.getCircuit().getNodes().get(i);
+                if (Circuit.getCircuit().getNodes().containsKey(i+1)){
+                    nodeTwo = Circuit.getCircuit().getNodes().get(i+1);
+                    between = Node.elementsBetween(nodeOne,nodeTwo);
+                    if (between > 1){
+                        g.drawLine(100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 75, 100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 50);
+                        g.drawLine(100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 75, 100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 50);
+                    }
+                    if (between > 2){
+                        g.drawLine(100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 50, 100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 25);
+                        g.drawLine(100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 50, 100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 25);
+                    }
+                }
+            }
+        }
+        for (int i=1;i<26;i++){
+            int between;
+            Node nodeOne,nodeTwo;
+            if (Circuit.getCircuit().getNodes().containsKey(i)){
+                nodeOne = Circuit.getCircuit().getNodes().get(i);
+                if (Circuit.getCircuit().getNodes().containsKey(i+6)){
+                    nodeTwo = Circuit.getCircuit().getNodes().get(i+6);
+                    between = Node.elementsBetween(nodeOne,nodeTwo);
+                    if (between > 1){
+                        g.drawLine(100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 75, 100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 50);
+                        g.drawLine(100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 75, 100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 50);
+                    }
+                    if (between > 2){
+                        g.drawLine(100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 50, 100 * (i % 6) - 50, 500 - 100 * ((i - 1) / 6) - 25);
+                        g.drawLine(100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 50, 100 * ((i+1) % 6) - 50, 500 - 100 * ((i + 1 - 1) / 6) - 25);
+                    }
+                }
+            }
 
 
 
+        }
 
 
 
 
 
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(5));
+        g2d.drawLine(25, 550, 575, 550);
         g2d.setStroke(new BasicStroke(8));
         g2d.drawLine(0, 0, 600, 0);
         g2d.drawLine(0, 0, 0, 600);
@@ -291,12 +330,12 @@ public class CircuitGraphBad extends JPanel {
                                     name.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + 0 - 15, 100, 20);
                                     label.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + 0 + 5, 100, 20);
                                     break;
-                                case 2:
+                                case 3:
                                     elementShape.setBounds(100 + 100 * (i % 6 - 1), 495 - 100 * ((i - 1) / 6) + 25, 100, 10);
                                     name.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + 25 - 15, 100, 20);
                                     label.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) + 0 + 25, 100, 20);
                                     break;
-                                case 3:
+                                case 2:
                                     elementShape.setBounds(100 + 100 * (i % 6 - 1), 495 - 100 * ((i - 1) / 6) - 25, 100, 10);
                                     name.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) - 25 - 15, 100, 20);
                                     label.setBounds(100 + 100 * (i % 6 - 1) + 70 * (elementsNumber % 2), 495 - 100 * ((i - 1) / 6) - 25 + 5, 100, 20);

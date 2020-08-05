@@ -708,6 +708,20 @@ public class Graphics {
             }
         });
 
+        JButton buttonSwitch = new JButton("Draw linear");
+        buttonSwitch.setFont(new Font("Arial",Font.BOLD,10));
+        buttonSwitch.setBackground(Color.BLACK);
+        buttonSwitch.setForeground(Color.white);
+        topPanel.add(buttonSwitch);
+        buttonSwitch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                drawCircuitEdited();
+                dialog.setVisible(false);
+            }
+        });
+
+
 
         dialog.setVisible(true);
     }

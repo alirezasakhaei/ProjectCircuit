@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -66,20 +67,61 @@ public class CircuitGraphEdited extends JPanel {
             for (int j = (i + 1); j < nodes.size(); j++) {
                 parralles = Node.elementsBetween(nodes.get(i), nodes.get(j));
                 if (parralles > 0) {
-                    g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50 * (j - i));
-                    g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50 * (j - i));
+                    g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50 * (j - i) -3*i);
+                    g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50 * (j - i) -3*i);
                 }
                 for (int k = 0; k < parralles; k++) {
-                    g.drawLine(50 + 100 * (i - 1) + 100, 450 - 50 * (j - i) + k * 15, 50 + 100 * (j - 1), 450 - 50 * (j - i) + k * 15);
-                    if (Math.abs(i-j) == locations.get(j))
-                        g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50*locations.get(j) + 15);
-                    if (Math.abs(i-j) == locations.get(i))
-                        g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50*locations.get(i) + 15);
+                    g.drawLine(50 + 100 * (i - 1) + 100, 450 - 50 * (j - i) + k * 15 - 3*i, 50 + 100 * (j - 1), 450 - 50 * (j - i) + k * 15 - 3*i);
+                    //if (Math.abs(i-j) == locations.get(j))
+                    //    g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50*locations.get(j) + 15);
+                  //  if (Math.abs(i-j) == locations.get(i))
+                    //    g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50*locations.get(i) + 15);
                 }
             }
         }
 
 
+    }
+
+
+    private void drawHorizontals() {
+        Element element;
+        ElementShape elementShape;
+        boolean isBetween;
+        int parralles;
+        JLabel label, name;
+        for (int i = 1; i < nodes.size() - 1; i++) {
+            for (int j = (i + 1); j < nodes.size(); j++) {
+                parralles = 0;
+                for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                    element = (Element) elementLoop.getValue();
+                    isBetween = false;
+                    if (element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName())
+                        isBetween = true;
+                    if (element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName())
+                        isBetween = true;
+                    if (isBetween) {
+                        elementShape = new ElementShape(element);
+                        int diff = j - i;
+                        elementShape.setBounds(100 * i - 50, 445 - 50 * (j - i) + parralles * 15 -3*(i), 100, 10);
+                        dialog.add(elementShape);
+
+                        name = new JLabel(element.name);
+                        name.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 - 15 -3*(i), 100, 20);
+                        name.setFont(new Font("Arial", Font.ITALIC, 8));
+                        dialog.add(name);
+
+                        label = new JLabel(element.label);
+                        label.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 + 5 - 3*(i), 100, 20);
+                        label.setFont(new Font("Arial", Font.ITALIC, 8));
+                        dialog.add(label);
+
+                        parralles++;
+
+                    }
+                }
+            }
+        }
     }
 
     private void drawEarthConnecteds() {
@@ -137,43 +179,5 @@ public class CircuitGraphEdited extends JPanel {
 
     }
 
-    private void drawHorizontals() {
-        Element element;
-        ElementShape elementShape;
-        boolean isBetween;
-        int parralles;
-        JLabel label, name;
-        for (int i = 1; i < nodes.size() - 1; i++) {
-            for (int j = (i + 1); j < nodes.size(); j++) {
-                parralles = 0;
-                for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
-                    element = (Element) elementLoop.getValue();
-                    isBetween = false;
-                    if (element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName())
-                        isBetween = true;
-                    if (element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName())
-                        isBetween = true;
-                    if (isBetween) {
-                        elementShape = new ElementShape(element);
-                        int diff = j - i;
-                        elementShape.setBounds(100 * i - 50, 445 - 50 * (j - i) + parralles * 15, 100, 10);
-                        dialog.add(elementShape);
 
-                        name = new JLabel(element.name);
-                        name.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 - 15, 100, 20);
-                        name.setFont(new Font("Arial", Font.ITALIC, 8));
-                        dialog.add(name);
-
-                        label = new JLabel(element.label);
-                        label.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 + 5, 100, 20);
-                        label.setFont(new Font("Arial", Font.ITALIC, 8));
-                        dialog.add(label);
-
-                        parralles++;
-
-                    }
-                }
-            }
-        }
-    }
 }

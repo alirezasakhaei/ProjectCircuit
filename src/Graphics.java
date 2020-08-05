@@ -107,6 +107,19 @@ public class Graphics {
                         else if (b>6)
                             stupid = false;
                     }
+                    int maxEarth = 0;
+                    Node node;
+                    for (Map.Entry nodesLoop : Circuit.getCircuit().getNodes().entrySet()){
+                        node = (Node) nodesLoop.getValue();
+                        node.setEarthConnections();
+                        if (node.getEarthConnections() > maxEarth)
+                            maxEarth = node.getEarthConnections();
+                    }
+                    if (maxEarth > 3)
+                        stupid = false;
+                    
+
+
                     if (stupid)
                         drawCircuitBad();
                     else

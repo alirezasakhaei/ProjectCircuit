@@ -57,9 +57,8 @@ public class CircuitGraphEdited extends JPanel {
             dialog.add(label);
             nodes.get(i).setEarthConnections();
             earth = nodes.get(i).getEarthConnections();
-            System.out.println(earth);
             if (earth > 1) {
-                g.drawLine(50 + (i - 1) * 100, 450, 50 + (i-1) * 100 + 20*(earth - 1), 450);
+                g.drawLine(50 + (i - 1) * 100, 450, 50 + (i-1) * 100 + 15*(earth - 1), 450);
             }
         }
         int parralles;

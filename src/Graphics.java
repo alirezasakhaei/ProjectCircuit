@@ -118,14 +118,16 @@ public class Graphics {
                     if (maxEarth > 3)
                         stupid = false;
 
-
+                    if (Circuit.getCircuit().getNodes().size() > 11)
+                        stupid = true;
+                    else
+                        stupid = false;
 
                     if (stupid)
                         drawCircuitBad();
                     else
                         drawCircuitEdited();
 
-                    drawCircuitEdited();
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
             }
         });

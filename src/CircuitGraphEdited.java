@@ -91,8 +91,10 @@ public class CircuitGraphEdited extends JPanel {
         g2d.setStroke(new BasicStroke(5));
         g.drawLine(50, 552, 1000, 552);
         g2d.setStroke(new BasicStroke(8));
-        g2d.drawRect(5,5,995,595);
-
+        g2d.drawLine(5, 50, 1080, 50);
+        g2d.drawLine(5, 50, 5, 560);
+        g2d.drawLine(1080, 50, 1080, 560);
+        g2d.drawLine(5, 560, 1080, 560);
 
 
     }

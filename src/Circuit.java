@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -239,7 +240,7 @@ public class Circuit {
                     d.setCurrentSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
-                  //  d.setPowersArray(temp.getPowersArray());
+                    //  d.setPowersArray(temp.getPowersArray());
                     System.out.println(time + ":off");
                     elements.put(elementName, d);
                 } else if (elements.get(elementName).getCurrent() < 0) {
@@ -278,7 +279,7 @@ public class Circuit {
         }
     }
 
-    int solveCircuit() {
+    int solveCircuit(JTextArea textArea) {
         double i0, i1, i2, i1All, i2All;
         int isKCLmet;
         Node currentNode;
@@ -289,6 +290,7 @@ public class Circuit {
             setVoltagesInUnion(i);
         }
         for (time = 0; time <= maximumTime; time += dt) {
+            textArea.setText(String.valueOf(time));
             isKCLmet = 0;
             // reconstructUnions();
             if (time / maximumTime > 0.0005) {
@@ -337,8 +339,8 @@ public class Circuit {
                     //    currentNode.setVoltage(previousVoltage + dv * (i1All - i2All) / di / 2);
                     //}
                 }
-                helpConvergence();
             }
+            helpConvergence();
             //System.out.println(time+" : "+nodes.get(5).getVoltage());
 
             for (String elementName : elementNames) {

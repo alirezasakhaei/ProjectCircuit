@@ -200,7 +200,7 @@ public class Graphics {
                     File input = fileChooser.getSelectedFile();
                     if (Objects.isNull(input))
                         return;
-                    error = run(input);
+                    error = run(input, textAreaOutput);
                 } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
@@ -211,7 +211,7 @@ public class Graphics {
                             fileWriter.write("\n");
                         }
                         fileWriter.close();
-                        error = run(selectedFile);
+                        error = run(selectedFile, textAreaOutput);
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
@@ -325,7 +325,7 @@ public class Graphics {
 
     }
 
-    private int run(File input) {
+    private int run(File input, JTextArea outText) {
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
             circuit = inputManager.analyzeTheInput();
@@ -339,7 +339,7 @@ public class Graphics {
                 return error;
             } else {
                 circuit.initializeGraph();
-                error = circuit.solveCircuit();
+                error = circuit.solveCircuit(outText);
                 if (error == 0) {
                     isCircuitSolved = true;
                     return 0;

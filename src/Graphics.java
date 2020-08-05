@@ -119,10 +119,7 @@ public class Graphics {
                     if (maxEarth > 3)
                         stupid = false;
 
-                    if (Circuit.getCircuit().getNodes().size() > 11)
-                        stupid = true;
-                    else
-                        stupid = false;
+                    stupid = Circuit.getCircuit().getNodes().size() > 11;
 
                     if (stupid)
                         drawCircuitBad();
@@ -205,7 +202,7 @@ public class Graphics {
                     File input = fileChooser.getSelectedFile();
                     if (Objects.isNull(input))
                         return;
-                    error = run(input, textAreaOutput);
+                    error = run(input);
                 } else {
                     try {
                         FileWriter fileWriter = new FileWriter(selectedFile);
@@ -216,7 +213,7 @@ public class Graphics {
                             fileWriter.write("\n");
                         }
                         fileWriter.close();
-                        error = run(selectedFile, textAreaOutput);
+                        error = run(selectedFile);
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(frame, "Exception Found!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
@@ -330,7 +327,7 @@ public class Graphics {
 
     }
 
-    private int run(File input, JTextArea outText) {
+    private int run(File input) {
         if (input.canExecute()) {
             InputManager inputManager = new InputManager(input);
             circuit = inputManager.analyzeTheInput();
@@ -344,7 +341,7 @@ public class Graphics {
                 return error;
             } else {
                 circuit.initializeGraph();
-                error = circuit.solveCircuit(outText);
+                error = circuit.solveCircuit();
                 if (error == 0) {
                     isCircuitSolved = true;
                     return 0;
@@ -540,14 +537,12 @@ public class Graphics {
                 for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getVoltageMax() > maxAmount)
                         maxAmount = chosenElements[i].getVoltageMax();
-                    System.out.println(maxAmount);
                 break;
             case 'A':
                 title.setText("Current");
                 for (int i = 0; i < elementsNumber; i++)
                     if (chosenElements[i].getCurrentMax() > maxAmount)
                         maxAmount = chosenElements[i].getCurrentMax();
-                System.out.println(maxAmount);
                 break;
             case 'W':
                 title.setText("Power");

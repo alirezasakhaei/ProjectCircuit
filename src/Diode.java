@@ -1,25 +1,12 @@
-import java.util.ArrayList;
-
 public class Diode extends Element {
     boolean isOn = true;
     int stackOverFlowed;
-    double prePreviousVoltage;
 
     Diode(String name, Node positiveNode, Node negativeNode) {
         this.name = name;
         this.positiveNode = positiveNode;
         this.negativeNode = negativeNode;
         stackOverFlowed = 0;
-        data = null;
-        prePreviousVoltage = 0;
-    }
-
-    @Override
-    public void updateTime() {
-        prePreviousVoltage = getPreviousVoltage();
-        currentsArray.add(getCurrent());
-        voltagesArray.add(getVoltage());
-        powersArray.add(getVoltage() * getCurrent());
     }
 
     @Override
@@ -80,15 +67,4 @@ public class Diode extends Element {
         }
     }
 
-    public void setVoltagesArray(ArrayList<Double> voltages) {
-        voltagesArray = voltages;
-    }
-
-    public void setCurrentsArray(ArrayList<Double> currents) {
-        currentsArray = currents;
-    }
-
-    public void setPowersArray(ArrayList<Double> powers) {
-        powersArray = powers;
-    }
 }

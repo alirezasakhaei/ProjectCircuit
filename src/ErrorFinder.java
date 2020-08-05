@@ -32,7 +32,7 @@ public class ErrorFinder {
     }
 
     private boolean isLoopValid() {
-        circuit.setAddedNodes(0);
+        circuit.setAddedNodes();
         if (circuit.getNodeNameQueue().size() < circuit.getNodes().size()) {
             return false;
         }

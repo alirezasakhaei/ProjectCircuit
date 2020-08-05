@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -95,31 +94,11 @@ public class Circuit {
         initializeUnions();
     }
 
-    /*   protected void setAddedNodes(int name) {
-           if (!nodes.get(name).isAdded()) {
-               nodes.get(name).setAdded(true);
-               nodeNameQueue.add(name);
-           } else return;
-           for (int j = 0; j < nodes.get(name).getPositives().size(); j++) {
-               if (elements.get(nodes.get(name).getPositives().get(j)).isVoltageSource()&&!elements.get(nodes.get(name).getPositives().get(j)).negativeNode.isAdded()) {
-                   elements.get(nodes.get(name).getPositives().get(j)).negativeNode.setUnion(nodes.get(name).getUnion());
-               }
-           }
-           for (int j = 0; j < nodes.get(name).getNegatives().size(); j++) {
-               if (elements.get(nodes.get(name).getNegatives().get(j)).isVoltageSource()&&!elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.isAdded()) {
-                   elements.get(nodes.get(name).getNegatives().get(j)).positiveNode.setUnion(nodes.get(name).getUnion());
-               }
-           }
-           for (int i = 0; i < nodes.get(name).getNeighbors().size(); i++) {
-               setAddedNodes(nodes.get(name).getNeighbors().get(i));
-           }
-       }
-   */
-    protected void setAddedNodes(int name) {
+    protected void setAddedNodes() {
         LinkedList<Integer> queue = new LinkedList<>();
-        queue.add(name);
-        nodes.get(name).setAdded(true);
-        nodeNameQueue.add(name);
+        queue.add(0);
+        nodes.get(0).setAdded(true);
+        nodeNameQueue.add(0);
         while (queue.size() > 0) {
             Node node = nodes.get(queue.poll());
             for (int j = 0; j < node.getPositives().size(); j++) {
@@ -226,41 +205,6 @@ public class Circuit {
         return true;
     }
 
-    void reconstructUnions() {
-        for (int i = 0; i < nodeNameQueue.size(); i++) {
-            nodes.get(nodeNameQueue.get(i)).setAdded(false);
-            nodes.get(nodeNameQueue.get(i)).setUnion(i);
-        }
-        for (String elementName : elementNames) {
-            if (elementName.charAt(0) == 'D') {
-                if (elements.get(elementName).positiveNode.getPreviousVoltage() < elements.get(elementName).negativeNode.getPreviousVoltage() &&
-                        (elements.get(elementName).getPreviousVoltage() < 0 || elements.get(elementName).getCurrent() <= 0)) {
-                    Element temp = elements.remove(elementName);
-                    IndependentCurrentSource d = new IndependentCurrentSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
-                    d.setCurrentSource(true);
-                    d.setCurrentsArray(temp.getCurrentsArray());
-                    d.setVoltagesArray(temp.getVoltagesArray());
-                    //  d.setPowersArray(temp.getPowersArray());
-                    System.out.println(time + ":off");
-                    elements.put(elementName, d);
-                } else if (elements.get(elementName).getCurrent() < 0) {
-                    Element temp = elements.remove(elementName);
-                    IndependentVoltageSource d = new IndependentVoltageSource(elementName, temp.positiveNode, temp.negativeNode, 0, 0, 0, 0);
-                    d.setVoltageSource(true);
-                    d.setCurrentsArray(temp.getCurrentsArray());
-                    d.setVoltagesArray(temp.getVoltagesArray());
-                    //   d.setPowersArray(temp.getPowersArray());
-                    System.out.println(time + ":on");
-                    elements.put(elementName, d);
-                }
-            }
-        }
-        nodeNameQueue.clear();
-        setAddedNodes(0);
-        initializeUnions();
-    }
-
-
     private void setVoltagesInUnion(int i) {
         for (int j = 1; j < unions.get(i).size(); j++) {
             for (int k = 0; k < unions.get(i).get(j).getPositives().size(); k++) {
@@ -279,20 +223,19 @@ public class Circuit {
         }
     }
 
-    int solveCircuit(JTextArea textArea) {
-        double i0, i1, i2, i1All, i2All;
+    int solveCircuit() {
+        double i1, i2;
         int isKCLmet;
         Node currentNode;
         ArrayList<Node> currentUnion;
         ErrorFinder errorFinder = new ErrorFinder(circuit);
 
+
         for (int i = 0; i < unions.size(); i++) {
             setVoltagesInUnion(i);
         }
         for (time = 0; time <= maximumTime; time += dt) {
-            textArea.setText(String.valueOf(time));
             isKCLmet = 0;
-            // reconstructUnions();
             if (time / maximumTime > 0.0005) {
                 if (!errorFinder.isCurrentSourceSeries()) {
                     return -2;
@@ -311,37 +254,21 @@ public class Circuit {
                     currentUnion = unions.get(i);
                     currentNode = currentUnion.get(0);
 
-                    i0 = obtainCurrent(currentUnion);
+                    i1 = obtainCurrent(currentUnion);
                     currentNode.setVoltage(currentNode.getVoltage());
                     setVoltagesInUnion(i);
-                    // i1 = obtainCurrent(currentUnion);
-                    i1All = obtainAllCurrents();
                     currentNode.setVoltage(currentNode.getVoltage() + dv);
                     setVoltagesInUnion(i);
                     i2 = obtainCurrent(currentUnion);
-                    i2All = obtainAllCurrents();
-                    // if (i2 > i1 && i2All < i1All)
-                    //     System.out.println("a");
-                    // if (i2 < i1 && i2All > i1All)
-                    //     System.out.println("b");
-                    //if (i1All - i2All != 0)
-                    //    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1All - i2All) / Math.abs(i1All - i2All) * (Math.abs(i1 - i2)) / di / 2);
-                    //else
-                    //    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1 - i2) / di / 2);
-                    currentNode.setVoltage(currentNode.getVoltage() - dv + dv * (i0 - i2) / di);
+                    currentNode.setVoltage(currentNode.getVoltage() - dv + dv * (i1 - i2) / di);
                     setVoltagesInUnion(i);
                     if (obtainCurrent(currentUnion) < Math.sqrt(di)) {
                         isKCLmet++;
                     }
-                    //if (i1 != i2)
-                    //    currentNode.setVoltage(previousVoltage + dv * (i1 - i2) / di / 2);
-                    //else {
-                    //    currentNode.setVoltage(previousVoltage + dv * (i1All - i2All) / di / 2);
-                    //}
+
                 }
             }
             helpConvergence();
-            //System.out.println(time+" : "+nodes.get(5).getVoltage());
 
             for (String elementName : elementNames) {
                 elements.get(elementName).updateTime();
@@ -350,20 +277,6 @@ public class Circuit {
                 nodes.get(integer).updatePreviousVoltage();
             }
         }
-/*
-        for (String elementName : elementNames) {
-            if (elementName.charAt(0) == 'D') {
-                Element temp = elements.remove(elementName);
-                Diode d = new Diode(temp.name, temp.positiveNode, temp.negativeNode);
-                d.setCurrentsArray(temp.getCurrentsArray());
-                d.setVoltagesArray(temp.getVoltagesArray());
-                d.setPowersArray(temp.getPowersArray());
-                elements.put(elementName, d);
-            }
-        }
-
- */
-
         return 0;
     }
 
@@ -374,16 +287,6 @@ public class Circuit {
                 nodes.get(integer).setVoltage((nodes.get(integer).getVoltage() + nodes.get(integer).getPreviousVoltage()) / 2);
         }
     }
-
-
-    private double obtainAllCurrents() {
-        double current = 0;
-        for (ArrayList<Node> union : unions) {
-            current += Math.abs(obtainCurrent(union));
-        }
-        return current;
-    }
-
 
     private double obtainCurrent(ArrayList<Node> union) {
         double current = 0;

@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 public class IndependentVoltageSource extends Element {
     final double offset;
@@ -16,12 +15,11 @@ public class IndependentVoltageSource extends Element {
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.phase = phase;
-        data = offset + "," + amplitude + "," + frequency + "," + phase;
         stackOverFlowed = 0;
         if (amplitude == 0)
-            setLabel(Double.toString(offset));
+            setLabel(provideLabel(offset));
         else
-            setLabel(offset + "+" + amplitude + "sin(2PI" + frequency + "t+" + phase + ")");
+            setLabel(provideLabel(offset) + "+" + provideLabel(amplitude) + "sin(2PI" + provideLabel(frequency) + "t+" + provideLabel(phase) + ")");
     }
 
     @Override
@@ -82,15 +80,4 @@ public class IndependentVoltageSource extends Element {
         return offset + amplitude * Math.sin(theta);
     }
 
-    public void setVoltagesArray(ArrayList<Double> voltages) {
-        voltagesArray = voltages;
-    }
-
-    public void setCurrentsArray(ArrayList<Double> currents) {
-        currentsArray = currents;
-    }
-
-    public void setPowersArray(ArrayList<Double> powers) {
-        powersArray = powers;
-    }
 }

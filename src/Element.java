@@ -1,9 +1,9 @@
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Element extends Circuit {
     Node positiveNode, negativeNode;
-    String data = null;
     ArrayList<Double> currentsArray = new ArrayList<>();
     String label;
     double voltageToSave = 0, currentToSave = 0, powerToSave = 0;
@@ -97,16 +97,17 @@ public abstract class Element extends Circuit {
         return voltagesArray;
     }
 
-    //  public ArrayList<Double> getPowersArray() {
-    //      return powersArray;
-    //  }
-
     public double getVoltage() {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
     }
 
     public double getPreviousVoltage() {
         return positiveNode.getPreviousVoltage() - negativeNode.getPreviousVoltage();
+    }
+
+    protected String provideLabel(double value) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.###E0");
+        return decimalFormat.format(value).replace("E0", "");
     }
 
     public void updateTime() {
@@ -151,55 +152,6 @@ public abstract class Element extends Circuit {
 
     void setLabel(String label) {
     }
-
-   /* private static int isSeriesHelper(Element elementOne, Element elementTwo, boolean positive) {
-        boolean isNeighbor = false, canContinue;
-        int isPositiveOfDestination = 0;
-        Node commonNode;
-        if (positive)
-            commonNode = elementOne.positiveNode;
-        else commonNode = elementOne.negativeNode;
-        if (elementOne.positiveNode.equals(elementTwo.positiveNode)) {
-            isNeighbor = true;
-            commonNode = elementOne.positiveNode;
-            isPositiveOfDestination = 1;
-        } else if (elementOne.positiveNode.equals(elementTwo.negativeNode)) {
-            isNeighbor = true;
-            commonNode = elementOne.positiveNode;
-            isPositiveOfDestination = -1;
-        } else if (elementOne.negativeNode.equals(elementTwo.positiveNode)) {
-            isNeighbor = true;
-            commonNode = elementOne.negativeNode;
-            isPositiveOfDestination = 1;
-        } else if (elementOne.negativeNode.equals(elementTwo.negativeNode)) {
-            isNeighbor = true;
-            commonNode = elementOne.negativeNode;
-            isPositiveOfDestination = -1;
-        }
-        canContinue = commonNode.getNegatives().size() + commonNode.getPositives().size() == 2;
-        if (canContinue)
-            if (isNeighbor) {
-                return isPositiveOfDestination;
-            } else {
-                if (positive) {
-                    if (commonNode.getPositives().size() == 1)
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(0)), elementTwo, true);
-                    else if (commonNode.getPositives().get(0).equals(elementOne.name))
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(1)), elementTwo, false);
-                    else
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(0)), elementTwo, false);
-                } else {
-                    if (commonNode.getNegatives().size() == 1)
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getPositives().get(0)), elementTwo, false);
-                    else if (commonNode.getNegatives().get(0).equals(elementOne.name))
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(1)), elementTwo, true);
-                    else
-                        return isSeriesHelper(Circuit.getCircuit().getElements().get(commonNode.getNegatives().get(0)), elementTwo, true);
-                }
-            }
-        else return 0;
-    }
-    */
 
     private static ArrayList<ArrayList<Integer>> seriesHelper(int currentNode, int destinationNode, int forbiddenNode, ArrayList<Integer> nodesPassed) {
         nodesPassed.add(currentNode);

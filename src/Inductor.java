@@ -7,10 +7,9 @@ public class Inductor extends Element {
         this.name = name;
         this.positiveNode = positiveNode;
         this.negativeNode = negativeNode;
-        this.inductance=inductance;
-        previousCurrent=0;
-        data = String.valueOf(inductance);
-        setLabel(Double.toString(inductance));
+        this.inductance = inductance;
+        previousCurrent = 0;
+        setLabel(provideLabel(inductance));
     }
 
     @Override

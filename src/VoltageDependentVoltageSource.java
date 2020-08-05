@@ -12,8 +12,7 @@ public class VoltageDependentVoltageSource extends Element {
         this.negativeDependence = negativeDependence;
         this.gain = gain;
         stackOverFlowed = 0;
-        data = gain + "," + positiveDependence.getName() + "," + negativeDependence.getName();
-        setLabel(gain + "(" + positiveDependence.getName() + "," + negativeDependence.getName() + ")");
+        setLabel(provideLabel(gain) + "(" + positiveDependence.getName() + "," + negativeDependence.getName() + ")");
     }
 
     @Override

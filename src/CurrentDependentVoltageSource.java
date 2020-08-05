@@ -11,8 +11,7 @@ public class CurrentDependentVoltageSource extends Element {
         this.negativeNode = negativeNode;
         this.elementDependent = elementDependent;
         this.gain = gain;
-        data = gain + "," + elementDependent;
-        setLabel(gain + "(" + elementDependent + ")");
+        setLabel(provideLabel(gain) + "(" + elementDependent + ")");
 
 
     }

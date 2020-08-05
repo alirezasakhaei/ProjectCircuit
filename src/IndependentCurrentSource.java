@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class IndependentCurrentSource extends Element {
     final double offset, amplitude, frequency, phase;
 
@@ -11,28 +9,15 @@ public class IndependentCurrentSource extends Element {
         this.amplitude = amplitude;
         this.frequency = frequency;
         this.phase = phase;
-        data = offset + "," + amplitude + "," + frequency + "," + phase;
         if (amplitude == 0)
-            setLabel(Double.toString(offset));
+            setLabel(provideLabel(offset));
         else
-            setLabel(offset + "+" + amplitude + "sin(2PI" + frequency + "t+" + phase + ")");
+            setLabel(provideLabel(offset) + "+" + provideLabel(amplitude) + "sin(2PI" + provideLabel(frequency) + "t+" + provideLabel(phase) + ")");
 
     }
 
     double getCurrent() {
         return offset + amplitude * Math.sin(2 * Math.PI * frequency * Circuit.getCircuit().getTime() + phase);
-    }
-
-    public void setVoltagesArray(ArrayList<Double> voltages) {
-        voltagesArray = voltages;
-    }
-
-    public void setCurrentsArray(ArrayList<Double> currents) {
-        currentsArray = currents;
-    }
-
-    public void setPowersArray(ArrayList<Double> powers) {
-        powersArray = powers;
     }
 
     @Override

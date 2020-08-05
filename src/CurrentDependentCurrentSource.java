@@ -8,8 +8,7 @@ public class CurrentDependentCurrentSource extends Element {
         this.negativeNode = negativeNode;
         this.dependentElement = dependentElement;
         this.gain = gain;
-        data = gain + "," + dependentElement;
-        setLabel(gain + "(" + dependentElement + ")");
+        setLabel(provideLabel(gain) + "(" + dependentElement + ")");
 
     }
 

@@ -6,6 +6,8 @@ public abstract class Element extends Circuit {
     String data = null;
     ArrayList<Double> currentsArray = new ArrayList<>();
     String label;
+    double voltageToSave = 0, currentToSave = 0, powerToSave = 0;
+    private int counter = 0;
 
     public static int isSeries(Element elementOne, Element elementTwo) {
         if (elementOne.equals(elementTwo))
@@ -108,9 +110,21 @@ public abstract class Element extends Circuit {
     }
 
     public void updateTime() {
-        currentsArray.add(getCurrent());
-        voltagesArray.add(getVoltage());
-        powersArray.add(getVoltage() * getCurrent());
+        double temp = Circuit.getCircuit().getMaximumTime() / 500;
+        if (Circuit.getCircuit().getTime() / temp > counter) {
+            temp /= Circuit.getCircuit().getDt();
+            currentsArray.add(currentToSave / temp);
+            voltagesArray.add(voltageToSave / temp);
+            powersArray.add(powerToSave / temp);
+            counter++;
+            voltageToSave = 0;
+            currentToSave = 0;
+            powerToSave = 0;
+        } else {
+            voltageToSave += getVoltage();
+            currentToSave += getCurrent();
+            powerToSave += getVoltage() * getCurrent();
+        }
     }
 
     public double getCurrentMax() {

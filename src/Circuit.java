@@ -20,7 +20,6 @@ public class Circuit {
     private final ArrayList<String> elementNames;
     private final ArrayList<ArrayList<Node>> unions;
     private double dt = 0, dv = 0, di = 0, time, maximumTime;
-    final ArrayList<Double> timeArray;
 
     public Circuit() {
         nodes = new HashMap<>();
@@ -28,14 +27,10 @@ public class Circuit {
         nodeNameQueue = new ArrayList<>();
         elementNames = new ArrayList<>();
         unions = new ArrayList<>();
-        timeArray = new ArrayList<>();
     }
 
     /////////////////// Get-set codeBox
 
-    public ArrayList<Double> getTimeArray() {
-        return timeArray;
-    }
 
     public HashMap<Integer, Node> getNodes() {
         return nodes;
@@ -287,6 +282,9 @@ public class Circuit {
         double i1, i2, i1All, i2All;
         ErrorFinder errorFinder = new ErrorFinder(circuit);
 
+        for (int i = 0; i < unions.size(); i++) {
+            setVoltagesInUnion(i);
+        }
         for (time = 0; time <= maximumTime; time += dt) {
             // reconstructUnions();
             if (time / maximumTime > 0.001) {
@@ -295,11 +293,11 @@ public class Circuit {
                 }
                 if (!errorFinder.isVoltageSourcesParallel())
                     return -3;
-                if (!checkForVoltageLoop()) {
-                    return -3;
-                }
-                if (!checkForCurrentNode())
-                    return -2;
+                //  if (!checkForVoltageLoop()) {
+                //      return -3;
+                //  }
+                //  if (!checkForCurrentNode())
+                //      return -2;
             }
             for (int i = 0; i < unions.size(); i++) {
                 unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() - dv);
@@ -310,10 +308,20 @@ public class Circuit {
                 setVoltagesInUnion(i);
                 i2 = obtainCurrent(unions.get(i));
                 i2All = obtainAllCurrents();
+                // if (i2 > i1 && i2All < i1All)
+                //     System.out.println("a");
+                // if (i2 < i1 && i2All > i1All)
+                //     System.out.println("b");
+                //  if (i1All - i2All != 0)
+                //      unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1All - i2All) / Math.abs(i1All - i2All) * (Math.abs(Math.abs(i1) - Math.abs(i2))) / di / 2);
+                //  else
+                //     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
+
                 if (Math.abs(i1) != Math.abs(i2))
                     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
-                else
+                else {
                     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1All) - Math.abs(i2All)) / di / 2);
+                }
                 setVoltagesInUnion(i);
             }
             helpConvergence();
@@ -324,9 +332,8 @@ public class Circuit {
             for (Integer integer : nodeNameQueue) {
                 nodes.get(integer).updatePreviousVoltage();
             }
-            timeArray.add(time);
         }
-
+/*
         for (String elementName : elementNames) {
             if (elementName.charAt(0) == 'D') {
                 Element temp = elements.remove(elementName);
@@ -337,6 +344,8 @@ public class Circuit {
                 elements.put(elementName, d);
             }
         }
+
+ */
 
         return 0;
     }
@@ -456,6 +465,7 @@ public class Circuit {
             }
             return output.toString();
         } catch (OutOfMemoryError e) {
+            output = null;
             return "Out of Memory!\ntry increasing dt or reducing maximum time.";
         }
     }

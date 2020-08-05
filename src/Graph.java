@@ -27,30 +27,32 @@ public class Graph extends JPanel {
             switch (graphType) {
                 case 'V':
                     for (int j = 0; j < 500; j++) {
-                        double sum = 0;
-                        for (int k = 0; k < stepDt; k++) {
-                            sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k);
-                        }
-                        fixedArray[j] = sum / stepDt;
-
+                        //  double sum = 0;
+                        //  for (int k = 0; k < stepDt; k++) {
+                        //      sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k);
+                        //  }
+                        //  fixedArray[j] = sum / stepDt;
+                        fixedArray[j] = chosenElements[i].getVoltagesArray().get(j);
                     }
                     break;
                 case 'A':
                     for (int j = 0; j < 500; j++) {
-                        double sum = 0;
-                        for (int k = 0; k < stepDt; k++) {
-                            sum += chosenElements[i].getCurrentsArray().get(j * stepDt + k);
-                        }
-                        fixedArray[j] = sum / stepDt;
+                        //double sum = 0;
+                        //for (int k = 0; k < stepDt; k++) {
+                        //    sum += chosenElements[i].getCurrentsArray().get(j * stepDt + k);
+                        //}
+                        //fixedArray[j] = sum / stepDt;
+                        fixedArray[j] = chosenElements[i].getCurrentsArray().get(j);
                     }
                     break;
                 case 'W':
                     for (int j = 0; j < 500; j++) {
-                        double sum = 0;
-                        for (int k = 0; k < stepDt; k++) {
-                            sum += chosenElements[i].getPowersArray().get(j * stepDt + k);
-                        }
-                        fixedArray[j] = sum / stepDt;
+                        //   double sum = 0;
+                        //   for (int k = 0; k < stepDt; k++) {
+                        //       sum += chosenElements[i].getPowersArray().get(j * stepDt + k);
+                        //   }
+                        //   fixedArray[j] = sum / stepDt;
+                        fixedArray[j] = chosenElements[i].getPowersArray().get(j);
                     }
                     break;
             }
@@ -79,7 +81,7 @@ public class Graph extends JPanel {
         g.drawLine(0, 250, 500, 250);
         g.drawLine(0, 0, 0, 500);
 
-        for (int i = 0; i <elementsNumber; i++) {
+        for (int i = 0; i < elementsNumber; i++) {
             g2d.setColor(colors[i]);
             for (int j = 0; j < 499; j++) {
                 g2d.drawLine(j, 250 - finalArrays[i][j], j + 1, 250 - finalArrays[i][j + 1]);

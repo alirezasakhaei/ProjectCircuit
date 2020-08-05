@@ -18,6 +18,8 @@ public class Node {
     int x, y;
     int xBad, yBad;
     int xEdit, yEdit;
+    int counter = 0;
+    double voltageToSave = 0;
 
 
     public Node(int name) {
@@ -156,7 +158,16 @@ public class Node {
     }
 
     void updatePreviousVoltage() {
-        voltagesArray.add(voltage);
+        double temp = Circuit.getCircuit().getMaximumTime() / 500;
+        if (Circuit.getCircuit().getTime() / temp > counter) {
+            temp /= Circuit.getCircuit().getDt();
+            voltagesArray.add(voltageToSave / temp);
+            counter++;
+            voltageToSave = 0;
+        } else {
+            voltageToSave += getVoltage();
+        }
+        // voltagesArray.add(voltage);
         prePreviousVoltage = previousVoltage;
         previousVoltage = voltage;
     }

@@ -117,13 +117,15 @@ public class Graphics {
                     }
                     if (maxEarth > 3)
                         stupid = false;
-                    
+
 
 
                     if (stupid)
                         drawCircuitBad();
                     else
                         drawCircuitEdited();
+
+                    drawCircuitEdited();
                 } else JOptionPane.showMessageDialog(frame, "There is no circuit solved!");
             }
         });

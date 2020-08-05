@@ -576,24 +576,24 @@ public class Graphics {
         dialogVoltage.add(labelTime);
 
 
-        JLabel labelMaxTime = new JLabel(Graph.getMaxTime() + "s");
+        JLabel labelMaxTime = new JLabel(decimalFormat.format(Graph.getMaxTime()) + "s");
         labelMaxTime.setBounds(1150, 300, 50, 50);
         dialogVoltage.add(labelMaxTime);
 
         JLabel labelMaxPositive = new JLabel(maxString + graphType);
-        labelMaxPositive.setBounds(10, 40, 50, 50);
+        labelMaxPositive.setBounds(2, 40, 100, 50);
         dialogVoltage.add(labelMaxPositive);
 
         JLabel labelMaxNegative = new JLabel("-" + maxString + graphType);
-        labelMaxNegative.setBounds(10, 520, 50, 50);
+        labelMaxNegative.setBounds(2, 520, 100, 50);
         dialogVoltage.add(labelMaxNegative);
 
         JLabel labelMaxPositiveHalf = new JLabel(halfString + graphType);
-        labelMaxPositiveHalf.setBounds(10, 150, 50, 50);
+        labelMaxPositiveHalf.setBounds(2, 150, 100, 50);
         dialogVoltage.add(labelMaxPositiveHalf);
 
         JLabel labelMaxNegativeHalf = new JLabel("-" + halfString + graphType);
-        labelMaxNegativeHalf.setBounds(10, 390, 50, 50);
+        labelMaxNegativeHalf.setBounds(2, 390, 100, 50);
         dialogVoltage.add(labelMaxNegativeHalf);
 
 

@@ -97,9 +97,9 @@ public abstract class Element extends Circuit {
         return voltagesArray;
     }
 
-    public ArrayList<Double> getPowersArray() {
-        return powersArray;
-    }
+    //  public ArrayList<Double> getPowersArray() {
+    //      return powersArray;
+    //  }
 
     public double getVoltage() {
         return positiveNode.getVoltage() - negativeNode.getVoltage();
@@ -110,24 +110,8 @@ public abstract class Element extends Circuit {
     }
 
     public void updateTime() {
-        // double temp = Circuit.getCircuit().getMaximumTime() / 500;
-        // if (Circuit.getCircuit().getTime() / temp > counter) {
-        //     temp /= Circuit.getCircuit().getDt();
-        //     currentsArray.add(currentToSave / temp);
-        //     voltagesArray.add(voltageToSave / temp);
-        //     powersArray.add(powerToSave / temp);
-        //     counter++;
-        //     voltageToSave = 0;
-        //     currentToSave = 0;
-        //     powerToSave = 0;
-        // } else {
-        //     voltageToSave += getVoltage();
-        //     currentToSave += getCurrent();
-        //     powerToSave += getVoltage() * getCurrent();
-        // }
         currentsArray.add(getCurrent());
         voltagesArray.add(getVoltage());
-        powersArray.add(getCurrent() * getVoltage());
     }
 
     public double getCurrentMax() {
@@ -141,7 +125,8 @@ public abstract class Element extends Circuit {
 
     public double getPowerMax() {
         double max = 0;
-        for (Double aDouble : powersArray) {
+        for (int i = 0; i < voltagesArray.size(); i++) {
+            double aDouble = voltagesArray.get(i) * currentsArray.get(i);
             if (Math.abs(aDouble) >= max)
                 max = Math.abs(aDouble);
         }

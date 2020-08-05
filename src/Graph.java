@@ -32,7 +32,6 @@ public class Graph extends JPanel {
                             sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k);
                         }
                         fixedArray[j] = sum / stepDt;
-                        //fixedArray[j] = chosenElements[i].getVoltagesArray().get(j);
                     }
                     break;
                 case 'A':
@@ -42,17 +41,15 @@ public class Graph extends JPanel {
                             sum += chosenElements[i].getCurrentsArray().get(j * stepDt + k);
                         }
                         fixedArray[j] = sum / stepDt;
-                        // fixedArray[j] = chosenElements[i].getCurrentsArray().get(j);
                     }
                     break;
                 case 'W':
                     for (int j = 0; j < 1100; j++) {
                         double sum = 0;
                         for (int k = 0; k < stepDt; k++) {
-                            sum += chosenElements[i].getPowersArray().get(j * stepDt + k);
+                            sum += chosenElements[i].getVoltagesArray().get(j * stepDt + k) * chosenElements[i].getCurrentsArray().get(j * stepDt + k);
                         }
                         fixedArray[j] = sum / stepDt;
-                        //  fixedArray[j] = chosenElements[i].getPowersArray().get(j);
                     }
                     break;
             }

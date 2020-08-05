@@ -239,7 +239,7 @@ public class Circuit {
                     d.setCurrentSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
-                    d.setPowersArray(temp.getPowersArray());
+                  //  d.setPowersArray(temp.getPowersArray());
                     System.out.println(time + ":off");
                     elements.put(elementName, d);
                 } else if (elements.get(elementName).getCurrent() < 0) {
@@ -248,7 +248,7 @@ public class Circuit {
                     d.setVoltageSource(true);
                     d.setCurrentsArray(temp.getCurrentsArray());
                     d.setVoltagesArray(temp.getVoltagesArray());
-                    d.setPowersArray(temp.getPowersArray());
+                    //   d.setPowersArray(temp.getPowersArray());
                     System.out.println(time + ":on");
                     elements.put(elementName, d);
                 }
@@ -279,52 +279,67 @@ public class Circuit {
     }
 
     int solveCircuit() {
-        double i1, i2, i1All, i2All;
+        double i0, i1, i2, i1All, i2All;
+        int isKCLmet;
+        Node currentNode;
+        ArrayList<Node> currentUnion;
         ErrorFinder errorFinder = new ErrorFinder(circuit);
 
         for (int i = 0; i < unions.size(); i++) {
             setVoltagesInUnion(i);
         }
         for (time = 0; time <= maximumTime; time += dt) {
+            isKCLmet = 0;
             // reconstructUnions();
-            if (time / maximumTime > 0.001) {
+            if (time / maximumTime > 0.0005) {
                 if (!errorFinder.isCurrentSourceSeries()) {
                     return -2;
                 }
                 if (!errorFinder.isVoltageSourcesParallel())
                     return -3;
-                //  if (!checkForVoltageLoop()) {
-                //      return -3;
-                //  }
-                //  if (!checkForCurrentNode())
-                //      return -2;
-            }
-            for (int i = 0; i < unions.size(); i++) {
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() - dv);
-                setVoltagesInUnion(i);
-                i1 = obtainCurrent(unions.get(i));
-                i1All = obtainAllCurrents();
-                unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv);
-                setVoltagesInUnion(i);
-                i2 = obtainCurrent(unions.get(i));
-                i2All = obtainAllCurrents();
-                // if (i2 > i1 && i2All < i1All)
-                //     System.out.println("a");
-                // if (i2 < i1 && i2All > i1All)
-                //     System.out.println("b");
-                //  if (i1All - i2All != 0)
-                //      unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1All - i2All) / Math.abs(i1All - i2All) * (Math.abs(Math.abs(i1) - Math.abs(i2))) / di / 2);
-                //  else
-                //     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
-
-                if (Math.abs(i1) != Math.abs(i2))
-                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1) - Math.abs(i2)) / di / 2);
-                else {
-                    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1All) - Math.abs(i2All)) / di / 2);
+                if (!checkForVoltageLoop()) {
+                    return -3;
                 }
-                setVoltagesInUnion(i);
+                if (!checkForCurrentNode())
+                    return -2;
             }
-            helpConvergence();
+            for (int j = 0; j < 5000 && isKCLmet < unions.size(); j++) {
+                isKCLmet = 0;
+                for (int i = 0; i < unions.size(); i++) {
+                    currentUnion = unions.get(i);
+                    currentNode = currentUnion.get(0);
+
+                    i0 = obtainCurrent(currentUnion);
+                    currentNode.setVoltage(currentNode.getVoltage());
+                    setVoltagesInUnion(i);
+                    // i1 = obtainCurrent(currentUnion);
+                    i1All = obtainAllCurrents();
+                    currentNode.setVoltage(currentNode.getVoltage() + dv);
+                    setVoltagesInUnion(i);
+                    i2 = obtainCurrent(currentUnion);
+                    i2All = obtainAllCurrents();
+                    // if (i2 > i1 && i2All < i1All)
+                    //     System.out.println("a");
+                    // if (i2 < i1 && i2All > i1All)
+                    //     System.out.println("b");
+                    //if (i1All - i2All != 0)
+                    //    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1All - i2All) / Math.abs(i1All - i2All) * (Math.abs(i1 - i2)) / di / 2);
+                    //else
+                    //    unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (i1 - i2) / di / 2);
+                    currentNode.setVoltage(currentNode.getVoltage() - dv + dv * (i0 - i2) / di);
+                    setVoltagesInUnion(i);
+                    if (obtainCurrent(currentUnion) < Math.sqrt(di)) {
+                        isKCLmet++;
+                    }
+                    //if (i1 != i2)
+                    //    currentNode.setVoltage(previousVoltage + dv * (i1 - i2) / di / 2);
+                    //else {
+                    //    currentNode.setVoltage(previousVoltage + dv * (i1All - i2All) / di / 2);
+                    //}
+                }
+                helpConvergence();
+            }
+            //System.out.println(time+" : "+nodes.get(5).getVoltage());
 
             for (String elementName : elementNames) {
                 elements.get(elementName).updateTime();
@@ -382,7 +397,7 @@ public class Circuit {
                 }
             }
         }
-        return current;
+        return Math.abs(current);
     }
 
 
@@ -459,7 +474,7 @@ public class Circuit {
                     output.append(" ");
                     output.append(elements.get(elementName).getCurrentsArray().get(j));
                     output.append(" ");
-                    output.append(elements.get(elementName).getPowersArray().get(j));
+                    output.append(elements.get(elementName).getCurrentsArray().get(j) * elements.get(elementName).getVoltagesArray().get(j));
                 }
                 output.append("\n");
             }

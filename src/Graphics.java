@@ -554,7 +554,7 @@ public class Graphics {
                         maxAmount = chosenElements[i].getPowerMax();
                 break;
         }
-        DecimalFormat decimalFormat = new DecimalFormat("###.###");
+        DecimalFormat decimalFormat = new DecimalFormat("0.###E0");
         String maxString = decimalFormat.format(maxAmount);
         String halfString = decimalFormat.format(maxAmount/2);
 

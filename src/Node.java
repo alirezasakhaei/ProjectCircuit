@@ -11,12 +11,27 @@ public class Node {
     private final ArrayList<String> negatives;
     private final int name;
     private double previousVoltage;
+    private double prePreviousVoltage;
     private final ArrayList<Double> voltagesArray;
     private int earthConnections = 0, earthConnectionsPro = 0;
     private Point location;
     int x, y;
-    int xBad,yBad;
-    int xEdit,yEdit;
+    int xBad, yBad;
+    int xEdit, yEdit;
+
+
+    public Node(int name) {
+        this.name = name;
+        voltage = 0;
+        previousVoltage = 0;
+        prePreviousVoltage = 0;
+        added = false;
+        neighbors = new ArrayList<>();
+        positives = new ArrayList<>();
+        negatives = new ArrayList<>();
+        voltagesArray = new ArrayList<>();
+    }
+
 
     public int getEarthConnectionsPro() {
         return earthConnectionsPro;
@@ -69,16 +84,6 @@ public class Node {
         return name == node.name;
     }
 
-    public Node(int name) {
-        this.name = name;
-        voltage = 0;
-        previousVoltage = 0;
-        added = false;
-        neighbors = new ArrayList<>();
-        positives = new ArrayList<>();
-        negatives = new ArrayList<>();
-        voltagesArray = new ArrayList<>();
-    }
 
     int getName() {
         return name;
@@ -146,8 +151,13 @@ public class Node {
         return previousVoltage;
     }
 
+    public double getPrePreviousVoltage() {
+        return prePreviousVoltage;
+    }
+
     void updatePreviousVoltage() {
         voltagesArray.add(voltage);
+        prePreviousVoltage = previousVoltage;
         previousVoltage = voltage;
     }
 

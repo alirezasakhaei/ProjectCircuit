@@ -316,6 +316,7 @@ public class Circuit {
                     unions.get(i).get(0).setVoltage(unions.get(i).get(0).getPreviousVoltage() + dv * (Math.abs(i1All) - Math.abs(i2All)) / di / 2);
                 setVoltagesInUnion(i);
             }
+            helpConvergence();
 
             for (String elementName : elementNames) {
                 elements.get(elementName).updateTime();
@@ -338,6 +339,14 @@ public class Circuit {
         }
 
         return 0;
+    }
+
+
+    private void helpConvergence() {
+        for (Integer integer : nodeNameQueue) {
+            if (Math.abs(nodes.get(integer).getVoltage() - nodes.get(integer).getPrePreviousVoltage()) < dv)
+                nodes.get(integer).setVoltage((nodes.get(integer).getVoltage() + nodes.get(integer).getPreviousVoltage()) / 2);
+        }
     }
 
 
@@ -445,10 +454,10 @@ public class Circuit {
                 }
                 output.append("\n");
             }
+            return output.toString();
         } catch (OutOfMemoryError e) {
             return "Out of Memory!\ntry increasing dt or reducing maximum time.";
         }
-        return output.toString();
     }
 }
 

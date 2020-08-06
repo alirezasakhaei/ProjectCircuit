@@ -1,6 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -122,9 +122,7 @@ public class CircuitGraphBad extends JPanel {
         int elementsBetween, elementNumber = 1;
         JLabel label, name;
         for (int i = 1; i < 25; i++) {
-            flag = true;
-            if (!Circuit.getCircuit().getNodes().containsKey(i))
-                flag = false;
+            flag = Circuit.getCircuit().getNodes().containsKey(i);
             if (!Circuit.getCircuit().getNodes().containsKey(i + 6))
                 flag = false;
             if (flag) {
@@ -133,11 +131,9 @@ public class CircuitGraphBad extends JPanel {
                 elementsBetween = Node.elementsBetween(nodeOne, nodeTwo);
                 elementNumber = 1;
                 if (elementsBetween > 0) {
-                    for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
-                        element = (Element) elementLoop.getValue();
-                        isBetween = false;
-                        if (element.positiveNode.getName() == nodeOne.getName() && element.negativeNode.getName() == nodeTwo.getName())
-                            isBetween = true;
+                    for (Map.Entry<String, Element> elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                        element = elementLoop.getValue();
+                        isBetween = element.positiveNode.getName() == nodeOne.getName() && element.negativeNode.getName() == nodeTwo.getName();
                         if (element.positiveNode.getName() == nodeTwo.getName() && element.negativeNode.getName() == nodeOne.getName())
                             isBetween = true;
                         if (isBetween) {
@@ -188,9 +184,9 @@ public class CircuitGraphBad extends JPanel {
         int elementNumber = 1;
         Element element;
         JLabel label, name;
-        for (Map.Entry nodeMap : Circuit.getCircuit().getNodes().entrySet()) {
+        for (Map.Entry<Integer, Node> nodeMap : Circuit.getCircuit().getNodes().entrySet()) {
             elementNumber = 1;
-            node = (Node) nodeMap.getValue();
+            node = nodeMap.getValue();
             for (int j = 0; j < node.getNegatives().size(); j++) {
                 element = circuit.getElements().get(node.getNegatives().get(j));
                 if (element.positiveNode.getName() == 0) {
@@ -284,9 +280,7 @@ public class CircuitGraphBad extends JPanel {
         int elementsBetween, elementsNumber = 1;
         JLabel label, name;
         for (int i = 1; i < 31; i++) {
-            flag = true;
-            if (i % 6 == 0)
-                flag = false;
+            flag = i % 6 != 0;
             if (!Circuit.getCircuit().getNodes().containsKey(i))
                 flag = false;
             if (!Circuit.getCircuit().getNodes().containsKey(i + 1))
@@ -298,11 +292,9 @@ public class CircuitGraphBad extends JPanel {
                 elementsBetween = Node.elementsBetween(nodeOne, nodeTwo);
                 elementsNumber = 1;
                 if (elementsBetween > 0) {
-                    for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
-                        element = (Element) elementLoop.getValue();
-                        isBetween = false;
-                        if (element.positiveNode.getName() == nodeOne.getName() && element.negativeNode.getName() == nodeTwo.getName())
-                            isBetween = true;
+                    for (Map.Entry<String, Element> elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                        element = elementLoop.getValue();
+                        isBetween = element.positiveNode.getName() == nodeOne.getName() && element.negativeNode.getName() == nodeTwo.getName();
                         if (element.positiveNode.getName() == nodeTwo.getName() && element.negativeNode.getName() == nodeOne.getName())
                             isBetween = true;
 

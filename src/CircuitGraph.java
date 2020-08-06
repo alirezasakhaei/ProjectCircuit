@@ -1,6 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -138,20 +138,20 @@ public class CircuitGraph extends JPanel {
         int parralles;
         JLabel label,name;
         for(int i=1;i<nodes.size() - 1;i++){
-            for (int j = (i+1);j<nodes.size();j++){
+            for (int j = (i+1);j<nodes.size();j++) {
                 parralles = 0;
-                for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()){
-                    element = (Element) elementLoop.getValue();
+                for (Map.Entry<String, Element> elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                    element = elementLoop.getValue();
                     isBetween = element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName();
                     if (element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName())
                         isBetween = true;
-                    if (isBetween){
+                    if (isBetween) {
                         elementShape = new ElementShape(element);
-                        elementShape.setBounds(50 + 100*i,495 - 100*(j-i) + parralles*30,100,10);
+                        elementShape.setBounds(50 + 100 * i, 495 - 100 * (j - i) + parralles * 30, 100, 10);
                         dialog.add(elementShape);
 
                         name = new JLabel(element.name);
-                        name.setBounds(50 + 100*i +70*(parralles%2) ,495 - 100*(j-i) + parralles*30 - 15 ,100,20);
+                        name.setBounds(50 + 100 * i + 70 * (parralles % 2), 495 - 100 * (j - i) + parralles * 30 - 15, 100, 20);
                         name.setFont(new Font("Arial",Font.ITALIC,8));
                         dialog.add(name);
                         namesElement.add(name);

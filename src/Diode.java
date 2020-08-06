@@ -9,6 +9,7 @@ public class Diode extends Element {
         stackOverFlowed = 0;
     }
 
+
     @Override
     double getCurrent() {
         if (!isOn) {
@@ -49,9 +50,14 @@ public class Diode extends Element {
                     return 0;
                 }
             } catch (StackOverflowError e) {
+                stackOverFlowed = 1;
                 return 0;
             }
         } else return 0;
+    }
+
+    @Override
+    void setLabel(String label) {
     }
 
     @Override

@@ -6,6 +6,12 @@ import java.util.LinkedList;
 
 public class Circuit {
     private static Circuit circuit;
+    private final HashMap<Integer, Node> nodes;
+    private final HashMap<String, Element> elements;
+    private final ArrayList<Integer> nodeNameQueue;
+    private final ArrayList<String> elementNames;
+    private final ArrayList<ArrayList<Node>> unions;
+    private double dt = 0, dv = 0, di = 0, time, maximumTime;
 
     public static void setCircuit(Circuit circuit) {
         Circuit.circuit = circuit;
@@ -14,13 +20,6 @@ public class Circuit {
     public static Circuit getCircuit() {
         return circuit;
     }
-
-    private final HashMap<Integer, Node> nodes;
-    private final HashMap<String, Element> elements;
-    private final ArrayList<Integer> nodeNameQueue;
-    private final ArrayList<String> elementNames;
-    private final ArrayList<ArrayList<Node>> unions;
-    private double dt = 0, dv = 0, di = 0, time, maximumTime;
 
     public Circuit() {
         nodes = new HashMap<>();
@@ -31,7 +30,6 @@ public class Circuit {
     }
 
     /////////////////// Get-set codeBox
-
 
     public HashMap<Integer, Node> getNodes() {
         return nodes;
@@ -75,10 +73,6 @@ public class Circuit {
 
     protected double getDi() {
         return di;
-    }
-
-    public void setTime(double time) {
-        this.time = time;
     }
 
     public double getTime() {
@@ -226,7 +220,7 @@ public class Circuit {
 
     int solveCircuit() {
         double i1, i2;
-        int isKCLmet;
+        int isKclSatisfied;
         Node currentNode;
         ArrayList<Node> currentUnion;
         ErrorFinder errorFinder = new ErrorFinder(circuit);
@@ -235,7 +229,7 @@ public class Circuit {
             setVoltagesInUnion(i);
         }
         for (time = 0; time <= maximumTime; time += dt) {
-            isKCLmet = 0;
+            isKclSatisfied = 0;
             if (time / maximumTime > 0.0005) {
                 if (!errorFinder.isCurrentSourceSeries()) {
                     return -2;
@@ -248,8 +242,8 @@ public class Circuit {
                 if (!checkForCurrentNode())
                     return -2;
             }
-            for (int j = 0; j < 5000 && isKCLmet < unions.size(); j++) {
-                isKCLmet = 0;
+            for (int j = 0; j < 5000 && isKclSatisfied < unions.size(); j++) {
+                isKclSatisfied = 0;
                 for (int i = 0; i < unions.size(); i++) {
                     currentUnion = unions.get(i);
                     currentNode = currentUnion.get(0);
@@ -262,10 +256,8 @@ public class Circuit {
                     i2 = obtainCurrent(currentUnion);
                     currentNode.setVoltage(currentNode.getVoltage() - dv + dv * (i1 - i2) / di);
                     setVoltagesInUnion(i);
-                    if (obtainCurrent(currentUnion) < Math.sqrt(di)) {
-                        isKCLmet++;
-                    }
-
+                    if (obtainCurrent(currentUnion) < Math.sqrt(di))
+                        isKclSatisfied++;
                 }
             }
             helpConvergence();
@@ -279,7 +271,6 @@ public class Circuit {
         }
         return 0;
     }
-
 
     private void helpConvergence() {
         for (Integer integer : nodeNameQueue) {
@@ -305,7 +296,6 @@ public class Circuit {
         return Math.abs(current);
     }
 
-
     private void initializeUnions() {
         ArrayList<Integer> seenUnions = new ArrayList<>();
         unions.clear();
@@ -321,16 +311,13 @@ public class Circuit {
         }
     }
 
-
     protected void checkLoopValidation(ArrayList<String> elementsUsed, ArrayList<Integer> nodesPassed, int currentNode) {
-
         if (nodesPassed.size() > 1 && currentNode == 0) {
             for (Integer integer : nodesPassed) {
                 nodes.get(integer).setAdded(true);
             }
             return;
         }
-
         for (int i = 0; i < nodes.get(currentNode).getPositives().size(); i++) {
             if (!elementsUsed.contains(nodes.get(currentNode).getPositives().get(i))) {
                 nodesPassed.add(elements.get(nodes.get(currentNode).getPositives().get(i)).negativeNode.getName());
@@ -340,7 +327,6 @@ public class Circuit {
                 elementsUsed.remove(elementsUsed.size() - 1);
             }
         }
-
         for (int i = 0; i < nodes.get(currentNode).getNegatives().size(); i++) {
             if (!elementsUsed.contains(nodes.get(currentNode).getNegatives().get(i))) {
                 nodesPassed.add(elements.get(nodes.get(currentNode).getNegatives().get(i)).positiveNode.getName());
@@ -351,7 +337,6 @@ public class Circuit {
             }
         }
     }
-
 
     String getOutput() {
         StringBuilder output = new StringBuilder();
@@ -389,5 +374,3 @@ public class Circuit {
         }
     }
 }
-
-

@@ -1,7 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.Graphics;
-import java.text.DecimalFormat;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -108,21 +107,19 @@ public class CircuitGraphEdited extends JPanel {
         for (int i = 1; i < nodes.size() - 1; i++) {
             for (int j = (i + 1); j < nodes.size(); j++) {
                 parralles = 0;
-                for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()) {
-                    element = (Element) elementLoop.getValue();
-                    isBetween = false;
-                    if (element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName())
-                        isBetween = true;
+                for (Map.Entry<String, Element> elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                    element = elementLoop.getValue();
+                    isBetween = element.positiveNode.getName() == nodes.get(j).getName() && element.negativeNode.getName() == nodes.get(i).getName();
                     if (element.positiveNode.getName() == nodes.get(i).getName() && element.negativeNode.getName() == nodes.get(j).getName())
                         isBetween = true;
                     if (isBetween) {
                         elementShape = new ElementShape(element);
                         int diff = j - i;
-                        elementShape.setBounds(100 * i - 50, 445 - 50 * (j - i) + parralles * 15 -3*(i), 100, 10);
+                        elementShape.setBounds(100 * i - 50, 445 - 50 * (j - i) + parralles * 15 - 3 * (i), 100, 10);
                         dialog.add(elementShape);
 
                         name = new JLabel(element.name);
-                        name.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 - 15 -3*(i), 100, 20);
+                        name.setBounds(100 * i + 70 * (parralles % 2) - 50, 445 - 50 * (j - i) + parralles * 15 - 15 - 3 * (i), 100, 20);
                         name.setFont(new Font("Arial", Font.ITALIC, 8));
                         namesElement.add(name);
                         dialog.add(name);

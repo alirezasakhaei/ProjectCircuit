@@ -669,7 +669,7 @@ public class Graphics {
         buttonElementLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for (int i = 0; i < labels.size(); i++) {
+                for (int i=0;i<labels.size();i++){
                     labels.get(i).setVisible(!labels.get(i).isVisible());
                 }
             }
@@ -687,6 +687,12 @@ public class Graphics {
                 dialog.setVisible(false);
             }
         });
+
+
+        buttonElementLabel.setEnabled(false);
+        buttonElementName.setEnabled(false);
+        buttonNodeName.setEnabled(false);
+
         dialog.setVisible(true);
 
     }

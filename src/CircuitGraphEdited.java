@@ -40,15 +40,9 @@ public class CircuitGraphEdited extends JPanel {
                 locations.add(i, location);
             }
         }
-        JLabel label;
 
-        for (int i = 1; i < nodes.size(); i++) {
-            label = new JLabel(String.valueOf(nodes.get(i).getName()));
-            label.setBounds(45 + (i - 1) * 100, 415 - locations.get(i)*50, 50, 50);
-            dialog.add(label);
-            namesNode.add(label);
-        }
 
+        nodesLabel();
         drawEarthConnecteds();
         drawHorizontals();
     }
@@ -58,7 +52,7 @@ public class CircuitGraphEdited extends JPanel {
         int earth;
         JLabel label;
         for (int i = 1; i < nodes.size(); i++) {
-            g.fillOval(50 + (i - 1) * 100, 450 - locations.get(i) * 50, 5, 5);
+            g.fillOval(48 + (i - 1) * 100, 448 - locations.get(i) * 50, 5, 5);
             label = new JLabel(String.valueOf(nodes.get(i).getName()));
             label.setBounds(45 + (i - 1) * 100, 455, 50, 50);
             dialog.add(label);
@@ -196,6 +190,16 @@ public class CircuitGraphEdited extends JPanel {
         }
 
 
+    }
+
+    private void nodesLabel(){
+        JLabel label;
+        for (int i = 1; i < nodes.size(); i++) {
+            label = new JLabel(String.valueOf(nodes.get(i).getName()));
+            label.setBounds(45 + (i - 1) * 100, 415 - locations.get(i)*50, 50, 50);
+            dialog.add(label);
+            namesNode.add(label);
+        }
     }
 
 

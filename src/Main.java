@@ -2488,10 +2488,10 @@ class CircuitGraphEdited extends JPanel {
                 }
                 for (int k = 0; k < parralles; k++) {
                     g.drawLine(50 + 100 * (i - 1) + 100, 450 - 50 * (j - i) + k * 15 - 3 * i, 50 + 100 * (j - 1), 450 - 50 * (j - i) + k * 15 - 3 * i);
-                    //if (Math.abs(i-j) == locations.get(j))
-                    //    g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50*locations.get(j) + 15);
-                    //  if (Math.abs(i-j) == locations.get(i))
-                    //    g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50*locations.get(i) + 15);
+                    if (Math.abs(i-j) == locations.get(j))
+                        g.drawLine(50 + 100 * (j - 1), 450 - 50*locations.get(j), 50 + 100 * (j - 1), 450 - 50*locations.get(j) + 15*(parralles-1));
+                    if (Math.abs(i-j) == locations.get(i))
+                        g.drawLine(50 + 100 * (i - 1), 450 - 50*locations.get(i), 50 + 100 * (i - 1), 450 - 50*locations.get(i) + 15*(parralles -1));
                 }
             }
         }

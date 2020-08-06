@@ -101,34 +101,34 @@ public class Graphics {
                 if (isCircuitSolved) {
                     boolean stupid = true;
                     Element element;
-                    for (Map.Entry elementLoop : Circuit.getCircuit().getElements().entrySet()){
-                        element = (Element) elementLoop.getValue();
+                    for (Map.Entry<String, Element> elementLoop : Circuit.getCircuit().getElements().entrySet()) {
+                        element = elementLoop.getValue();
                         int a = element.negativeNode.getName();
                         int b = element.positiveNode.getName();
-                        if (!(a == 0 || b == 0)){
-                            if ((Math.abs(b - a) != 6)){
-                                if ((Math.abs(b - a) != 1)){
+                        if (!(a == 0 || b == 0)) {
+                            if ((Math.abs(b - a) != 6)) {
+                                if ((Math.abs(b - a) != 1)) {
                                     stupid = false;
                                 }
-                                if (Math.min(a,b)%6 == 0)
+                                if (Math.min(a, b) % 6 == 0)
                                     stupid = false;
                             }
                         } else if (a > 6)
                             stupid = false;
-                        else if (b>6)
+                        else if (b > 6)
                             stupid = false;
                     }
                     int maxEarth = 0;
                     Node node;
-                    for (Map.Entry nodesLoop : Circuit.getCircuit().getNodes().entrySet()){
-                        node = (Node) nodesLoop.getValue();
+                    for (Map.Entry<Integer, Node> nodesLoop : Circuit.getCircuit().getNodes().entrySet()) {
+                        node = nodesLoop.getValue();
                         node.setEarthConnections();
                         if (node.getEarthConnections() > maxEarth)
                             maxEarth = node.getEarthConnections();
                     }
                     if (maxEarth > 3)
                         stupid = false;
-                    if(Circuit.getCircuit().getNodes().size() > 11)
+                    if (Circuit.getCircuit().getNodes().size() > 11)
                         stupid = true;
 
                     if (stupid)
@@ -614,9 +614,9 @@ public class Graphics {
 
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
-        for (Map.Entry node : circuit.getNodes().entrySet()) {
-            if (((Node) node.getValue()).getName() != 0) {
-                nodes.add((Node) node.getValue());
+        for (Map.Entry<Integer, Node> node : circuit.getNodes().entrySet()) {
+            if ((node.getValue()).getName() != 0) {
+                nodes.add(node.getValue());
             }
         }
 
@@ -815,9 +815,9 @@ public class Graphics {
 
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
-        for (Map.Entry node : circuit.getNodes().entrySet()) {
-            if (((Node) node.getValue()).getName() != 0) {
-                nodes.add((Node) node.getValue());
+        for (Map.Entry<Integer, Node> node : circuit.getNodes().entrySet()) {
+            if ((node.getValue()).getName() != 0) {
+                nodes.add(node.getValue());
             }
         }
 
@@ -892,9 +892,9 @@ public class Graphics {
     private void drawCircuitPro() {
         ArrayList<Node> nodes = new ArrayList<>(0);
         nodes.add(0, circuit.getNodes().get(0));
-        for (Map.Entry node : circuit.getNodes().entrySet()) {
-            if (((Node) node.getValue()).getName() != 0) {
-                nodes.add((Node) node.getValue());
+        for (Map.Entry<Integer, Node> node : circuit.getNodes().entrySet()) {
+            if ((node.getValue()).getName() != 0) {
+                nodes.add(node.getValue());
             }
         }
 

@@ -78,11 +78,11 @@ public class ErrorFinder {
                                 }
                             }
                         }
-                        if (result == 2 || result == 3) {
+                        if (result == 2) {
                             if (Math.abs(current1 - current2) > circuit.getDi()) {
                                 return false;
                             }
-                        } else if (result == 1 || result == 4) {
+                        } else if (result == 1) {
                             if (Math.abs(current1 + current2) > circuit.getDi()) {
                                 return false;
                             }

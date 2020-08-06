@@ -56,29 +56,6 @@ public abstract class Element extends Circuit {
         if (passedNegative)
             return 2;
         else return 1;
-/*
-        //positives are series : 1
-        //elementOne positive and elementTwo negative are series : 2
-        //elementOne negative and elementTwo positive are series : 3
-        //negatives are series : 4
-        if (!elementOne.equals(elementTwo)) {
-            int result = isSeriesHelper(elementOne, elementTwo, true);
-            if (result == 1)
-                return 1;
-            else if (result == -1)
-                return 2;
-            else {
-                result = isSeriesHelper(elementOne, elementTwo, false);
-                if (result == 1)
-                    return 3;
-                else if (result == -1)
-                    return 4;
-            }
-        }
-        return 0;
-
-
- */
     }
 
     protected ArrayList<Double> voltagesArray = new ArrayList<>();
@@ -147,8 +124,7 @@ public abstract class Element extends Circuit {
                 || (elementOne.positiveNode.equals(elementTwo.negativeNode) && elementOne.negativeNode.equals(elementTwo.positiveNode));
     }
 
-    void setLabel(String label) {
-    }
+    abstract void setLabel(String label);
 
     private static ArrayList<ArrayList<Integer>> seriesHelper(int currentNode, int destinationNode, int forbiddenNode, ArrayList<Integer> nodesPassed) {
         nodesPassed.add(currentNode);
@@ -205,6 +181,7 @@ public abstract class Element extends Circuit {
                 ", positiveNode=" + positiveNode.getName() +
                 ", negativeNode=" + negativeNode.getName() +
                 ", current=" + getCurrent() +
+                ", voltage=" + getVoltage() +
                 '}' + "\n";
     }
 }

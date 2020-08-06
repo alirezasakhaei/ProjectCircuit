@@ -239,7 +239,6 @@ public class Graphics {
                             JOptionPane.showMessageDialog(frame, "File Not Executable!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             break;
                         case 0:
-                            System.out.println(textAreaOutput.getText());
                             textAreaOutput.setText(circuit.getOutput());
                             buttonDrawCircuit.setEnabled(true);
                             buttonDrawGraph.setEnabled(true);
